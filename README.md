@@ -1,2 +1,2 @@
 # HousingAtlas
-testing setup
+this is a test
