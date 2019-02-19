@@ -1,0 +1,88 @@
+GISJOIN,YEAR,ANRCA,RES_ONLYA,TRUSTA,AIANHHA,RES_TRSTA,BLCK_GRPA,TRACTA,CDA,C_CITYA,COUNTY,COUNTYA,CTY_SUBA,DIVISIONA,MSA_CMSAA,PLACEA,PMSAA,REGIONA,STATE,STATEA,URBRURALA,URB_AREAA,ZIPA,CD103A,ANPSADPI,EX8001
+G2700010,1990,,,,,,,,,,Aitkin,1,,4,9999,,9999,2,Minnesota,27,,,,,Aitkin County,1970
+G2700030,1990,,,,,,,,,,Anoka,3,,4,5120,,9999,2,Minnesota,27,,,,,Anoka County,1973
+G2700050,1990,,,,,,,,,,Becker,5,,4,9999,,9999,2,Minnesota,27,,,,,Becker County,1967
+G2700070,1990,,,,,,,,,,Beltrami,7,,4,9999,,9999,2,Minnesota,27,,,,,Beltrami County,1971
+G2700090,1990,,,,,,,,,,Benton,9,,4,6980,,9999,2,Minnesota,27,,,,,Benton County,1973
+G2700110,1990,,,,,,,,,,Big Stone,11,,4,9999,,9999,2,Minnesota,27,,,,,Big Stone County,1945
+G2700130,1990,,,,,,,,,,Blue Earth,13,,4,9999,,9999,2,Minnesota,27,,,,,Blue Earth County,1959
+G2700150,1990,,,,,,,,,,Brown,15,,4,9999,,9999,2,Minnesota,27,,,,,Brown County,1951
+G2700170,1990,,,,,,,,,,Carlton,17,,4,9999,,9999,2,Minnesota,27,,,,,Carlton County,1960
+G2700190,1990,,,,,,,,,,Carver,19,,4,5120,,9999,2,Minnesota,27,,,,,Carver County,1973
+G2700210,1990,,,,,,,,,,Cass,21,,4,9999,,9999,2,Minnesota,27,,,,,Cass County,1972
+G2700230,1990,,,,,,,,,,Chippewa,23,,4,9999,,9999,2,Minnesota,27,,,,,Chippewa County,1950
+G2700250,1990,,,,,,,,,,Chisago,25,,4,5120,,9999,2,Minnesota,27,,,,,Chisago County,1972
+G2700270,1990,,,,,,,,,,Clay,27,,4,2520,,9999,2,Minnesota,27,,,,,Clay County,1965
+G2700290,1990,,,,,,,,,,Clearwater,29,,4,9999,,9999,2,Minnesota,27,,,,,Clearwater County,1965
+G2700310,1990,,,,,,,,,,Cook,31,,4,9999,,9999,2,Minnesota,27,,,,,Cook County,1967
+G2700330,1990,,,,,,,,,,Cottonwood,33,,4,9999,,9999,2,Minnesota,27,,,,,Cottonwood County,1950
+G2700350,1990,,,,,,,,,,Crow Wing,35,,4,9999,,9999,2,Minnesota,27,,,,,Crow Wing County,1969
+G2700370,1990,,,,,,,,,,Dakota,37,,4,5120,,9999,2,Minnesota,27,,,,,Dakota County,1976
+G2700390,1990,,,,,,,,,,Dodge,39,,4,9999,,9999,2,Minnesota,27,,,,,Dodge County,1959
+G2700410,1990,,,,,,,,,,Douglas,41,,4,9999,,9999,2,Minnesota,27,,,,,Douglas County,1968
+G2700430,1990,,,,,,,,,,Faribault,43,,4,9999,,9999,2,Minnesota,27,,,,,Faribault County,1946
+G2700450,1990,,,,,,,,,,Fillmore,45,,4,9999,,9999,2,Minnesota,27,,,,,Fillmore County,1939
+G2700470,1990,,,,,,,,,,Freeborn,47,,4,9999,,9999,2,Minnesota,27,,,,,Freeborn County,1952
+G2700490,1990,,,,,,,,,,Goodhue,49,,4,9999,,9999,2,Minnesota,27,,,,,Goodhue County,1959
+G2700510,1990,,,,,,,,,,Grant,51,,4,9999,,9999,2,Minnesota,27,,,,,Grant County,1950
+G2700530,1990,,,,,,,,,,Hennepin,53,,4,5120,,9999,2,Minnesota,27,,,,,Hennepin County,1961
+G2700550,1990,,,,,,,,,,Houston,55,,4,9999,,9999,2,Minnesota,27,,,,,Houston County,1958
+G2700570,1990,,,,,,,,,,Hubbard,57,,4,9999,,9999,2,Minnesota,27,,,,,Hubbard County,1971
+G2700590,1990,,,,,,,,,,Isanti,59,,4,5120,,9999,2,Minnesota,27,,,,,Isanti County,1971
+G2700610,1990,,,,,,,,,,Itasca,61,,4,9999,,9999,2,Minnesota,27,,,,,Itasca County,1969
+G2700630,1990,,,,,,,,,,Jackson,63,,4,9999,,9999,2,Minnesota,27,,,,,Jackson County,1948
+G2700650,1990,,,,,,,,,,Kanabec,65,,4,9999,,9999,2,Minnesota,27,,,,,Kanabec County,1967
+G2700670,1990,,,,,,,,,,Kandiyohi,67,,4,9999,,9999,2,Minnesota,27,,,,,Kandiyohi County,1966
+G2700690,1990,,,,,,,,,,Kittson,69,,4,9999,,9999,2,Minnesota,27,,,,,Kittson County,1954
+G2700710,1990,,,,,,,,,,Koochiching,71,,4,9999,,9999,2,Minnesota,27,,,,,Koochiching County,1962
+G2700730,1990,,,,,,,,,,Lac Qui Parle,73,,4,9999,,9999,2,Minnesota,27,,,,,Lac qui Parle County,1939
+G2700750,1990,,,,,,,,,,Lake,75,,4,9999,,9999,2,Minnesota,27,,,,,Lake County,1958
+G2700770,1990,,,,,,,,,,Lake Of The Woods,77,,4,9999,,9999,2,Minnesota,27,,,,,Lake of the Woods County,1970
+G2700790,1990,,,,,,,,,,Le Sueur,79,,4,9999,,9999,2,Minnesota,27,,,,,Le Sueur County,1959
+G2700810,1990,,,,,,,,,,Lincoln,81,,4,9999,,9999,2,Minnesota,27,,,,,Lincoln County,1947
+G2700830,1990,,,,,,,,,,Lyon,83,,4,9999,,9999,2,Minnesota,27,,,,,Lyon County,1962
+G2700850,1990,,,,,,,,,,McLeod,85,,4,9999,,9999,2,Minnesota,27,,,,,McLeod County,1962
+G2700870,1990,,,,,,,,,,Mahnomen,87,,4,9999,,9999,2,Minnesota,27,,,,,Mahnomen County,1964
+G2700890,1990,,,,,,,,,,Marshall,89,,4,9999,,9999,2,Minnesota,27,,,,,Marshall County,1954
+G2700910,1990,,,,,,,,,,Martin,91,,4,9999,,9999,2,Minnesota,27,,,,,Martin County,1950
+G2700930,1990,,,,,,,,,,Meeker,93,,4,9999,,9999,2,Minnesota,27,,,,,Meeker County,1961
+G2700950,1990,,,,,,,,,,Mille Lacs,95,,4,9999,,9999,2,Minnesota,27,,,,,Mille Lacs County,1967
+G2700970,1990,,,,,,,,,,Morrison,97,,4,9999,,9999,2,Minnesota,27,,,,,Morrison County,1963
+G2700990,1990,,,,,,,,,,Mower,99,,4,9999,,9999,2,Minnesota,27,,,,,Mower County,1950
+G2701010,1990,,,,,,,,,,Murray,101,,4,9999,,9999,2,Minnesota,27,,,,,Murray County,1950
+G2701030,1990,,,,,,,,,,Nicollet,103,,4,9999,,9999,2,Minnesota,27,,,,,Nicollet County,1964
+G2701050,1990,,,,,,,,,,Nobles,105,,4,9999,,9999,2,Minnesota,27,,,,,Nobles County,1951
+G2701070,1990,,,,,,,,,,Norman,107,,4,9999,,9999,2,Minnesota,27,,,,,Norman County,1942
+G2701090,1990,,,,,,,,,,Olmsted,109,,4,6820,,9999,2,Minnesota,27,,,,,Olmsted County,1967
+G2701110,1990,,,,,,,,,,Otter Tail,111,,4,9999,,9999,2,Minnesota,27,,,,,Otter Tail County,1963
+G2701130,1990,,,,,,,,,,Pennington,113,,4,9999,,9999,2,Minnesota,27,,,,,Pennington County,1962
+G2701150,1990,,,,,,,,,,Pine,115,,4,9999,,9999,2,Minnesota,27,,,,,Pine County,1970
+G2701170,1990,,,,,,,,,,Pipestone,117,,4,9999,,9999,2,Minnesota,27,,,,,Pipestone County,1947
+G2701190,1990,,,,,,,,,,Polk,119,,4,9999,,9999,2,Minnesota,27,,,,,Polk County,1959
+G2701210,1990,,,,,,,,,,Pope,121,,4,9999,,9999,2,Minnesota,27,,,,,Pope County,1953
+G2701230,1990,,,,,,,,,,Ramsey,123,,4,5120,,9999,2,Minnesota,27,,,,,Ramsey County,1958
+G2701250,1990,,,,,,,,,,Red Lake,125,,4,9999,,9999,2,Minnesota,27,,,,,Red Lake County,1954
+G2701270,1990,,,,,,,,,,Redwood,127,,4,9999,,9999,2,Minnesota,27,,,,,Redwood County,1951
+G2701290,1990,,,,,,,,,,Renville,129,,4,9999,,9999,2,Minnesota,27,,,,,Renville County,1950
+G2701310,1990,,,,,,,,,,Rice,131,,4,9999,,9999,2,Minnesota,27,,,,,Rice County,1962
+G2701330,1990,,,,,,,,,,Rock,133,,4,9999,,9999,2,Minnesota,27,,,,,Rock County,1952
+G2701350,1990,,,,,,,,,,Roseau,135,,4,9999,,9999,2,Minnesota,27,,,,,Roseau County,1971
+G2701370,1990,,,,,,,,,,St Louis,137,,4,2240,,9999,2,Minnesota,27,,,,,St. Louis County,1952
+G2701390,1990,,,,,,,,,,Scott,139,,4,5120,,9999,2,Minnesota,27,,,,,Scott County,1974
+G2701410,1990,,,,,,,,,,Sherburne,141,,4,6980,,9999,2,Minnesota,27,,,,,Sherburne County,1975
+G2701430,1990,,,,,,,,,,Sibley,143,,4,9999,,9999,2,Minnesota,27,,,,,Sibley County,1947
+G2701450,1990,,,,,,,,,,Stearns,145,,4,6980,,9999,2,Minnesota,27,,,,,Stearns County,1970
+G2701470,1990,,,,,,,,,,Steele,147,,4,9999,,9999,2,Minnesota,27,,,,,Steele County,1958
+G2701490,1990,,,,,,,,,,Stevens,149,,4,9999,,9999,2,Minnesota,27,,,,,Stevens County,1956
+G2701510,1990,,,,,,,,,,Swift,151,,4,9999,,9999,2,Minnesota,27,,,,,Swift County,1946
+G2701530,1990,,,,,,,,,,Todd,153,,4,9999,,9999,2,Minnesota,27,,,,,Todd County,1961
+G2701550,1990,,,,,,,,,,Traverse,155,,4,9999,,9999,2,Minnesota,27,,,,,Traverse County,1942
+G2701570,1990,,,,,,,,,,Wabasha,157,,4,9999,,9999,2,Minnesota,27,,,,,Wabasha County,1960
+G2701590,1990,,,,,,,,,,Wadena,159,,4,9999,,9999,2,Minnesota,27,,,,,Wadena County,1962
+G2701610,1990,,,,,,,,,,Waseca,161,,4,9999,,9999,2,Minnesota,27,,,,,Waseca County,1957
+G2701630,1990,,,,,,,,,,Washington,163,,4,5120,,9999,2,Minnesota,27,,,,,Washington County,1973
+G2701650,1990,,,,,,,,,,Watonwan,165,,4,9999,,9999,2,Minnesota,27,,,,,Watonwan County,1949
+G2701670,1990,,,,,,,,,,Wilkin,167,,4,9999,,9999,2,Minnesota,27,,,,,Wilkin County,1950
+G2701690,1990,,,,,,,,,,Winona,169,,4,9999,,9999,2,Minnesota,27,,,,,Winona County,1950
+G2701710,1990,,,,,,,,,,Wright,171,,4,5120,,9999,2,Minnesota,27,,,,,Wright County,1972
+G2701730,1990,,,,,,,,,,Yellow Medicine,173,,4,9999,,9999,2,Minnesota,27,,,,,Yellow Medicine County,1947
