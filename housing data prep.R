@@ -4,6 +4,8 @@ library(tidyverse)
 # Median home value ---------------------------------
 
 med.home.val.1990 <- read_csv("1990_median_home_val.csv") %>%
+  mutate(COUNTYA = formatC(COUNTYA, width = 3, flag = "0"))
+
   select(YEAR, COUNTY,EST001) %>%
   rename(countyName = COUNTY,
          value1990=EST001,
