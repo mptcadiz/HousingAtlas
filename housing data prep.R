@@ -76,3 +76,37 @@ med.year.built.1990_2010 <- full_join(med.year.built.1990_2000, med.year.built.2
     year = replace(year, year =="value2000" ,"2000"),
     year = replace(year, year =="value2010" ,"2010")) %>%
   rename(yearBuilt = value)
+
+# Mortgage status  ---------------------------------
+
+total.housing.units.1970_2010 <- read_csv("1970_2010_total_housing_units.csv") %>%
+  select (COUNTY, A41AA1970, A41AA1980, A41AA1990, A41AA2000, A41AA2010) %>%
+  mutate(
+    COUNTY = str_replace(COUNTY, " County", ""),
+    COUNTY = str_replace(COUNTY,"Lake of the Woods","Lake Of The Woods"),
+    COUNTY = str_replace(COUNTY,"Lac qui Parle","Lac Qui Parle")
+  ) %>%
+  rename(countyName = COUNTY,
+         "1970units"=A41AA1970,
+         "1980units"=A41AA1980,
+         "1990units"=A41AA1990,
+         "2000units"=A41AA2000,
+         "2010units"=A41AA2010)
+
+mortgage.status.1990_2010 <- read_csv("1990_2010_mortgage_status.csv") %>%
+  select (COUNTY, B80AA1990, B80AA2000, B80AA2010, B80AB1990, B80AB2000, B80AB2010, B80AC1990, B80AC2000, B80AC2010) %>%
+  mutate(
+    COUNTY = str_replace(COUNTY, " County", ""),
+    COUNTY = str_replace(COUNTY,"Lake of the Woods","Lake Of The Woods"),
+    COUNTY = str_replace(COUNTY,"Lac qui Parle","Lac Qui Parle")
+  ) %>%
+  rename(countyName = COUNTY,
+         "1990_mortgage_owner"=B80AA1990,
+         "2000_mortgage_owner"=B80AA2000,
+         "2010_mortgage_owner"=B80AA2010,
+         "1990_free_owner"=B80AB1990,
+         "2000_free_owner"=B80AB2000,
+         "2010_free"=B80AB2010,
+         "1990_mortgage_renter"=B80AC1990,
+         "2000_mortgage_renter"=B80AC2000,
+         "2010_mortgage_renter"=B80AC2010)
