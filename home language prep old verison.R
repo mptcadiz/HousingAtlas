@@ -1,3 +1,4 @@
+#03/04/19 - remove rows where all columns are NA https://stackoverflow.com/questions/41609912/remove-rows-where-all-variables-are-na-using-dplyr#
 library(tidyverse)
 
 
@@ -16,7 +17,7 @@ home.lang.2018 <- read_csv("2018_home_lang.csv") %>%
   mutate(enrollmentTotal = enrollment,
          language = ifelse(languageCode != "011", "OTHER", language),
          language = ifelse(languageCode == "011", "ENGLISH", language)
-         ) %>%
+  ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
   summarize(enrollment=sum(enrollment)) %>%
@@ -25,15 +26,14 @@ home.lang.2018 <- read_csv("2018_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2018 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2018 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2017 <- read_csv("2017_home_lang.csv") %>%
@@ -56,15 +56,14 @@ home.lang.2017 <- read_csv("2017_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2017 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2017 = percentLang) %>%
   drop_na(districtName)
 
 
@@ -88,15 +87,14 @@ home.lang.2016 <- read_csv("2016_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2016 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2016 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2015 <- read_csv("2015_home_lang.csv") %>%
@@ -119,15 +117,14 @@ home.lang.2015 <- read_csv("2015_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2015 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2015 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2014 <- read_csv("2014_home_lang.csv") %>%
@@ -150,15 +147,14 @@ home.lang.2014 <- read_csv("2014_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2014 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2014 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2013 <- read_csv("2013_home_lang.csv") %>%
@@ -184,15 +180,14 @@ home.lang.2013 <- read_csv("2013_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2013 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2013 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2012 <- read_csv("2012_home_lang.csv") %>%
@@ -215,15 +210,14 @@ home.lang.2012 <- read_csv("2012_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2012 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2012 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2011 <- read_csv("2011_home_lang.csv") %>%
@@ -246,15 +240,14 @@ home.lang.2011 <- read_csv("2011_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2011 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2011 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2010 <- read_csv("2010_home_lang.csv") %>%
@@ -277,15 +270,14 @@ home.lang.2010 <- read_csv("2010_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2010 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2010 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2009 <- read_csv("2009_home_lang.csv") %>%
@@ -308,15 +300,14 @@ home.lang.2009 <- read_csv("2009_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2009 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2009 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2008 <- read_csv("2008_home_lang.csv") %>%
@@ -339,15 +330,14 @@ home.lang.2008 <- read_csv("2008_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2008 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2008 = percentLang) %>%
   drop_na(districtName)
 
 home.lang.2007 <- read_csv("2007_home_lang.csv") %>%
@@ -371,75 +361,74 @@ home.lang.2007 <- read_csv("2007_home_lang.csv") %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
   ungroup() %>%
   mutate(
-    percentEng = enrollment/enrollmentTotal,
-    percentEng=as.factor(percentEng)
+    percentLang = enrollment/enrollmentTotal,
+    percentLang=as.factor(percentLang)
   ) %>%
   mutate(
     districtName=toupper(districtName)
   ) %>%
-  filter(language=="ENGLISH") %>%
-  select(districtNumber, districtType, districtName, percentEng) %>%
-  rename(percentEng2007 = percentEng) %>%
+  select(districtNumber, districtType, districtName, language, percentLang) %>%
+  rename(percentLang2008 = percentLang) %>%
   drop_na(districtName)
 
 
-home.lang.2008_2018 <- full_join(home.lang.2018, home.lang.2017, by = c("districtType","districtNumber")) %>%
+home.lang.2008_2018 <- full_join(home.lang.2018, home.lang.2017, by = c("districtType","districtNumber","language")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2016,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
+  drop_na(districtNumber) %>%
+  full_join(home.lang.2018, home.lang.2016,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2015,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2014,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2013,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2012,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2011,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2010,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2009,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2008,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName) %>%
-  full_join(home.lang.2007,home.lang.2008_2018, by = c("districtType","districtNumber")) %>%
-  rename(districtName=districtName.x) %>%
-  select(-districtName.y) %>%
-  drop_na(districtName)
+  drop_na(districtNumber) 
 
-home.lang.2008_2018.tidy <- home.lang.2008_2018 %>%
-  gather(year,percentEng,percentEng2007:percentEng2018) %>%
-  mutate(
-    year = replace(year, year =="percentEng2007" ,"2007"),
-    year = replace(year, year =="percentEng2008" ,"2008"),
-    year = replace(year, year =="percentEng2009" ,"2009"),
-    year = replace(year, year =="percentEng2010" ,"2010"),
-    year = replace(year, year =="percentEng2011" ,"2011"),
-    year = replace(year, year =="percentEng2012" ,"2012"),
-    year = replace(year, year =="percentEng2013" ,"2013"),
-    year = replace(year, year =="percentEng2014" ,"2014"),
-    year = replace(year, year =="percentEng2015" ,"2015"),
-    year = replace(year, year =="percentEng2016" ,"2016"),
-    year = replace(year, year =="percentEng2017" ,"2017"),
-    year = replace(year, year =="percentEng2018" ,"2018"))
+
+home.lang.2007_2008 <- full_join(home.lang.2007, home.lang.2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2009, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2010, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2011, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2012, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2013, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2014, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2015, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2016, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2017, home.lang.2007_2008, by=c("districtName","languageCode","language")) %>%
+  full_join(home.lang.2018, home.lang.2007_2008, by=c("districtName","languageCode","language"))
+
+home.lang.2008_2018 <- full_join(home.lang.2008, home.lang.2009, by=c("districtName","languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2010, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2011, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2012, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2013, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2014, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2015, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2016, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2017, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x) %>%
+  full_join(home.lang.2018, home.lang.2008_2018, by=c("districtName", "languageCode")) %>%
+  select(-language.y) %>%
+  rename(language=language.x)
+
+
+#free.red.lunch.2008_2018 <- full_join(free.red.lunch.2018, free.red.lunch.2017, by = c("DistrictName")) %>%
+#  full_join(free.red.lunch.2016, free.red.lunch.2006_2018, by =c("DistrictName")) %>%
+#  gather(year,percentLunch,percentLunch2006:percentLunch2018) %>%
+#  mutate(
+#    year = replace(year, year =="percentLunch2006" ,"2006"),
+#    year = replace(year, year =="percentLunch2018" ,"2018"))
