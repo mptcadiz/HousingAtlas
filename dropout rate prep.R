@@ -1,7 +1,7 @@
 library(tidyverse)
 
 
-# Graduation rates by district ---------------------------------
+# Dropout rates by district ---------------------------------
 
 drop.2017 <- read_csv("2017_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
@@ -27,31 +27,148 @@ drop.2017 <- read_csv("2017_grad.csv") %>%
   rename(dropRate2017 = dropRate) %>%
   drop_na(districtName)
 
+drop.2016 <- read_csv("2016_grad.csv") %>%
+  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  rename (
+    districtName="District Name",
+    districtNumber="District Number",
+    districtType="District Type",
+    dropRate = "Four Year Percent",
+    endStatus = "Ending Status"
+  ) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  ) %>%
+  filter(endStatus=="Dropout") %>%
+  #drop_na(dropRate) %>%
+  group_by(districtNumber, districtType, districtName) %>%
+  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(
+    districtName=toupper(districtName)
+  ) %>%
+  rename(dropRate2016 = dropRate) %>%
+  drop_na(districtName)
 
+drop.2015 <- read_csv("2015_grad.csv") %>%
+  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  rename (
+    districtName="District Name",
+    districtNumber="District Number",
+    districtType="District Type",
+    dropRate = "Four Year Percent",
+    endStatus = "Ending Status"
+  ) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  ) %>%
+  filter(endStatus=="Dropout") %>%
+  #drop_na(dropRate) %>%
+  group_by(districtNumber, districtType, districtName) %>%
+  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(
+    districtName=toupper(districtName)
+  ) %>%
+  rename(dropRate2015 = dropRate) %>%
+  drop_na(districtName)
 
+drop.2014 <- read_csv("2014_grad.csv") %>%
+  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  rename (
+    districtName="District Name",
+    districtNumber="District Number",
+    districtType="District Type",
+    dropRate = "Four Year Percent",
+    endStatus = "Ending Status"
+  ) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  ) %>%
+  filter(endStatus=="Dropout") %>%
+  #drop_na(dropRate) %>%
+  group_by(districtNumber, districtType, districtName) %>%
+  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(
+    districtName=toupper(districtName)
+  ) %>%
+  rename(dropRate2014 = dropRate) %>%
+  drop_na(districtName)
 
-grad.2012_2018 <- full_join(grad.2017, grad.2016, by = c("districtType","districtNumber")) %>%
+drop.2013 <- read_csv("2013_grad.csv") %>%
+  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  rename (
+    districtName="District Name",
+    districtNumber="District Number",
+    districtType="District Type",
+    dropRate = "Four Year Percent",
+    endStatus = "Ending Status"
+  ) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  ) %>%
+  filter(endStatus=="Dropout") %>%
+  #drop_na(dropRate) %>%
+  group_by(districtNumber, districtType, districtName) %>%
+  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(
+    districtName=toupper(districtName)
+  ) %>%
+  rename(dropRate2013 = dropRate) %>%
+  drop_na(districtName)
+
+drop.2012 <- read_csv("2012_grad.csv") %>%
+  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  rename (
+    districtName="District Name",
+    districtNumber="District Number",
+    districtType="District Type",
+    dropRate = "Four Year Percent",
+    endStatus = "Ending Status"
+  ) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  ) %>%
+  filter(endStatus=="Dropout") %>%
+  #drop_na(dropRate) %>%
+  group_by(districtNumber, districtType, districtName) %>%
+  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(
+    districtName=toupper(districtName)
+  ) %>%
+  rename(dropRate2012 = dropRate) %>%
+  drop_na(districtName)
+
+drop.2012_2018 <- full_join(drop.2017, drop.2016, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
-  full_join(grad.2015, grad.2012_2018, by = c("districtType","districtNumber")) %>%
+  full_join(drop.2015, drop.2012_2018, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
-  full_join(grad.2014, grad.2012_2018, by = c("districtType","districtNumber")) %>%
+  full_join(drop.2014, drop.2012_2018, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
-  full_join(grad.2013, grad.2012_2018, by = c("districtType","districtNumber")) %>%
+  full_join(drop.2013, drop.2012_2018, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
-  full_join(grad.2012, grad.2012_2018, by = c("districtType","districtNumber")) %>%
+  full_join(drop.2012, drop.2012_2018, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName)
 
-grad.2012_2018.tidy <- grad.2012_2018 %>%
+drop.2012_2018.tidy <- drop.2012_2018 %>%
   gather(year,dropRate,dropRate2012:dropRate2017) %>%
   mutate(
     year = replace(year, year =="dropRate2012" ,"2012"),
