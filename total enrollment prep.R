@@ -444,3 +444,26 @@ enrolled.2018_2000 <- full_join(enrolled.2018, enrolled.2017, by = c("districtTy
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName)
+
+enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
+  gather(year,totalStudents,totalStudents2018:totalStudents2000) %>%
+  mutate(
+    year = replace(year, year =="totalStudents2000" ,"2000"),
+    year = replace(year, year =="totalStudents2001" ,"2001"),
+    year = replace(year, year =="totalStudents2002" ,"2002"),
+    year = replace(year, year =="totalStudents2003" ,"2003"),
+    year = replace(year, year =="totalStudents2004" ,"2004"),
+    year = replace(year, year =="totalStudents2005" ,"2005"),
+    year = replace(year, year =="totalStudents2006" ,"2006"),
+    year = replace(year, year =="totalStudents2007" ,"2007"),
+    year = replace(year, year =="totalStudents2008" ,"2008"),
+    year = replace(year, year =="totalStudents2009" ,"2009"),
+    year = replace(year, year =="totalStudents2010" ,"2010"),
+    year = replace(year, year =="totalStudents2011" ,"2011"),
+    year = replace(year, year =="totalStudents2012" ,"2012"),
+    year = replace(year, year =="totalStudents2013" ,"2013"),
+    year = replace(year, year =="totalStudents2014" ,"2014"),
+    year = replace(year, year =="totalStudents2015" ,"2015"),
+    year = replace(year, year =="totalStudents2016" ,"2016"),
+    year = replace(year, year =="totalStudents2017" ,"2017"),
+    year = replace(year, year =="totalStudents2018" ,"2018"))
