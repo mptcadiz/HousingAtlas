@@ -16,20 +16,12 @@ mortgage.status.1990_2010 <- read_csv("1990_2010_mortgage_status.csv") %>%
          free_owner_2010=B80AB2010) %>%
   mutate(mortgage_owner_1990 = as.numeric(mortgage_owner_1990),
          mortgage_owner_2000 = as.numeric(mortgage_owner_2000),
-         mortgage_owner_2010 = as.numeric(mortgage_owner_2010),
-    total1990 = mortgage.status.1990_2010 %>%
-      select(mortgage_owner_1990, free_owner_1990) %>%
-      rowSums
-  ) %>%
+         mortgage_owner_2010 = as.numeric(mortgage_owner_2010)
+         ) %>%
   mutate(
-    total2000=mortgage.status.1990_2010 %>%
-      select(mortgage_owner_2000, free_owner_2000) %>%
-      rowSums
-  ) %>%
-  mutate(
-    total2010=mortgage.status.1990_2010 %>%
-      select(mortgage_owner_2010, free_owner_2010) %>%
-      rowSums
+    total1990 = mortgage_owner_1990 + free_owner_1990,
+    total2000 = mortgage_owner_2000 + free_owner_2000,
+    total2010 = mortgage_owner_2010 + free_owner_2010
   ) %>%
   mutate (
     percentFree1990=free_owner_1990/total1990,
