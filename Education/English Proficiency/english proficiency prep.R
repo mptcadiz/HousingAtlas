@@ -20,7 +20,7 @@ english.2019 <- read_csv("2019_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12),
     totalStudents=sum(totalStudents)
   ) %>%
@@ -49,7 +49,7 @@ english.2018 <- read_csv("2018_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12),
     totalStudents=sum(totalStudents)
   ) %>%
@@ -78,7 +78,7 @@ english.2017 <- read_csv("2017_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12),
     totalStudents=sum(totalStudents)
   ) %>%
@@ -107,7 +107,7 @@ english.2016 <- read_csv("2016_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12),
     totalStudents=sum(totalStudents)
   ) %>%
@@ -136,7 +136,7 @@ english.2015 <- read_csv("2015_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12),
     totalStudents=sum(totalStudents)
   ) %>%
@@ -161,7 +161,7 @@ enrolled.2014 <- read_csv("2014_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -182,7 +182,7 @@ english.2014 <- read_csv("2014_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPIdentifiedK12 = sum(LEPIdentifiedK12)
   ) %>%
   ungroup() %>%
@@ -210,7 +210,7 @@ enrolled.2013 <- read_csv("2013_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -228,7 +228,7 @@ english.2013 <- read_csv("2013_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPServedK12 = sum(LEPServedK12),
     LEPIdentifiedK12 = sum(LEPIdentifiedK12)
   ) %>%
@@ -259,7 +259,7 @@ enrolled.2012 <- read_csv("2012_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -281,7 +281,7 @@ english.2012 <- read_csv("2012_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPServedK12 = sum(LEPServedK12),
     LEPIdentifiedK12 = sum(LEPIdentifiedK12)
   ) %>%
@@ -312,7 +312,7 @@ enrolled.2011 <- read_csv("2011_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -334,7 +334,7 @@ english.2011 <- read_csv("2011_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPServedK12 = sum(LEPServedK12),
     LEPIdentifiedK12 = sum(LEPIdentifiedK12)
   ) %>%
@@ -365,7 +365,7 @@ enrolled.2010 <- read_csv("2010_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -383,7 +383,7 @@ english.2010 <- read_csv("2010_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPServedK12 = sum(LEPServedK12),
     LEPIdentifiedK12 = sum(LEPIdentifiedK12)
   ) %>%
@@ -415,7 +415,7 @@ enrolled.2009 <- read_csv("2009_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -432,7 +432,7 @@ english.2009 <- read_csv("2009_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -448,7 +448,7 @@ english.2009 <- read_csv("2009_english.csv") %>%
   drop_na(districtName)
 
 # 2008 ---------------------------------
-#problem with summarize sum LEPK12
+#problem with summarise sum LEPK12
 enrolled.2008 <- read_csv("2008_enrolled_ethnicity_district.csv") %>%
   select (DistrictNumber, DistrictType, DistrictName, TotalStudents) %>%
   rename(
@@ -463,13 +463,13 @@ enrolled.2008 <- read_csv("2008_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
   drop_na(districtName)
 
-#summarize to sum LEPK12 won't work, can't figure out why
+#summarise to sum LEPK12 won't work, can't figure out why
 english.2008 <- read_csv("2008_english.csv") %>%
   select (districtNumber, districtType, DistrictName, LEPK12) %>%
   rename(
@@ -482,7 +482,7 @@ english.2008 <- read_csv("2008_english.csv") %>%
   ) %>%
   drop_na(districtName) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12, na.rm=TRUE)
   ) %>%
   ungroup() %>%
@@ -510,7 +510,7 @@ enrolled.2007 <- read_csv("2007_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -527,7 +527,7 @@ english.2007 <- read_csv("2007_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -555,7 +555,7 @@ enrolled.2006 <- read_csv("2006_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -572,7 +572,7 @@ english.2006 <- read_csv("2006_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -600,7 +600,7 @@ enrolled.2005 <- read_csv("2005_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -620,7 +620,7 @@ english.2005 <- read_csv("2005_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -648,7 +648,7 @@ enrolled.2004 <- read_csv("2004_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -668,7 +668,7 @@ english.2004 <- read_csv("2004_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -696,7 +696,7 @@ enrolled.2003 <- read_csv("2003_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -716,7 +716,7 @@ english.2003 <- read_csv("2003_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -746,7 +746,7 @@ enrolled.2002 <- read_csv("2002_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -766,7 +766,7 @@ english.2002 <- read_csv("2002_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%
@@ -799,7 +799,7 @@ enrolled.2000 <- read_csv("2000_enrolled_ethnicity_district.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     totalStudents = sum(totalStudents)
   ) %>%
   ungroup() %>%
@@ -819,7 +819,7 @@ english.2000 <- read_csv("2000_english.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(
+  summarise(
     LEPK12 = sum(LEPK12)
   ) %>%
   ungroup() %>%

@@ -19,7 +19,7 @@ grad.ethnicity.2017 <- read_csv("2017_grad.csv") %>%
   filter(endStatus=="Graduate") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(gradRate=mean(gradRate, na.rm=TRUE)) %>%
+  summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)

@@ -6,7 +6,7 @@ library(tidyverse)
 free.red.lunch.2018 <- read_csv("2018_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -25,7 +25,7 @@ free.red.lunch.2018 <- read_csv("2018_free_red_lunch.csv") %>%
 free.red.lunch.2017 <- read_csv("2017_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -44,7 +44,7 @@ free.red.lunch.2017 <- read_csv("2017_free_red_lunch.csv") %>%
 free.red.lunch.2016 <- read_csv("2016_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -63,7 +63,7 @@ free.red.lunch.2016 <- read_csv("2016_free_red_lunch.csv") %>%
 free.red.lunch.2015 <- read_csv("2015_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -82,7 +82,7 @@ free.red.lunch.2015 <- read_csv("2015_free_red_lunch.csv") %>%
 free.red.lunch.2014 <- read_csv("2014_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -101,7 +101,7 @@ free.red.lunch.2014 <- read_csv("2014_free_red_lunch.csv") %>%
 free.red.lunch.2013 <- read_csv("2013_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -111,11 +111,15 @@ free.red.lunch.2013 <- read_csv("2013_free_red_lunch.csv") %>%
     percentLunch2013 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2013)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2013)
 
 free.red.lunch.2012 <- read_csv("2012_free_red_lunch.csv") %>%
   select (districtNumber, districtType, DistrictName, K12Enr, FreeK12, RedK12) %>%
@@ -130,7 +134,7 @@ free.red.lunch.2012 <- read_csv("2012_free_red_lunch.csv") %>%
     RedK12 = as.numeric(RedK12)
          ) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -139,9 +143,13 @@ free.red.lunch.2012 <- read_csv("2012_free_red_lunch.csv") %>%
     freeRed = FreeK12 + RedK12,
     percentLunch2012 = freeRed/K12Enr
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
+  ) %>%
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
   ) %>%
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2012)
 
@@ -158,7 +166,7 @@ free.red.lunch.2011 <- read_csv("2011_free_red_lunch.csv") %>%
     RedK12 = as.numeric(RedK12)
   ) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -167,16 +175,20 @@ free.red.lunch.2011 <- read_csv("2011_free_red_lunch.csv") %>%
     freeRed = FreeK12 + RedK12,
     percentLunch2011 = freeRed/K12Enr
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
+  ) %>%
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
   ) %>%
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2011)
 
 free.red.lunch.2010 <- read_csv("2010_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -186,16 +198,20 @@ free.red.lunch.2010 <- read_csv("2010_free_red_lunch.csv") %>%
     percentLunch2010 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2010)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2010)
 
 free.red.lunch.2009 <- read_csv("2009_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -205,16 +221,20 @@ free.red.lunch.2009 <- read_csv("2009_free_red_lunch.csv") %>%
     percentLunch2009 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2009)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2009)
 
 free.red.lunch.2008 <- read_csv("2008_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -224,16 +244,20 @@ free.red.lunch.2008 <- read_csv("2008_free_red_lunch.csv") %>%
     percentLunch2008 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2008)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2008)
 
 free.red.lunch.2007 <- read_csv("2007_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -243,16 +267,20 @@ free.red.lunch.2007 <- read_csv("2007_free_red_lunch.csv") %>%
     percentLunch2007 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2007)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2007)
 
 free.red.lunch.2006 <- read_csv("2006_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
   group_by(districtNumber,districtType, DistrictName) %>%
-  summarize(
+  summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
     FreeK12 = sum(FreeK12, na.rm=TRUE),
     RedK12 = sum(RedK12, na.rm=TRUE)
@@ -262,11 +290,15 @@ free.red.lunch.2006 <- read_csv("2006_free_red_lunch.csv") %>%
     percentLunch2006 = freeRed/K12Enr,
     DistrictName=toupper(DistrictName)
   ) %>%
+  ungroup() %>%
   rename(
     DistrictNumber=districtNumber,
     DistrictType=districtType
   ) %>%
-  select(DistrictName, percentLunch2006)
+  mutate(
+    DistrictNumber = ifelse(DistrictNumber == "0769" & DistrictType == "01", "2769", DistrictNumber)
+  ) %>%
+  select(DistrictNumber, DistrictType, DistrictName, percentLunch2006)
 
 
 free.red.lunch.2006_2018 <- full_join(free.red.lunch.2018, free.red.lunch.2017, by = c("DistrictType","DistrictNumber")) %>%
@@ -333,4 +365,5 @@ tidy.free.red.lunch.2006_2018 <- free.red.lunch.2006_2018 %>%
     year = replace(year, year =="percentLunch2015" ,"2015"),
     year = replace(year, year =="percentLunch2016" ,"2016"),
     year = replace(year, year =="percentLunch2017" ,"2017"),
-    year = replace(year, year =="percentLunch2018" ,"2018"))
+    year = replace(year, year =="percentLunch2018" ,"2018")) %>%
+  rename(districtName=DistrictName)

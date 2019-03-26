@@ -207,7 +207,7 @@ grad.math.nonpub.2010 <- read_csv("2010_grad_math_nonpub.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtName, districtNumber, districtType) %>%
-  summarize(
+  summarise(
     percentPassed=mean(percentPassed, na.rm=TRUE),
     averageScore=mean(averageScore, na.rm=TRUE)
   ) %>%
@@ -231,7 +231,7 @@ grad.math.nonpub.2009 <- read_csv("2009_grad_math_nonpub.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   group_by(districtName, districtNumber, districtType) %>%
-  summarize(
+  summarise(
     percentPassed=mean(percentPassed, na.rm=TRUE),
     averageScore=mean(averageScore, na.rm=TRUE)
   ) %>%

@@ -63,4 +63,5 @@ percentfree.1990_2010 <- mortgage.status.1990_2010 %>%
 
 tidymortgage.status.1990_2010 <- full_join(mortgages.1990_2010, free.1990_2010, by = c("countyName", "year")) %>%
   full_join(total.1990_2010, tidymortgage.status.1990_2010, by = c("countyName","year")) %>%
-  full_join(percentfree.1990_2010, tidymortgage.status.1990_2010, by = c("countyName", "year"))
+  full_join(percentfree.1990_2010, tidymortgage.status.1990_2010, by = c("countyName", "year")) %>%
+  mutate(countyName=str_remove(countyName," County"))
