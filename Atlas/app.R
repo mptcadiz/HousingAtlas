@@ -86,6 +86,12 @@ grad.math.list <- grad.math.2009_2013_total %>%
   select(districtName) %>%
   distinct(districtName)
 
+grad.reading.2008_2012_total
+
+grad.reading.list <- grad.reading.2008_2012_total %>%
+  select(districtName) %>%
+  distinct(districtName)
+
 #Visualization types --------------------------------------------------------
 vis.list <- c("Trend lines","Data points", "Both visualizations") %>% 
   as.list()
@@ -177,6 +183,19 @@ radioButtons(inputId="lunch.vis.list",
 
 ggiraphOutput("lunchgraph"),
 
+#For visualizing average GRAD: Math scores  --------------------------------------------------------
+selectizeInput(inputId = "grad.math.score",
+               label = "Choose a district",
+               choices = grad.math.list,
+               multiple = TRUE),
+
+radioButtons(inputId="grad.math.score.vis.list",
+             label="How would you like to visualize the data?",
+             choices = vis.list,
+             inline=TRUE),
+
+ggiraphOutput("gradmathscoregraph"),
+
 #For visualizing percent of GRAD: Math passers --------------------------------------------------------
 selectizeInput(inputId = "grad.math.pass",
                label = "Choose a district",
@@ -190,18 +209,31 @@ radioButtons(inputId="grad.math.pass.vis.list",
 
 ggiraphOutput("gradmathpassgraph"),
 
-#For visualizing average GRAD: Math scores  --------------------------------------------------------
-selectizeInput(inputId = "grad.math.score",
+#For visualizing average GRAD: Reading scores  --------------------------------------------------------
+selectizeInput(inputId = "grad.reading.score",
                label = "Choose a district",
-               choices = grad.math.list,
+               choices = grad.reading.list,
                multiple = TRUE),
 
-radioButtons(inputId="grad.math.score.vis.list",
+radioButtons(inputId="grad.reading.score.vis.list",
              label="How would you like to visualize the data?",
              choices = vis.list,
              inline=TRUE),
 
-ggiraphOutput("gradmathscoregraph")
+ggiraphOutput("gradreadingscoregraph"),
+
+#For visualizing percent of GRAD: Reading passers --------------------------------------------------------
+selectizeInput(inputId = "grad.reading.pass",
+               label = "Choose a district",
+               choices = grad.reading.list,
+               multiple = TRUE),
+
+radioButtons(inputId="grad.reading.pass.vis.list",
+             label="How would you like to visualize the data?",
+             choices = vis.list,
+             inline=TRUE),
+
+ggiraphOutput("gradreadingpassgraph")
 
 
 )
@@ -422,6 +454,57 @@ server <- function(input, output, session) {
     ggiraph(code=print(grad.math.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
   
+#GRAD: Reading Score Visualization --------------------------------------------------------
+  output$gradreadingscoregraph <- renderggiraph({
+    
+    grad.reading.score.plot <- ggplot(filter(grad.reading.2008_2012_total, districtName %in% input$grad.reading.score), aes(color=districtName, x=as.numeric(year), y=as.numeric(averageScore))) +
+      scale_x_continuous(breaks=c(2008, 2009,2010,2011,2012))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Average GRAD: Reading Score")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$grad.reading.score.vis.list == "Data points"){
+      grad.reading.score.plot <- grad.reading.score.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Average GRAD: Reading Score: ",averageScore)))
+    }
+    else if (input$grad.reading.score.vis.list == "Trend lines"){
+      grad.reading.score.plot <- grad.reading.score.plot +
+        geom_line()
+    }
+    else if (input$grad.reading.score.vis.list == "Both visualizations"){
+      grad.reading.score.plot <- grad.reading.score.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Average GRAD: Reading Score: ",averageScore))) +
+        geom_line()
+    }
+    ggiraph(code=print(grad.reading.score.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
+#GRAD: Reading Passing Visualization --------------------------------------------------------
+  output$gradreadingpassgraph <- renderggiraph({
+    
+    grad.reading.pass.plot <- ggplot(filter(grad.reading.2008_2012_total, districtName %in% input$grad.reading.pass), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentPassed))) +
+      scale_x_continuous(breaks=c(2008,2009, 2010,2011,2012))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="GRAD: Reading Percent Passed")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$grad.reading.pass.vis.list == "Data points"){
+      grad.reading.pass.plot <- grad.reading.pass.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percentPassed)))
+    }
+    else if (input$grad.reading.pass.vis.list == "Trend lines"){
+      grad.reading.pass.plot <- grad.reading.pass.plot +
+        geom_line()
+    }
+    else if (input$grad.reading.pass.vis.list == "Both visualizations"){
+      grad.reading.pass.plot <- grad.reading.pass.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percentPassed))) +
+        geom_line()
+    }
+    ggiraph(code=print(grad.reading.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
 }
 
 # Run the application 
