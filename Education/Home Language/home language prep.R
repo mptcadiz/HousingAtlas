@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Languages spoken at home (by district) ---------------------------------
 
-home.lang.2018 <- read_csv("2018_home_lang.csv") %>%
+home.lang.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2018_home_lang.csv") %>%
   select ("District Number","District Type", "District Name", "Language Name", "Home Primary Language", Enrollments) %>%
   rename (
     enrollment=Enrollments,
@@ -19,7 +19,7 @@ home.lang.2018 <- read_csv("2018_home_lang.csv") %>%
          ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -36,7 +36,7 @@ home.lang.2018 <- read_csv("2018_home_lang.csv") %>%
   rename(percentEng2018 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2017 <- read_csv("2017_home_lang.csv") %>%
+home.lang.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2017_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -50,7 +50,7 @@ home.lang.2017 <- read_csv("2017_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -68,7 +68,7 @@ home.lang.2017 <- read_csv("2017_home_lang.csv") %>%
   drop_na(districtName)
 
 
-home.lang.2016 <- read_csv("2016_home_lang.csv") %>%
+home.lang.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2016_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -82,7 +82,7 @@ home.lang.2016 <- read_csv("2016_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -99,7 +99,7 @@ home.lang.2016 <- read_csv("2016_home_lang.csv") %>%
   rename(percentEng2016 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2015 <- read_csv("2015_home_lang.csv") %>%
+home.lang.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2015_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -113,7 +113,7 @@ home.lang.2015 <- read_csv("2015_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -130,7 +130,7 @@ home.lang.2015 <- read_csv("2015_home_lang.csv") %>%
   rename(percentEng2015 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2014 <- read_csv("2014_home_lang.csv") %>%
+home.lang.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2014_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -144,7 +144,7 @@ home.lang.2014 <- read_csv("2014_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -161,7 +161,7 @@ home.lang.2014 <- read_csv("2014_home_lang.csv") %>%
   rename(percentEng2014 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2013 <- read_csv("2013_home_lang.csv") %>%
+home.lang.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2013_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -178,7 +178,7 @@ home.lang.2013 <- read_csv("2013_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -195,7 +195,7 @@ home.lang.2013 <- read_csv("2013_home_lang.csv") %>%
   rename(percentEng2013 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2012 <- read_csv("2012_home_lang.csv") %>%
+home.lang.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2012_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -209,7 +209,7 @@ home.lang.2012 <- read_csv("2012_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -226,7 +226,7 @@ home.lang.2012 <- read_csv("2012_home_lang.csv") %>%
   rename(percentEng2012 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2011 <- read_csv("2011_home_lang.csv") %>%
+home.lang.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2011_home_lang.csv") %>%
   select (districtType, districtNumber, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -240,7 +240,7 @@ home.lang.2011 <- read_csv("2011_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -257,7 +257,7 @@ home.lang.2011 <- read_csv("2011_home_lang.csv") %>%
   rename(percentEng2011 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2010 <- read_csv("2010_home_lang.csv") %>%
+home.lang.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2010_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -271,7 +271,7 @@ home.lang.2010 <- read_csv("2010_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -288,7 +288,7 @@ home.lang.2010 <- read_csv("2010_home_lang.csv") %>%
   rename(percentEng2010 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2009 <- read_csv("2009_home_lang.csv") %>%
+home.lang.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2009_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -302,7 +302,7 @@ home.lang.2009 <- read_csv("2009_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -319,7 +319,7 @@ home.lang.2009 <- read_csv("2009_home_lang.csv") %>%
   rename(percentEng2009 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2008 <- read_csv("2008_home_lang.csv") %>%
+home.lang.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2008_home_lang.csv") %>%
   select (districtNumber, districtType, districtName, languageName, homePrimaryLanguage, enrollments) %>%
   rename (
     enrollment=enrollments,
@@ -333,7 +333,7 @@ home.lang.2008 <- read_csv("2008_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%
@@ -350,7 +350,7 @@ home.lang.2008 <- read_csv("2008_home_lang.csv") %>%
   rename(percentEng2008 = percentEng) %>%
   drop_na(districtName)
 
-home.lang.2007 <- read_csv("2007_home_lang.csv") %>%
+home.lang.2007 <- read_csv("/home/cadiz003/HousingAtlas/Education/Home Language/2007_home_lang.csv") %>%
   select (dst_num, dst_tye, district, language, homprm_lng, k12count) %>%
   rename (
     enrollment=k12count,
@@ -365,7 +365,7 @@ home.lang.2007 <- read_csv("2007_home_lang.csv") %>%
   ) %>%
   select(-languageCode) %>%
   group_by(districtNumber, districtType, districtName, language) %>%
-  summarize(enrollment=sum(enrollment)) %>%
+  summarise(enrollment=sum(enrollment)) %>%
   ungroup() %>%
   group_by(districtNumber, districtType, districtName) %>%
   mutate(enrollmentTotal = sum(enrollment)) %>%

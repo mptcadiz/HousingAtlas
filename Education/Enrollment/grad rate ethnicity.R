@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Graduation rates by district ---------------------------------
 
-grad.ethnicity.2017 <- read_csv("2017_grad.csv") %>%
+grad.ethnicity.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2017_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",

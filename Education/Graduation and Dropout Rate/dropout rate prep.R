@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Dropout rates by district ---------------------------------
 
-drop.2017 <- read_csv("2017_grad.csv") %>%
+drop.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2017_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
@@ -27,7 +27,7 @@ drop.2017 <- read_csv("2017_grad.csv") %>%
   rename(dropRate2017 = dropRate) %>%
   drop_na(districtName)
 
-drop.2016 <- read_csv("2016_grad.csv") %>%
+drop.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2016_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
@@ -51,7 +51,7 @@ drop.2016 <- read_csv("2016_grad.csv") %>%
   rename(dropRate2016 = dropRate) %>%
   drop_na(districtName)
 
-drop.2015 <- read_csv("2015_grad.csv") %>%
+drop.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2015_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
@@ -75,7 +75,7 @@ drop.2015 <- read_csv("2015_grad.csv") %>%
   rename(dropRate2015 = dropRate) %>%
   drop_na(districtName)
 
-drop.2014 <- read_csv("2014_grad.csv") %>%
+drop.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2014_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
@@ -99,7 +99,7 @@ drop.2014 <- read_csv("2014_grad.csv") %>%
   rename(dropRate2014 = dropRate) %>%
   drop_na(districtName)
 
-drop.2013 <- read_csv("2013_grad.csv") %>%
+drop.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2013_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
@@ -126,7 +126,7 @@ drop.2013 <- read_csv("2013_grad.csv") %>%
   rename(dropRate2013 = dropRate) %>%
   drop_na(districtName)
 
-drop.2012 <- read_csv("2012_grad.csv") %>%
+drop.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/Graduation and Dropout Rate/2012_grad.csv") %>%
   select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
