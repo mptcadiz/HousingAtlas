@@ -121,6 +121,9 @@ grad.2013 <- read_csv("2013_grad.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   rename(gradRate2013 = gradRate) %>%
+  mutate(
+    districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
+  ) %>%
   drop_na(districtName)
 
 grad.2012 <- read_csv("2012_grad.csv") %>%
@@ -145,6 +148,9 @@ grad.2012 <- read_csv("2012_grad.csv") %>%
     districtName=toupper(districtName)
   ) %>%
   rename(gradRate2012 = gradRate) %>%
+  mutate(
+    districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
+  ) %>%
   drop_na(districtName)
 
 grad.2012_2018 <- full_join(grad.2017, grad.2016, by = c("districtType","districtNumber")) %>%

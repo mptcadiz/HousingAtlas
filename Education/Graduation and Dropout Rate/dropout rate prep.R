@@ -19,7 +19,7 @@ drop.2017 <- read_csv("2017_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
@@ -43,7 +43,7 @@ drop.2016 <- read_csv("2016_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
@@ -67,7 +67,7 @@ drop.2015 <- read_csv("2015_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
@@ -91,7 +91,7 @@ drop.2014 <- read_csv("2014_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
@@ -115,10 +115,13 @@ drop.2013 <- read_csv("2013_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
+  ) %>%
+  mutate(
+    districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   ) %>%
   rename(dropRate2013 = dropRate) %>%
   drop_na(districtName)
@@ -139,10 +142,13 @@ drop.2012 <- read_csv("2012_grad.csv") %>%
   filter(endStatus=="Dropout") %>%
   #drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
-  summarize(dropRate=mean(dropRate, na.rm=TRUE)) %>%
+  summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
   mutate(
     districtName=toupper(districtName)
+  ) %>%
+  mutate(
+    districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   ) %>%
   rename(dropRate2012 = dropRate) %>%
   drop_na(districtName)

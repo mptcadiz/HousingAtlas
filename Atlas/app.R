@@ -92,6 +92,12 @@ grad.reading.list <- grad.reading.2008_2012_total %>%
   select(districtName) %>%
   distinct(districtName)
 
+grad.2012_2018.tidy
+
+grad.rate.list <- grad.2012_2018.tidy %>%
+  select(districtName) %>%
+  distinct(districtName)
+
 #Visualization types --------------------------------------------------------
 vis.list <- c("Trend lines","Data points", "Both visualizations") %>% 
   as.list()
@@ -233,12 +239,38 @@ radioButtons(inputId="grad.reading.pass.vis.list",
              choices = vis.list,
              inline=TRUE),
 
-ggiraphOutput("gradreadingpassgraph")
+ggiraphOutput("gradreadingpassgraph"),
+
+#For visualizing overall graduation rate --------------------------------------------------------
+selectizeInput(inputId = "grad.rate",
+               label = "Choose a district",
+               choices = grad.rate.list,
+               multiple = TRUE),
+
+radioButtons(inputId="grad.rate.vis.list",
+             label="How would you like to visualize the data?",
+             choices = vis.list,
+             inline=TRUE),
+
+ggiraphOutput("gradrategraph"),
+
+#For visualizing overall dropout rate --------------------------------------------------------
+selectizeInput(inputId = "drop.rate",
+               label = "Choose a district",
+               choices = grad.rate.list,
+               multiple = TRUE),
+
+radioButtons(inputId="drop.rate.vis.list",
+             label="How would you like to visualize the data?",
+             choices = vis.list,
+             inline=TRUE),
+
+ggiraphOutput("droprategraph")
 
 
 )
 
-# Server - homeValue: cities and townships from counties -----------------------------------
+# Server
 server <- function(input, output, session) {
   
 #Median Home Value visualization --------------------------------------------------------
@@ -505,6 +537,60 @@ server <- function(input, output, session) {
     }
     ggiraph(code=print(grad.reading.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
+
+#Graduation Rates Visualization --------------------------------------------------------
+  output$gradrategraph <- renderggiraph({
+    
+    grad.rate.plot <- ggplot(filter(grad.2012_2018.tidy, districtName %in% input$grad.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(gradRate))) +
+      scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Graduation Rate")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$grad.rate.vis.list == "Data points"){
+      grad.rate.plot <- grad.rate.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",gradRate)))
+    }
+    else if (input$grad.rate.vis.list == "Trend lines"){
+      grad.rate.plot <- grad.rate.plot +
+        geom_line()
+    }
+    else if (input$grad.rate.vis.list == "Both visualizations"){
+      grad.rate.plot <- grad.rate.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",gradRate))) +
+        geom_line()
+    }
+    ggiraph(code=print(grad.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+ 
+#Dropout Rates Visualization --------------------------------------------------------
+  output$droprategraph <- renderggiraph({
+    
+    drop.rate.plot <- ggplot(filter(drop.2012_2018.tidy, districtName %in% input$drop.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(dropRate))) +
+      scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Dropout Rate")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$drop.rate.vis.list == "Data points"){
+      drop.rate.plot <- drop.rate.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",dropRate)))
+    }
+    else if (input$drop.rate.vis.list == "Trend lines"){
+      drop.rate.plot <- drop.rate.plot +
+        geom_line()
+    }
+    else if (input$drop.rate.vis.list == "Both visualizations"){
+      drop.rate.plot <- drop.rate.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",dropRate))) +
+        geom_line()
+    }
+    ggiraph(code=print(drop.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
+   
 }
 
 # Run the application 
