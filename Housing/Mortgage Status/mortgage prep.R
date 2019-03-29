@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Mortgage status  ---------------------------------
 
-mortgage.status.1990_2010 <- read_csv("1990_2010_mortgage_status.csv") %>%
+mortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/1990_2010_mortgage_status.csv") %>%
   mutate(COUNTYFP = formatC(COUNTYFP, width = 3, flag = "0")) %>%
   select (COUNTY, COUNTYFP, B80AA1990, B80AA2000, B80AA2010, B80AB1990, B80AB2000, B80AB2010) %>%
   rename(countyName = COUNTY,
@@ -64,4 +64,5 @@ percentfree.1990_2010 <- mortgage.status.1990_2010 %>%
 tidymortgage.status.1990_2010 <- full_join(mortgages.1990_2010, free.1990_2010, by = c("countyName", "year")) %>%
   full_join(total.1990_2010, tidymortgage.status.1990_2010, by = c("countyName","year")) %>%
   full_join(percentfree.1990_2010, tidymortgage.status.1990_2010, by = c("countyName", "year")) %>%
-  mutate(countyName=str_remove(countyName," County"))
+  mutate(countyName=str_remove(countyName," County")) %>%
+  write_csv("Housing/Mortgage Status/mortgage_status_1990_2010.csv",append=FALSE)

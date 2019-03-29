@@ -441,4 +441,4 @@ english.2010_2019.identified <- english.2010_2019 %>%
     year = replace(year, year =="percentIdentified2011" ,"2011"),
     year = replace(year, year =="percentIdentified2010" ,"2010")
   ) %>%
-  write_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/english_identified_2010_2019.csv",append=FALSE)
+  write_csv("Education/English Proficiency/english_identified_2010_2019.csv",append=FALSE)

@@ -3,7 +3,7 @@ library(tidyverse)
 
 # GRAD: reading (public schools, by district) ---------------------------------
 
-grad.reading.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2012_grad_reading.csv") %>%
+grad.reading.2012 <- read_csv("Education/GRAD scores/2012_grad_reading.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -21,7 +21,7 @@ grad.reading.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores
           percentPassed2012 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2011_grad_reading.csv") %>%
+grad.reading.2011 <- read_csv("Education/GRAD scores/2011_grad_reading.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -39,7 +39,7 @@ grad.reading.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores
           percentPassed2011 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2010_grad_reading.csv") %>%
+grad.reading.2010 <- read_csv("Education/GRAD scores/2010_grad_reading.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -57,7 +57,7 @@ grad.reading.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores
           percentPassed2010 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2009_grad_reading.csv") %>%
+grad.reading.2009 <- read_csv("Education/GRAD scores/2009_grad_reading.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -75,7 +75,7 @@ grad.reading.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores
           percentPassed2009 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2008_grad_reading.csv") %>%
+grad.reading.2008 <- read_csv("Education/GRAD scores/2008_grad_reading.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -135,7 +135,7 @@ grad.reading.2008_2012.tidy <- full_join(grad.reading.2008_2012.score, grad.read
 
 # GRAD: reading (public schools, by district) ---------------------------------
 
-grad.reading.nonpub.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2012_grad_reading_nonpub.csv") %>%
+grad.reading.nonpub.2012 <- read_csv("Education/GRAD scores/2012_grad_reading_nonpub.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -153,7 +153,7 @@ grad.reading.nonpub.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD
           percentPassed2012 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.nonpub.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2011_grad_reading_nonpub.csv") %>%
+grad.reading.nonpub.2011 <- read_csv("Education/GRAD scores/2011_grad_reading_nonpub.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -171,7 +171,7 @@ grad.reading.nonpub.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD
           percentPassed2011 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.nonpub.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2010_grad_reading_nonpub.csv") %>%
+grad.reading.nonpub.2010 <- read_csv("Education/GRAD scores/2010_grad_reading_nonpub.csv") %>%
   select (districtNumber, districtType, districtName, percentPassed, averageScore) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
@@ -188,7 +188,7 @@ grad.reading.nonpub.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD
           percentPassed2010 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.nonpub.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2009_grad_reading_nonpub.csv") %>%
+grad.reading.nonpub.2009 <- read_csv("Education/GRAD scores/2009_grad_reading_nonpub.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -212,7 +212,7 @@ grad.reading.nonpub.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD
           percentPassed2009 = percentPassed) %>%
   drop_na(districtName)
 
-grad.reading.nonpub.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/2008_grad_reading_nonpub.csv") %>%
+grad.reading.nonpub.2008 <- read_csv("Education/GRAD scores/2008_grad_reading_nonpub.csv") %>%
   select ("District Number", "District Type", "District Name", "Percent Passed", "Average Score") %>%
   rename(
     districtNumber= "District Number",
@@ -278,4 +278,4 @@ grad.reading.nonpub.2008_2012.tidy <- full_join(grad.reading.nonpub.2008_2012.sc
 # GRAD: math (public and nonpublic schools, by district) ---------------------------------
 
 grad.reading.2008_2012_total <- bind_rows(grad.reading.2008_2012.tidy, grad.reading.nonpub.2008_2012.tidy) %>%
-  write_csv("/home/cadiz003/HousingAtlas/Education/GRAD scores/grad_reading_2008_2012.csv",append=FALSE)
+  write_csv("Education/GRAD scores/grad_reading_2008_2012.csv",append=FALSE)

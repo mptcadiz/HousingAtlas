@@ -54,45 +54,45 @@ theme_sf <- theme_bw() +
 # Objects - Visualization of home value data by county ---------------------------------------------------------
 
 #Housing --------------------------------------------------------
-med.home.val.1990_2010
+med.home.val.1990_2010 <- read_csv("Housing/Median Home Value/med_home_val_1990_2010.csv")
 
-med.year.built.1990_2017
+med.year.built.1990_2017 <- read_csv("Housing/Median Year Built/med_year_built_1990_2017.csv")
 
-tidymortgage.status.1990_2010
+tidymortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/mortgage_status_1990_2010.csv")
 
 county.list <- med.home.val.1990_2010 %>%
   select(countyName) %>%
   distinct(countyName)
 
 #Education --------------------------------------------------------
-enrolled.ethnicity.2000_2018.tidy
+enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv")
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
   distinct(districtName) %>%
   mutate(districtName=toupper(districtName))
 
-enrolled.2018_2000.tidy
+enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
 
 enrollment.district.list <- enrolled.2018_2000.tidy %>%
   select(districtName) %>%
   distinct(districtName)
 
-tidy.free.red.lunch.2006_2018
+tidy.free.red.lunch.2006_2018 <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv")
 
-grad.math.2009_2013_total
+grad.math.2009_2013_total <- read_csv("Education/GRAD scores/grad_math_2009_2013.csv")
 
 grad.math.list <- grad.math.2009_2013_total %>%
   select(districtName) %>%
   distinct(districtName)
 
-grad.reading.2008_2012_total
+grad.reading.2008_2012_total <- read_csv("Education/GRAD scores/grad_reading_2008_2012.csv")
 
 grad.reading.list <- grad.reading.2008_2012_total %>%
   select(districtName) %>%
   distinct(districtName)
 
-grad.2012_2018.tidy
+grad.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv")
 
 grad.rate.list <- grad.2012_2018.tidy %>%
   select(districtName) %>%

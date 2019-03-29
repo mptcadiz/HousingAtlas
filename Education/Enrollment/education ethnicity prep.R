@@ -4,7 +4,7 @@ library(tidyverse)
 # Ethnicity of students enrolled (by district) ---------------------------------
 
 #2018 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -38,7 +38,7 @@ enrolled.ethnicity.district.2018 <- read_csv("/home/cadiz003/HousingAtlas/Educat
 
 
 #2017 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -72,7 +72,7 @@ enrolled.ethnicity.district.2017 <- read_csv("/home/cadiz003/HousingAtlas/Educat
           DistrictType = districtType)
 
 #2016 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -107,7 +107,7 @@ enrolled.ethnicity.district.2016 <- read_csv("/home/cadiz003/HousingAtlas/Educat
 
 
 #2015 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -140,7 +140,7 @@ enrolled.ethnicity.district.2015 <- read_csv("/home/cadiz003/HousingAtlas/Educat
           DistrictType = districtType)
  
 #2014 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, districtNumber, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -176,7 +176,7 @@ enrolled.ethnicity.district.2014 <- read_csv("/home/cadiz003/HousingAtlas/Educat
 #2013 to 2003 data uses API (Asian/Pacific Islander) instead of ASI and HPI separately. It does not have MULTI
 
 #2013 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -208,7 +208,7 @@ enrolled.ethnicity.district.2013 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2012 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -240,7 +240,7 @@ enrolled.ethnicity.district.2012 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2011 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -272,7 +272,7 @@ enrolled.ethnicity.district.2011 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2010 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, Total_Male, Total_Female, TotalMinority, TotalStudents) %>%
 group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -305,7 +305,7 @@ group_by(DistrictName, districtNumber, districtType) %>%
 
 
 #2009 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -337,7 +337,7 @@ enrolled.ethnicity.district.2009 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2008 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
   select (DistrictNumber, DistrictType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, DistrictNumber, DistrictType) %>%
   summarise(
@@ -367,7 +367,7 @@ enrolled.ethnicity.district.2008 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2007 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2007 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
@@ -399,7 +399,7 @@ enrolled.ethnicity.district.2007 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2006 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2006 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -431,7 +431,7 @@ enrolled.ethnicity.district.2006 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2005 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2005 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2005 <- read_csv("Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -463,7 +463,7 @@ enrolled.ethnicity.district.2005 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2004 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2004 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2004 <- read_csv("Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -495,7 +495,7 @@ enrolled.ethnicity.district.2004 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2003 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2003 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2003_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2003 <- read_csv("Education/Enrollment/2003_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
@@ -527,7 +527,7 @@ enrolled.ethnicity.district.2003 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2002 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2002 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2002_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2002 <- read_csv("Education/Enrollment/2002_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_tye, dst_nam, ami_mal, ami_fem, api_mal, api_fem, his_mal, his_fem, blk_mal, blk_fem, wht_mal, wht_fem, tot_mal, tot_fem, tot_mny, tot_tot) %>%
   group_by(dst_nam, dst_num, dst_tye) %>%
   summarise(
@@ -562,7 +562,7 @@ enrolled.ethnicity.district.2002 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2001 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2001 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2001_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2001 <- read_csv("Education/Enrollment/2001_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_nam, dst_tye, ami_mal, ami_fem, api_mal, api_fem, his_mal, his_fem, blk_mal, blk_fem, wht_mal, wht_fem, tot_mal, tot_fem, tot_mny, tot_tot) %>%
   group_by(dst_nam, dst_num, dst_tye) %>%
   summarise(
@@ -597,7 +597,7 @@ enrolled.ethnicity.district.2001 <- read_csv("/home/cadiz003/HousingAtlas/Educat
   )
 
 #2000 Ethnicity of students enrolled (by district) ---------------------------------
-enrolled.ethnicity.district.2000 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2000_enrolled_ethnicity_district.csv") %>%
+enrolled.ethnicity.district.2000 <- read_csv("Education/Enrollment/2000_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_tye, dst_nam, ami_mal, ami_fem, api_mal, api_fem, his_mal, his_fem, blk_mal, blk_fem, wht_mal, wht_fem, tot_mal, tot_fem, tot_mny, tot_tot) %>%
   group_by(dst_nam, dst_num, dst_tye) %>%
   summarise(
@@ -729,6 +729,6 @@ gather(year,percentMinority,percentMinority2000:percentMinority2018) %>%
     year = replace(year, year =="percentMinority2018" ,"2018")) %>%
   rename(districtName = DistrictName,
          districtType = DistrictType) %>%
-  write_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/enrolled_ethnicity_2000_2018.csv",append=FALSE)
+  write_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv",append=FALSE)
 
 

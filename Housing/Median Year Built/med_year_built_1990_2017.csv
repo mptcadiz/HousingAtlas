@@ -1,0 +1,349 @@
+countyName,year,yearBuilt
+Aitkin,1990,1970
+Anoka,1990,1973
+Becker,1990,1967
+Beltrami,1990,1971
+Benton,1990,1973
+Big Stone,1990,1945
+Blue Earth,1990,1959
+Brown,1990,1951
+Carlton,1990,1960
+Carver,1990,1973
+Cass,1990,1972
+Chippewa,1990,1950
+Chisago,1990,1972
+Clay,1990,1965
+Clearwater,1990,1965
+Cook,1990,1967
+Cottonwood,1990,1950
+Crow Wing,1990,1969
+Dakota,1990,1976
+Dodge,1990,1959
+Douglas,1990,1968
+Faribault,1990,1946
+Fillmore,1990,1939
+Freeborn,1990,1952
+Goodhue,1990,1959
+Grant,1990,1950
+Hennepin,1990,1961
+Houston,1990,1958
+Hubbard,1990,1971
+Isanti,1990,1971
+Itasca,1990,1969
+Jackson,1990,1948
+Kanabec,1990,1967
+Kandiyohi,1990,1966
+Kittson,1990,1954
+Koochiching,1990,1962
+Lac Qui Parle,1990,1939
+Lake,1990,1958
+Lake Of The Woods,1990,1970
+Le Sueur,1990,1959
+Lincoln,1990,1947
+Lyon,1990,1962
+McLeod,1990,1962
+Mahnomen,1990,1964
+Marshall,1990,1954
+Martin,1990,1950
+Meeker,1990,1961
+Mille Lacs,1990,1967
+Morrison,1990,1963
+Mower,1990,1950
+Murray,1990,1950
+Nicollet,1990,1964
+Nobles,1990,1951
+Norman,1990,1942
+Olmsted,1990,1967
+Otter Tail,1990,1963
+Pennington,1990,1962
+Pine,1990,1970
+Pipestone,1990,1947
+Polk,1990,1959
+Pope,1990,1953
+Ramsey,1990,1958
+Red Lake,1990,1954
+Redwood,1990,1951
+Renville,1990,1950
+Rice,1990,1962
+Rock,1990,1952
+Roseau,1990,1971
+St Louis,1990,1952
+Scott,1990,1974
+Sherburne,1990,1975
+Sibley,1990,1947
+Stearns,1990,1970
+Steele,1990,1958
+Stevens,1990,1956
+Swift,1990,1946
+Todd,1990,1961
+Traverse,1990,1942
+Wabasha,1990,1960
+Wadena,1990,1962
+Waseca,1990,1957
+Washington,1990,1973
+Watonwan,1990,1949
+Wilkin,1990,1950
+Winona,1990,1950
+Wright,1990,1972
+Yellow Medicine,1990,1947
+Aitkin,2000,1972
+Anoka,2000,1978
+Becker,2000,1971
+Beltrami,2000,1975
+Benton,2000,1976
+Big Stone,2000,1952
+Blue Earth,2000,1963
+Brown,2000,1955
+Carlton,2000,1964
+Carver,2000,1982
+Cass,2000,1975
+Chippewa,2000,1953
+Chisago,2000,1980
+Clay,2000,1968
+Clearwater,2000,1968
+Cook,2000,1975
+Cottonwood,2000,1952
+Crow Wing,2000,1974
+Dakota,2000,1981
+Dodge,2000,1969
+Douglas,2000,1972
+Faribault,2000,1944
+Fillmore,2000,1944
+Freeborn,2000,1954
+Goodhue,2000,1965
+Grant,2000,1952
+Hennepin,2000,1964
+Houston,2000,1962
+Hubbard,2000,1974
+Isanti,2000,1975
+Itasca,2000,1971
+Jackson,2000,1949
+Kanabec,2000,1973
+Kandiyohi,2000,1970
+Kittson,2000,1955
+Koochiching,2000,1964
+Lac Qui Parle,2000,1941
+Lake,2000,1960
+Lake Of The Woods,2000,1973
+Le Sueur,2000,1963
+Lincoln,2000,1950
+Lyon,2000,1963
+McLeod,2000,1969
+Mahnomen,2000,1961
+Marshall,2000,1961
+Martin,2000,1952
+Meeker,2000,1963
+Mille Lacs,2000,1972
+Morrison,2000,1969
+Mower,2000,1952
+Murray,2000,1951
+Nicollet,2000,1970
+Nobles,2000,1955
+Norman,2000,1952
+Olmsted,2000,1973
+Otter Tail,2000,1967
+Pennington,2000,1966
+Pine,2000,1974
+Pipestone,2000,1951
+Polk,2000,1961
+Pope,2000,1958
+Ramsey,2000,1959
+Red Lake,2000,1957
+Redwood,2000,1953
+Renville,2000,1951
+Rice,2000,1969
+Rock,2000,1952
+Roseau,2000,1974
+St Louis,2000,1954
+Scott,2000,1984
+Sherburne,2000,1985
+Sibley,2000,1952
+Stearns,2000,1974
+Steele,2000,1964
+Stevens,2000,1959
+Swift,2000,1950
+Todd,2000,1964
+Traverse,2000,1950
+Wabasha,2000,1965
+Wadena,2000,1964
+Waseca,2000,1960
+Washington,2000,1982
+Watonwan,2000,1950
+Wilkin,2000,1956
+Winona,2000,1959
+Wright,2000,1978
+Yellow Medicine,2000,1948
+Aitkin,2010,1976
+Anoka,2010,1982
+Becker,2010,1976
+Beltrami,2010,1979
+Benton,2010,1980
+Big Stone,2010,1956
+Blue Earth,2010,1970
+Brown,2010,1959
+Carlton,2010,1971
+Carver,2010,1990
+Cass,2010,1978
+Chippewa,2010,1956
+Chisago,2010,1988
+Clay,2010,1972
+Clearwater,2010,1972
+Cook,2010,1977
+Cottonwood,2010,1954
+Crow Wing,2010,1977
+Dakota,2010,1984
+Dodge,2010,1975
+Douglas,2010,1977
+Faribault,2010,1950
+Fillmore,2010,1949
+Freeborn,2010,1956
+Goodhue,2010,1971
+Grant,2010,1955
+Hennepin,2010,1967
+Houston,2010,1967
+Hubbard,2010,1977
+Isanti,2010,1981
+Itasca,2010,1974
+Jackson,2010,1953
+Kanabec,2010,1979
+Kandiyohi,2010,1974
+Kittson,2010,1957
+Koochiching,2010,1971
+Lac Qui Parle,2010,1949
+Lake,2010,1960
+Lake Of The Woods,2010,1981
+Le Sueur,2010,1972
+Lincoln,2010,1953
+Lyon,2010,1966
+McLeod,2010,1973
+Mahnomen,2010,1969
+Marshall,2010,1965
+Martin,2010,1954
+Meeker,2010,1971
+Mille Lacs,2010,1978
+Morrison,2010,1974
+Mower,2010,1954
+Murray,2010,1954
+Nicollet,2010,1974
+Nobles,2010,1958
+Norman,2010,1958
+Olmsted,2010,1980
+Otter Tail,2010,1971
+Pennington,2010,1970
+Pine,2010,1976
+Pipestone,2010,1953
+Polk,2010,1966
+Pope,2010,1968
+Ramsey,2010,1961
+Red Lake,2010,1962
+Redwood,2010,1955
+Renville,2010,1955
+Rice,2010,1975
+Rock,2010,1955
+Roseau,2010,1977
+St Louis,2010,1958
+Scott,2010,1993
+Sherburne,2010,1992
+Sibley,2010,1955
+Stearns,2010,1979
+Steele,2010,1967
+Stevens,2010,1961
+Swift,2010,1962
+Todd,2010,1969
+Traverse,2010,1952
+Wabasha,2010,1971
+Wadena,2010,1972
+Waseca,2010,1967
+Washington,2010,1988
+Watonwan,2010,1955
+Wilkin,2010,1960
+Winona,2010,1961
+Wright,2010,1990
+Yellow Medicine,2010,1953
+Aitkin,2017,1980
+Anoka,2017,1984
+Becker,2017,1976
+Beltrami,2017,1982
+Benton,2017,1982
+Big Stone,2017,1958
+Blue Earth,2017,1974
+Brown,2017,1961
+Carlton,2017,1973
+Carver,2017,1993
+Cass,2017,1986
+Chippewa,2017,1959
+Chisago,2017,1990
+Clay,2017,1976
+Clearwater,2017,1977
+Cook,2017,1984
+Cottonwood,2017,1958
+Crow Wing,2017,1983
+Dakota,2017,1986
+Dodge,2017,1976
+Douglas,2017,1982
+Faribault,2017,1951
+Fillmore,2017,1964
+Freeborn,2017,1958
+Goodhue,2017,1973
+Grant,2017,1966
+Hennepin,2017,1970
+Houston,2017,1971
+Hubbard,2017,1984
+Isanti,2017,1985
+Itasca,2017,1977
+Jackson,2017,1956
+Kanabec,2017,1979
+Kandiyohi,2017,1975
+Kittson,2017,1966
+Koochiching,2017,1972
+Lac Qui Parle,2017,1950
+Lake,2017,1966
+Lake Of The Woods,2017,1983
+Le Sueur,2017,1974
+Lincoln,2017,1958
+Lyon,2017,1971
+McLeod,2017,1973
+Mahnomen,2017,1973
+Marshall,2017,1969
+Martin,2017,1956
+Meeker,2017,1972
+Mille Lacs,2017,1980
+Morrison,2017,1977
+Mower,2017,1956
+Murray,2017,1960
+Nicollet,2017,1977
+Nobles,2017,1962
+Norman,2017,1962
+Olmsted,2017,1983
+Otter Tail,2017,1977
+Pennington,2017,1972
+Pine,2017,1985
+Pipestone,2017,1954
+Polk,2017,1971
+Pope,2017,1972
+Ramsey,2017,1963
+Red Lake,2017,1971
+Redwood,2017,1958
+Renville,2017,1957
+Rice,2017,1977
+Rock,2017,1958
+Roseau,2017,1979
+St Louis,2017,1960
+Scott,2017,1994
+Sherburne,2017,1993
+Sibley,2017,1960
+Stearns,2017,1982
+Steele,2017,1972
+Stevens,2017,1967
+Swift,2017,1958
+Todd,2017,1973
+Traverse,2017,1956
+Wabasha,2017,1973
+Wadena,2017,1972
+Waseca,2017,1971
+Washington,2017,1990
+Watonwan,2017,1951
+Wilkin,2017,1964
+Winona,2017,1968
+Wright,2017,1992
+Yellow Medicine,2017,1954

@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Ethnicity of students enrolled (by district) ---------------------------------
 
-enrolled.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
+enrolled.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -22,7 +22,7 @@ enrolled.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2018
   rename (totalStudents2018 = totalStudents) %>%
   drop_na(districtName)
 
-enrolled.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
+enrolled.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -41,7 +41,7 @@ enrolled.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2017
   rename (totalStudents2017 = totalStudents) %>%
   drop_na(districtName)
 
-enrolled.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
+enrolled.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -60,7 +60,7 @@ enrolled.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2016
   rename (totalStudents2016 = totalStudents) %>%
   drop_na(districtName)
 
-enrolled.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
+enrolled.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -79,7 +79,7 @@ enrolled.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2015
   rename (totalStudents2015 = totalStudents) %>%
   drop_na(districtName)
 
-enrolled.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
+enrolled.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -98,7 +98,7 @@ enrolled.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2014
   rename (totalStudents2014 = totalStudents) %>%
   drop_na(districtName)
 
-enrolled.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
+enrolled.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -120,7 +120,7 @@ enrolled.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2013
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
+enrolled.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -142,7 +142,7 @@ enrolled.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2012
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
+enrolled.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -164,7 +164,7 @@ enrolled.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2011
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
+enrolled.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -186,7 +186,7 @@ enrolled.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2010
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
+enrolled.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -208,7 +208,7 @@ enrolled.2009 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2009
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
+enrolled.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
   select (DistrictNumber, DistrictType, DistrictName, TotalStudents) %>%
   rename(
     districtNumber = DistrictNumber,
@@ -232,7 +232,7 @@ enrolled.2008 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2008
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2007 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
+enrolled.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -254,7 +254,7 @@ enrolled.2007 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2007
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2006 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
+enrolled.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -276,7 +276,7 @@ enrolled.2006 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2006
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2005 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
+enrolled.2005 <- read_csv("Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -298,7 +298,7 @@ enrolled.2005 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2005
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2004 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
+enrolled.2004 <- read_csv("Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -320,7 +320,7 @@ enrolled.2004 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2004
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2003 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2003_enrolled_ethnicity_district.csv") %>%
+enrolled.2003 <- read_csv("Education/Enrollment/2003_enrolled_ethnicity_district.csv") %>%
   select (districtNumber, districtType, DistrictName, TotalStudents) %>%
   rename(
     districtName=DistrictName,
@@ -342,7 +342,7 @@ enrolled.2003 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2003
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2002 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2002_enrolled_ethnicity_district.csv") %>%
+enrolled.2002 <- read_csv("Education/Enrollment/2002_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_tye, dst_nam, tot_tot) %>%
   rename(
     districtNumber = dst_num,
@@ -366,7 +366,7 @@ enrolled.2002 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2002
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2001 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2001_enrolled_ethnicity_district.csv") %>%
+enrolled.2001 <- read_csv("Education/Enrollment/2001_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_tye, dst_nam, tot_tot) %>%
   rename(
     districtNumber = dst_num,
@@ -390,7 +390,7 @@ enrolled.2001 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2001
     districtNumber = ifelse(districtNumber == "0769" & districtType == "01", "2769", districtNumber)
   )
 
-enrolled.2000 <- read_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/2000_enrolled_ethnicity_district.csv") %>%
+enrolled.2000 <- read_csv("Education/Enrollment/2000_enrolled_ethnicity_district.csv") %>%
   select (dst_num, dst_tye, dst_nam, tot_tot) %>%
   rename(
     districtNumber = dst_num,
@@ -509,4 +509,4 @@ enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
     year = replace(year, year =="totalStudents2016" ,"2016"),
     year = replace(year, year =="totalStudents2017" ,"2017"),
     year = replace(year, year =="totalStudents2018" ,"2018")) %>%
-    write_csv("/home/cadiz003/HousingAtlas/Education/Enrollment/enrolled_total_2000_2018.csv",append=FALSE)
+    write_csv("Education/Enrollment/enrolled_total_2000_2018.csv",append=FALSE)
