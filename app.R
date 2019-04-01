@@ -53,10 +53,27 @@ theme_sf <- theme_bw() +
 
 # Objects - Visualization of home value data by county ---------------------------------------------------------
 
+#Shapefiles ----------------------------------------------------
+mn_counties <- st_read("MNCounties_MNDOT.shp", quiet = TRUE) %>%
+  rename(countyfp = FIPS_CODE) %>%
+  st_simplify(dTolerance = 1000) %>%
+  mutate(
+    COUNTY_NAM = ifelse(COUNTY_NAM == "Saint Louis", "St Louis", as.character(COUNTY_NAM)),
+    COUNTY_NAM = ifelse(COUNTY_NAM == "Lake of the Woods", "Lake Of The Woods", as.character(COUNTY_NAM))
+    ) %>%
+  rename(countyName = COUNTY_NAM)
+
 #Housing --------------------------------------------------------
 med.home.val.1990_2010 <- read_csv("Housing/Median Home Value/med_home_val_1990_2010.csv")
 
-med.year.built.1990_2017 <- read_csv("Housing/Median Year Built/med_year_built_1990_2017.csv")
+med.year.built.1990_2017 <- read_csv("Housing/Median Year Built/med_year_built_1990_2017.csv") %>%
+  full_join(mn_counties, med.year.built.1990_2017, by = c("countyName")) %>%
+  # mutate(bins = cut(population,
+  #                   breaks = c(0, 9999, 19999, 29999, 39999, 49999, 2000000),
+  #                   labels = c("1- 9,999", "10,000 - 19,999", "20,000 - 29,999", "30,000 - 39,999", "40,000 - 49,999", "50,000+")))
+  mutate(bins = cut(yearBuilt,
+                    breaks = c(0, 1946,1954,1962,1970,1978,1986,1994),
+                    labels = c("1939 - 1946", "1947 - 1954", "1955 - 1962", "1963 - 1970", "1971 - 1978", "1979 - 1986", "1987 - 1994")))
 
 tidymortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/mortgage_status_1990_2010.csv")
 
@@ -112,7 +129,6 @@ vis.list <- c("Trend lines","Data points", "Both visualizations") %>%
 
 ui <- fluidPage(
 
-#This is all the container stuff --------------------------------------
 navbarMenu("",
            tabPanel("",
                     navlistPanel("Housing",
@@ -140,16 +156,22 @@ navbarMenu("",
                                           mainPanel(
                                             tabsetPanel(
                                               tabPanel("Median Year Built",
+                                                       # selectizeInput(inputId = "year.built.county",
+                                                       #                label = "Choose a county",
+                                                       #                choices = county.list,
+                                                       #                multiple = TRUE),
+                                                       # 
+                                                       # radioButtons(inputId="year.built.vis.list",
+                                                       #              label="How would you like to visualize the data?",
+                                                       #              choices = vis.list,
+                                                       #              inline=TRUE),
+                                                       # 
+                                                       # ggiraphOutput("yearbuiltcountygraph")
                                                        
-                                                       selectizeInput(inputId = "year.built.county",
-                                                                      label = "Choose a county",
-                                                                      choices = county.list,
-                                                                      multiple = TRUE),
-                                                       
-                                                       radioButtons(inputId="year.built.vis.list",
-                                                                    label="How would you like to visualize the data?",
-                                                                    choices = vis.list,
-                                                                    inline=TRUE),
+                                                       selectInput(inputId = "year.built.county",
+                                                                      label = "Choose a year",
+                                                                      choices = list(1990,2000,2010,2017),
+                                                                      multiple = FALSE),
                                                        
                                                        ggiraphOutput("yearbuiltcountygraph")
                                               )))),
@@ -159,7 +181,6 @@ navbarMenu("",
                                           mainPanel(
                                             tabsetPanel(
                                               tabPanel("Mortgage Status",
-                                                       
                                                        selectizeInput(inputId = "mortgage.status.county",
                                                                       label = "Choose a county",
                                                                       choices = county.list,
@@ -220,7 +241,7 @@ navbarMenu("",
            )
 )
   
-#End of all container stuff ----------------------
+
  #For visualizing percent of homeowners with mortgages --------------------------------------------------------
   # selectizeInput(inputId = "mortgage.status.county",
   #              label = "Choose a county",
@@ -367,13 +388,13 @@ server <- function(input, output, session) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
     if (input$home.val.vis.list == "Data points"){
-      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: ",homeValue)))
+      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: $",comma(homeValue, digits = 0))))
     }
     else if (input$home.val.vis.list == "Trend lines"){
       home.val.county.plot <- home.val.county.plot + geom_line()
     }
     else if (input$home.val.vis.list == "Both visualizations"){
-      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: ",homeValue))) +
+      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: $",comma(homeValue, digits = 0)))) +
         geom_line()
     }
     ggiraph(code=print(home.val.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -381,25 +402,47 @@ server <- function(input, output, session) {
 
 
 # #Median Year Built Visualization --------------------------------------------------------
+  # output$yearbuiltcountygraph <- renderggiraph({
+  # 
+  #   year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, countyName %in% input$year.built.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(yearBuilt))) +
+  #     scale_x_continuous(breaks=c(2000,2010,2017))+
+  #     labs(x="Year", y="Year Built")+
+  #     theme_bar+
+  #     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  # 
+  #   if (input$year.built.vis.list == "Data points"){
+  #     year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt)))
+  #   }
+  #   else if (input$year.built.vis.list == "Trend lines"){
+  #     year.built.county.plot <- year.built.county.plot + geom_line()
+  #   }
+  #   else if (input$year.built.vis.list == "Both visualizations"){
+  #     year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt))) +
+  #       geom_line()
+  #   }
+  #   ggiraph(code=print(year.built.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  # })
+  
+  # output$yearbuiltcountygraph <- renderggiraph({
+  #   
+  #   year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, year == as.numeric(input$year.built.county))) +
+  #     geom_sf_interactive(aes(fill = bins, tooltip = paste(Name, "\n", "Year: ", comma(yearBuilt, digits = 0), sep = "")), color = "black") + 
+  #     theme_sf +
+  #     scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
+  #   
+  #   ggiraph(code = print(year.built.county.plot), selection_type = "none")
+  #   
+  # })
+  
   output$yearbuiltcountygraph <- renderggiraph({
-
-    year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, countyName %in% input$year.built.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(yearBuilt))) +
-      scale_x_continuous(breaks=c(2000,2010,2017))+
-      labs(x="Year", y="Year Built")+
-      theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-    if (input$year.built.vis.list == "Data points"){
-      year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt)))
-    }
-    else if (input$year.built.vis.list == "Trend lines"){
-      year.built.county.plot <- year.built.county.plot + geom_line()
-    }
-    else if (input$year.built.vis.list == "Both visualizations"){
-      year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt))) +
-        geom_line()
-    }
-    ggiraph(code=print(year.built.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    
+    year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, year == as.numeric(input$year.built.county))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Year Built: ", yearBuilt, sep = "")), color = "black") + 
+      theme_sf +
+      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
+    
+    ggiraph(code = print(year.built.county.plot), selection_type = "none")
+    
   })
 
  #Mortgage Status Visualization --------------------------------------------------------
@@ -414,7 +457,7 @@ server <- function(input, output, session) {
 
     if (input$mortgage.status.vis.list == "Data points"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Percent of homes without mortgages: ",percentFree)))
+        geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Percent of homes without mortgages: ",percent(percentFree))))
     }
     else if (input$mortgage.status.vis.list == "Trend lines"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
@@ -422,7 +465,7 @@ server <- function(input, output, session) {
     }
     else if (input$mortgage.status.vis.list == "Both visualizations"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Percent of homes without mortgages: ",percentFree))) +
+        geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Percent of homes without mortgages: ",percent(percentFree)))) +
         geom_line()
     }
     ggiraph(code=print(mortgage.status.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
