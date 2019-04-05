@@ -95,25 +95,49 @@ enrollment.district.list <- enrolled.2018_2000.tidy %>%
 
 tidy.free.red.lunch.2006_2018 <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv")
 
-grad.math.2009_2013_total <- read_csv("Education/GRAD scores/grad_math_2009_2013.csv")
+grad.math.2009_2013_total <- read_csv("Education/GRAD scores/grad_math_2009_2013.csv") %>%
+  mutate(percentPassed=percentPassed/100)
 
 grad.math.list <- grad.math.2009_2013_total %>%
   select(districtName) %>%
   distinct(districtName)
 
-grad.reading.2008_2012_total <- read_csv("Education/GRAD scores/grad_reading_2008_2012.csv")
+grad.reading.2008_2012_total <- read_csv("Education/GRAD scores/grad_reading_2008_2012.csv") %>%
+  mutate(percentPassed=percentPassed/100)
 
 grad.reading.list <- grad.reading.2008_2012_total %>%
   select(districtName) %>%
   distinct(districtName)
 
-grad.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv")
+grad.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv") %>%
+  mutate(gradRate=gradRate/100)
 
 grad.rate.list <- grad.2012_2018.tidy %>%
   select(districtName) %>%
   distinct(districtName)
 
-drop.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/drop_rate_2012_2018.csv")
+drop.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/drop_rate_2012_2018.csv") %>%
+  mutate(dropRate=dropRate/100)
+
+grad.ethnicity.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_2012_2017.csv") 
+
+drop.ethnicity.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_2012_2017.csv") 
+
+grad.ethnicity.list <- grad.ethnicity.2012_2017 %>%
+  select(districtName) %>%
+  distinct(districtName)
+
+grad.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_breakdown_2012_2017.csv") 
+
+drop.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv") 
+
+grad.ethnicity.breakdown.district.list <- grad.ethnicity.breakdown.2012_2017 %>%
+  select(districtName) %>%
+  distinct(districtName)
+
+grad.ethnicity.breakdown.ethnicity.list <- grad.ethnicity.breakdown.2012_2017 %>%
+  select(description) %>%
+  distinct(description)
 
 english.2010_2019 <- read_csv("Education/English Proficiency/english_identified_2010_2019.csv")
 
@@ -143,7 +167,7 @@ navbarPage("",
            tabPanel("Housing Data",
                 navbarMenu("",
                     navlistPanel("Housing",
-                                 #UI: For visualizing home values by county over time --------------------------------------------------------
+                                 #UI: Home values by county over time --------------------------------------------------------
                                  tabPanel("Median Home Value",
                                           mainPanel(
                                             tabsetPanel(
@@ -162,7 +186,7 @@ navbarPage("",
                                                        ggiraphOutput("homevalcountygraph")
                                                        )))),
                                  
-                                 #UI: For visualizing median year built by county over time --------------------------------------------------------
+                                 #UI: Median year built by county over time --------------------------------------------------------
                                  tabPanel("Median Year Built",
                                           mainPanel(
                                             tabsetPanel(
@@ -187,7 +211,7 @@ navbarPage("",
                                                        ggiraphOutput("yearbuiltcountygraph")
                                               )))),
                                  
-                                 #UI: For visualizing median year built by county over time --------------------------------------------------------
+                                 #UI: Median year built by county over time --------------------------------------------------------
                                  tabPanel("Mortgage Status",
                                           mainPanel(
                                             tabsetPanel(
@@ -283,7 +307,7 @@ navbarPage("",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.grad.rate",
                                                                                  label = "Choose a district",
-                                                                                 choices = grad.rate.list,
+                                                                                 choices = grad.ethnicity.list,
                                                                                  multiple = TRUE),
                                                                   
                                                                   radioButtons(inputId="ethnicity.grad.rate.vis.list",
@@ -298,7 +322,7 @@ navbarPage("",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.drop.rate",
                                                                                  label = "Choose a district",
-                                                                                 choices = grad.rate.list,
+                                                                                 choices = grad.ethnicity.list,
                                                                                  multiple = TRUE),
                                                                   
                                                                   radioButtons(inputId="ethnicity.drop.rate.vis.list",
@@ -307,6 +331,46 @@ navbarPage("",
                                                                                inline=TRUE),
                                                                   
                                                                   ggiraphOutput("ethnicitydroprategraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity",
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.grad.rate.district",
+                                                                                 label = "Choose a district",
+                                                                                 choices = grad.ethnicity.breakdown.district.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.grad.rate.ethnicity",
+                                                                                 label = "Choose an ethnicity",
+                                                                                 choices = grad.ethnicity.breakdown.ethnicity.list,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  radioButtons(inputId="ethnicity.breakdown.grad.rate.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+                                                                  
+                                                                  ggiraphOutput("ethnicitybreakdowngradrategraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity",
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.drop.rate.district",
+                                                                                 label = "Choose a district",
+                                                                                 choices = grad.ethnicity.breakdown.district.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.drop.rate.ethnicity",
+                                                                                 label = "Choose an ethnicity",
+                                                                                 choices = grad.ethnicity.breakdown.ethnicity.list,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  radioButtons(inputId="ethnicity.breakdown.drop.rate.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+                                                                  
+                                                                  ggiraphOutput("ethnicitybreakdowndroprategraph")
                                                          )
                                                          
                                                          
@@ -317,7 +381,7 @@ navbarPage("",
                                                        tabsetPanel(
                                                          tabPanel("GRAD: Math",
                                                                   
-                                                                  #For visualizing average GRAD: Math scores  --------------------------------------------------------
+                                                                  #UI: Average GRAD: Math scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.math.score",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.math.list,
@@ -330,7 +394,7 @@ navbarPage("",
                                                                   
                                                                   ggiraphOutput("gradmathscoregraph"),
                                                                   
-                                                                  #For visualizing percent of GRAD: Math passers --------------------------------------------------------
+                                                                  #UI: Percent of GRAD: Math passers --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.math.pass",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.math.list,
@@ -346,7 +410,7 @@ navbarPage("",
                                                          
                                                          tabPanel("GRAD: Reading",
                                                                   
-                                                                  #For visualizing average GRAD: Reading scores  --------------------------------------------------------
+                                                                  #UI: Average GRAD: Reading scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.reading.score",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.reading.list,
@@ -359,7 +423,7 @@ navbarPage("",
                                                                   
                                                                   ggiraphOutput("gradreadingscoregraph"),
                                                                   
-                                                                  #For visualizing percent of GRAD: Reading passers --------------------------------------------------------
+                                                                  #UI: Percent of GRAD: Reading passers --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.reading.pass",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.reading.list,
@@ -397,7 +461,7 @@ navbarPage("",
                                                        tabsetPanel(
                                                          tabPanel("Percent of Students with Free/Reduced Lunch",
                                                                   
-                                                                  #For visualizing number of students with free/reduced lunch --------------------------------------------------------
+                                                                  #UI: Free/reduced lunch --------------------------------------------------------
                                                                   selectizeInput(inputId = "lunch.district",
                                                                                  label = "Choose a district",
                                                                                  choices = ethnicity.district.list,
@@ -620,19 +684,19 @@ server <- function(input, output, session) {
     ggiraph(code=print(student.enrollment.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
  
-#Graduation Rates Visualization --------------------------------------------------------
+#Overall Graduation Rates Visualization --------------------------------------------------------
     output$gradrategraph <- renderggiraph({
 
       grad.rate.plot <- ggplot(filter(grad.2012_2018.tidy, districtName %in% input$grad.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(gradRate))) +
         scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
-        #scale_y_continuous(labels=scales::percent)+
+        scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Graduation Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
       if (input$grad.rate.vis.list == "Data points"){
         grad.rate.plot <- grad.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",gradRate)))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",percent(gradRate))))
       }
       else if (input$grad.rate.vis.list == "Trend lines"){
         grad.rate.plot <- grad.rate.plot +
@@ -640,25 +704,25 @@ server <- function(input, output, session) {
       }
       else if (input$grad.rate.vis.list == "Both visualizations"){
         grad.rate.plot <- grad.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",gradRate))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",percent(gradRate)))) +
           geom_line()
       }
       ggiraph(code=print(grad.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
-#Dropout Rates Visualization --------------------------------------------------------
+#Overall Dropout Rates Visualization --------------------------------------------------------
     output$droprategraph <- renderggiraph({
       
       drop.rate.plot <- ggplot(filter(drop.2012_2018.tidy, districtName %in% input$drop.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(dropRate))) +
         scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
-        #scale_y_continuous(labels=scales::percent)+
+        scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Dropout Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
       
       if (input$drop.rate.vis.list == "Data points"){
         drop.rate.plot <- drop.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",dropRate)))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",percent(dropRate))))
       }
       else if (input$drop.rate.vis.list == "Trend lines"){
         drop.rate.plot <- drop.rate.plot +
@@ -666,12 +730,116 @@ server <- function(input, output, session) {
       }
       else if (input$drop.rate.vis.list == "Both visualizations"){
         drop.rate.plot <- drop.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",dropRate))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",percent(dropRate)))) +
           geom_line()
       }
       ggiraph(code=print(drop.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
 
+#Graduation Rates Visualization - Students of Color --------------------------------------------------------
+    output$ethnicitygradrategraph <- renderggiraph({
+      
+      ethnicity.grad.rate.plot <- ggplot(filter(grad.ethnicity.2012_2017, districtName %in% input$ethnicity.grad.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(gradRate))) +
+        scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+        scale_y_continuous(labels=scales::percent)+
+        labs(x="Year", y="Graduation Rate of Students of Color")+
+        theme_bar+
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+      if (input$ethnicity.grad.rate.vis.list == "Data points"){
+        ethnicity.grad.rate.plot <- ethnicity.grad.rate.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate of students of color: ",percent(gradRate))))
+      }
+      else if (input$ethnicity.grad.rate.vis.list == "Trend lines"){
+        ethnicity.grad.rate.plot <- ethnicity.grad.rate.plot +
+          geom_line()
+      }
+      else if (input$ethnicity.grad.rate.vis.list == "Both visualizations"){
+        ethnicity.grad.rate.plot <- ethnicity.grad.rate.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate of students of color: ",percent(gradRate)))) +
+          geom_line()
+      }
+      ggiraph(code=print(ethnicity.grad.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    })
+    
+#Graduation Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
+    output$ethnicitybreakdowngradrategraph <- renderggiraph({
+
+      ethnicity.grad.rate.breakdown.plot <- ggplot(filter(grad.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.grad.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.grad.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(gradRate))) +
+        scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+        scale_y_continuous(labels=scales::percent)+
+        labs(x="Year", y="Graduation Rate")+
+        theme_bar+
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+      if (input$ethnicity.breakdown.grad.rate.vis.list == "Data points"){
+        ethnicity.grad.rate.breakdown.plot <- ethnicity.grad.rate.breakdown.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate - ",description," : ",percent(gradRate))))
+      }
+      else if (input$ethnicity.breakdown.grad.rate.vis.list == "Trend lines"){
+        ethnicity.grad.rate.breakdown.plot <- ethnicity.grad.rate.breakdown.plot +
+          geom_line()
+      }
+      else if (input$ethnicity.breakdown.grad.rate.vis.list == "Both visualizations"){
+        ethnicity.grad.rate.breakdown.plot <- ethnicity.grad.rate.breakdown.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate - ",description," : ",percent(gradRate)))) +
+          geom_line()
+      }
+      ggiraph(code=print(ethnicity.grad.rate.breakdown.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    })
+    
+#Dropout Rates Visualization - Students of Color --------------------------------------------------------
+    output$ethnicitydroprategraph <- renderggiraph({
+      
+      ethnicity.drop.rate.plot <- ggplot(filter(drop.ethnicity.2012_2017, districtName %in% input$ethnicity.drop.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(dropRate))) +
+        scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+        scale_y_continuous(labels=scales::percent)+
+        labs(x="Year", y="Dropout Rate of Students of Color")+
+        theme_bar+
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+      if (input$ethnicity.drop.rate.vis.list == "Data points"){
+        ethnicity.drop.rate.plot <- ethnicity.drop.rate.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate of students of color: ",percent(dropRate))))
+      }
+      else if (input$ethnicity.drop.rate.vis.list == "Trend lines"){
+        ethnicity.drop.rate.plot <- ethnicity.drop.rate.plot +
+          geom_line()
+      }
+      else if (input$ethnicity.drop.rate.vis.list == "Both visualizations"){
+        ethnicity.drop.rate.plot <- ethnicity.drop.rate.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate of students of color: ",percent(dropRate)))) +
+          geom_line()
+      }
+      ggiraph(code=print(ethnicity.drop.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    })
+
+#Dropout Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
+    output$ethnicitybreakdowndroprategraph <- renderggiraph({
+      
+      ethnicity.drop.rate.breakdown.plot <- ggplot(filter(drop.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.drop.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.drop.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(dropRate))) +
+        scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
+        scale_y_continuous(labels=scales::percent)+
+        labs(x="Year", y="Dropout Rate")+
+        theme_bar+
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+      if (input$ethnicity.breakdown.drop.rate.vis.list == "Data points"){
+        ethnicity.drop.rate.breakdown.plot <- ethnicity.drop.rate.breakdown.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate - ",description," : ",percent(dropRate))))
+      }
+      else if (input$ethnicity.breakdown.drop.rate.vis.list == "Trend lines"){
+        ethnicity.drop.rate.breakdown.plot <- ethnicity.drop.rate.breakdown.plot +
+          geom_line()
+      }
+      else if (input$ethnicity.breakdown.drop.rate.vis.list == "Both visualizations"){
+        ethnicity.drop.rate.breakdown.plot <- ethnicity.drop.rate.breakdown.plot +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate - ",description," : ",percent(dropRate)))) +
+          geom_line()
+      }
+      ggiraph(code=print(ethnicity.drop.rate.breakdown.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    })
+    
 #GRAD: Math Score Visualization --------------------------------------------------------
     output$gradmathscoregraph <- renderggiraph({
       
@@ -703,14 +871,14 @@ server <- function(input, output, session) {
       
       grad.math.pass.plot <- ggplot(filter(grad.math.2009_2013_total, districtName %in% input$grad.math.pass), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentPassed))) +
         scale_x_continuous(breaks=c(2009,2010,2011,2012,2013))+
-        #scale_y_continuous(labels=scales::percent)+
+        scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="GRAD: Math Percent Passed")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
       
       if (input$grad.math.pass.vis.list == "Data points"){
         grad.math.pass.plot <- grad.math.pass.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Math Percent Passed: ",percentPassed)))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Math Percent Passed: ",percent(percentPassed))))
       }
       else if (input$grad.math.pass.vis.list == "Trend lines"){
         grad.math.pass.plot <- grad.math.pass.plot +
@@ -718,7 +886,7 @@ server <- function(input, output, session) {
       }
       else if (input$grad.math.pass.vis.list == "Both visualizations"){
         grad.math.pass.plot <- grad.math.pass.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Math Percent Passed: ",percentPassed))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Math Percent Passed: ",percent(percentPassed)))) +
           geom_line()
       }
       ggiraph(code=print(grad.math.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -755,14 +923,14 @@ server <- function(input, output, session) {
       
       grad.reading.pass.plot <- ggplot(filter(grad.reading.2008_2012_total, districtName %in% input$grad.reading.pass), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentPassed))) +
         scale_x_continuous(breaks=c(2008,2009, 2010,2011,2012))+
-        #scale_y_continuous(labels=scales::percent)+
+        scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="GRAD: Reading Percent Passed")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
       
       if (input$grad.reading.pass.vis.list == "Data points"){
         grad.reading.pass.plot <- grad.reading.pass.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percentPassed)))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percent(percentPassed))))
       }
       else if (input$grad.reading.pass.vis.list == "Trend lines"){
         grad.reading.pass.plot <- grad.reading.pass.plot +
@@ -770,7 +938,7 @@ server <- function(input, output, session) {
       }
       else if (input$grad.reading.pass.vis.list == "Both visualizations"){
         grad.reading.pass.plot <- grad.reading.pass.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percentPassed))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n GRAD: Reading Percent Passed: ",percent(percentPassed)))) +
           geom_line()
       }
       ggiraph(code=print(grad.reading.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -788,7 +956,7 @@ server <- function(input, output, session) {
 
     if (input$lunch.vis.list == "Data points"){
       lunch.district.plot <- lunch.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students with free/reduced lunch: ",percentLunch)))
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students with free/reduced lunch: ",percent(percentLunch))))
     }
     else if (input$lunch.vis.list == "Trend lines"){
       lunch.district.plot <- lunch.district.plot +
@@ -796,7 +964,7 @@ server <- function(input, output, session) {
     }
     else if (input$lunch.vis.list == "Both visualizations"){
       lunch.district.plot <- lunch.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students with free/reduced lunch: ",percentLunch))) +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students with free/reduced lunch: ",percent(percentLunch)))) +
         geom_line()
     }
     ggiraph(code=print(lunch.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
