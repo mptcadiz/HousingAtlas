@@ -151,6 +151,11 @@ home.lang.list <- home_lang_2008_2018 %>%
   select(districtName) %>%
   distinct(districtName)
 
+student.teacher.ratio.2008_2018 <- read_csv("Education/Student Teacher Ratio/student_teacher_ratio_2000_2018.csv")
+
+teacher.district.list <- student.teacher.ratio.2008_2018 %>%
+  distinct(districtName)
+
 #Visualization types --------------------------------------------------------
 vis.list <- c("Trend lines","Data points", "Both visualizations") %>% 
   as.list()
@@ -516,7 +521,41 @@ navbarPage("",
                                                                   ggiraphOutput("homelanggraph")
                                                          )
                                                        ))
-                                                     )
+                                                     ),
+                                            #UI: Student-Teacher Ratio --------------------------------------------------------
+                                            tabPanel("Student-Teacher Ratio",
+                                                     mainPanel(
+                                                       tabsetPanel(
+                                                         tabPanel("Number of Teachers (Full-Time Equivalent Teachers)",
+                                                                  
+                                                                  selectizeInput(inputId = "teacher.district",
+                                                                                 label = "Choose a district",
+                                                                                 choices = teacher.district.list,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  radioButtons(inputId="teacher.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+                                                                  
+                                                                  ggiraphOutput("teachergraph")
+                                                         ),
+                                                         tabPanel("Student-Teacher Ratio",
+                                                                  
+                                                                  selectizeInput(inputId = "student.teacher.ratio",
+                                                                                 label = "Choose a district",
+                                                                                 choices = teacher.district.list,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  radioButtons(inputId="student.teacher.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+                                                                  
+                                                                  ggiraphOutput("studentteachegraph")
+                                                         )
+                                                       ))
+                                            )
                                             
                                             
                                             
@@ -1022,6 +1061,58 @@ server <- function(input, output, session) {
     ggiraph(code=print(home.lang.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })  
 
+#Number of Teachers --------------------------------------------------------
+  output$teachergraph <- renderggiraph({
+    
+    teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$teacher.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(totalTeachers))) +
+      scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Number of teachers (full-time equivalents)")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$teacher.vis.list == "Data points"){
+      teacher.plot <- teacher.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Number of teachers (FTEs): ",totalTeachers)))
+    }
+    else if (input$teacher.vis.list == "Trend lines"){
+      teacher.plot <- teacher.plot +
+        geom_line()
+    }
+    else if (input$teacher.vis.list == "Both visualizations"){
+      teacher.plot <- teacher.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Number of teachers (FTEs): ",totalTeachers))) +
+        geom_line()
+    }
+    ggiraph(code=print(teacher.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
+#Student-Teacher Ratio --------------------------------------------------------
+  output$studentteachegraph <- renderggiraph({
+    
+    student.teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$student.teacher.ratio), aes(color=districtName, x=as.numeric(year), y=as.numeric(studentTeacherRatio))) +
+      scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Student-Teacher Ratio")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    if (input$student.teacher.vis.list == "Data points"){
+      student.teacher.plot <- student.teacher.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Student-Teacher Ratio: ",studentTeacherRatio)))
+    }
+    else if (input$student.teacher.vis.list == "Trend lines"){
+      student.teacher.plot <- student.teacher.plot +
+        geom_line()
+    }
+    else if (input$student.teacher.vis.list == "Both visualizations"){
+      student.teacher.plot <- student.teacher.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Student-Teacher Ratio ",studentTeacherRatio))) +
+        geom_line()
+    }
+    ggiraph(code=print(student.teacher.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
 }
 
 # Run the application 
