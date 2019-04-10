@@ -5,7 +5,7 @@ library(tidyverse)
 
 # 2019 ---------------------------------
 english.2019 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2019_english.csv") %>%
-  select ("District Number", "District Type", "District Name","Total Enrollment","Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade,"Total Enrollment","Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -14,6 +14,7 @@ english.2019 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     totalStudents="Total Enrollment"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -34,7 +35,7 @@ english.2019 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2018 ---------------------------------
 english.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2018_english.csv") %>%
-  select ("District Number", "District Type", "District Name","Total Enrollment","Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade,"Total Enrollment","Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -43,6 +44,7 @@ english.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     totalStudents="Total Enrollment"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -63,7 +65,7 @@ english.2018 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2017 ---------------------------------
 english.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2017_english.csv") %>%
-  select ("District Number", "District Type", "District Name","Total Enrollment","Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade,"Total Enrollment","Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -72,6 +74,7 @@ english.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     totalStudents="Total Enrollment"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -92,7 +95,7 @@ english.2017 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2016 ---------------------------------
 english.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2016_english.csv") %>%
-  select ("District Number", "District Type", "District Name","Total Enrollment","Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade,"Total Enrollment","Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -101,6 +104,7 @@ english.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     totalStudents="Total Enrollment"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -121,7 +125,7 @@ english.2016 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2015 ---------------------------------
 english.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2015_english.csv") %>%
-  select ("District Number", "District Type", "District Name","Total Enrollment","Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade,"Total Enrollment","Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -130,6 +134,7 @@ english.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     totalStudents="Total Enrollment"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -150,11 +155,12 @@ english.2015 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2014 ---------------------------------
 enrolled.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2014_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -168,7 +174,7 @@ enrolled.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Profici
   drop_na(districtName)
 
 english.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2014_english.csv") %>%
-  select ("District Number", "District Type", "District Name", "Total English learner Identified Count") %>%
+  select ("District Number", "District Type", "District Name",Grade, "Total English learner Identified Count") %>%
   rename(
     districtName="District Name",
     districtNumber="District Number",
@@ -176,6 +182,7 @@ english.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
     LEPIdentifiedK12="Total English learner Identified Count"
   ) %>%
   drop_na(districtName) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -199,11 +206,12 @@ english.2014 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2013 ---------------------------------
 enrolled.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2013_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName,Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -218,10 +226,11 @@ enrolled.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Profici
   drop_na(districtName)
 
 english.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2013_english.csv") %>%
-  select (districtNumber, districtType, DistrictName, LEPIdentifiedK12, LEPServedK12) %>%
+  select (districtNumber, districtType, DistrictName, Grade,LEPIdentifiedK12, LEPServedK12) %>%
   rename(
     districtName=DistrictName
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -248,11 +257,12 @@ english.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2012 ---------------------------------
 enrolled.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2012_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName,Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -267,10 +277,11 @@ enrolled.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Profici
   drop_na(districtName)
 
 english.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2012_english.csv") %>%
-  select (districtNumber, districtType, DistrictName, LEPIdentifiedK12) %>%
+  select (districtNumber, districtType, DistrictName, Grade,LEPIdentifiedK12) %>%
   rename(
     districtName=DistrictName
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     LEPIdentifiedK12 = na_if(LEPIdentifiedK12, "NULL"),
     LEPIdentifiedK12 = as.numeric(LEPIdentifiedK12),
@@ -296,11 +307,12 @@ english.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2011 ---------------------------------
 enrolled.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2011_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade,TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -315,10 +327,11 @@ enrolled.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Profici
   drop_na(districtName)
 
 english.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2011_english.csv") %>%
-  select (districtNumber, districtType, DistrictName, LEPIdentifiedK12) %>%
+  select (districtNumber, districtType, DistrictName, Grade, LEPIdentifiedK12) %>%
   rename(
     districtName=DistrictName
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     LEPIdentifiedK12 = na_if(LEPIdentifiedK12, "NULL"),
     LEPIdentifiedK12 = as.numeric(LEPIdentifiedK12),
@@ -344,11 +357,12 @@ english.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
 
 # 2010 ---------------------------------
 enrolled.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2010_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade,TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -363,10 +377,11 @@ enrolled.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Profici
   drop_na(districtName)
 
 english.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficiency/2010_english.csv") %>%
-  select (districtNumber, districtType, DistrictName, LEPIdentifiedK12) %>%
+  select (districtNumber, districtType, DistrictName, Grade,LEPIdentifiedK12) %>%
   rename(
     districtName=DistrictName
   ) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),

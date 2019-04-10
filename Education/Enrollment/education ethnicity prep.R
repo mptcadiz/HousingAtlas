@@ -5,7 +5,8 @@ library(tidyverse)
 
 #2018 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName,Grade, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -39,7 +40,8 @@ enrolled.ethnicity.district.2018 <- read_csv("Education/Enrollment/2018_enrolled
 
 #2017 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -73,7 +75,8 @@ enrolled.ethnicity.district.2017 <- read_csv("Education/Enrollment/2017_enrolled
 
 #2016 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -108,7 +111,8 @@ enrolled.ethnicity.district.2016 <- read_csv("Education/Enrollment/2016_enrolled
 
 #2015 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -141,7 +145,8 @@ enrolled.ethnicity.district.2015 <- read_csv("Education/Enrollment/2015_enrolled
  
 #2014 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, districtNumber, DistrictName, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, districtNumber, DistrictName,Grade, AMI_Male, AMI_Female, ASI_Male, ASI_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, HPI_Male, HPI_Female, MLT_Male, MLT_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -177,7 +182,8 @@ enrolled.ethnicity.district.2014 <- read_csv("Education/Enrollment/2014_enrolled
 
 #2013 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade,AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -209,7 +215,8 @@ enrolled.ethnicity.district.2013 <- read_csv("Education/Enrollment/2013_enrolled
 
 #2012 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName,Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -241,7 +248,8 @@ enrolled.ethnicity.district.2012 <- read_csv("Education/Enrollment/2012_enrolled
 
 #2011 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade,AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -273,8 +281,9 @@ enrolled.ethnicity.district.2011 <- read_csv("Education/Enrollment/2011_enrolled
 
 #2010 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, Total_Male, Total_Female, TotalMinority, TotalStudents) %>%
-group_by(DistrictName, districtNumber, districtType) %>%
+  select (districtNumber, districtType, DistrictName,Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, Total_Male, Total_Female, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
+  group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
     AMI_Female = sum(AMI_Female),
@@ -306,7 +315,8 @@ group_by(DistrictName, districtNumber, districtType) %>%
 
 #2009 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -338,7 +348,8 @@ enrolled.ethnicity.district.2009 <- read_csv("Education/Enrollment/2009_enrolled
 
 #2008 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
-  select (DistrictNumber, DistrictType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (DistrictNumber, DistrictType, DistrictName, Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, DistrictNumber, DistrictType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -368,7 +379,8 @@ enrolled.ethnicity.district.2008 <- read_csv("Education/Enrollment/2008_enrolled
 
 #2007 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtNumber, districtType) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -400,7 +412,8 @@ enrolled.ethnicity.district.2007 <- read_csv("Education/Enrollment/2007_enrolled
 
 #2006 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  filter(Grade != "All Grades") %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -432,7 +445,7 @@ enrolled.ethnicity.district.2006 <- read_csv("Education/Enrollment/2006_enrolled
 
 #2005 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2005 <- read_csv("Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName,Grade, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
     AMI_Male = sum(AMI_Male),
@@ -464,7 +477,7 @@ enrolled.ethnicity.district.2005 <- read_csv("Education/Enrollment/2005_enrolled
 
 #2004 Ethnicity of students enrolled (by district) ---------------------------------
 enrolled.ethnicity.district.2004 <- read_csv("Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade,AMI_Male, AMI_Female, API_Male, API_Female, BLK_Male, BLK_Female, HIS_Male, HIS_Female, WHT_Male, WHT_Female, TotalMale, TotalFemale, TotalMinority, TotalStudents) %>%
   group_by(DistrictName, districtType, districtNumber) %>%
   summarise(
     AMI_Male = sum(AMI_Male),

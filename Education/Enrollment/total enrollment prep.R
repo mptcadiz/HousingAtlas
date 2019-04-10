@@ -4,7 +4,7 @@ library(tidyverse)
 # Ethnicity of students enrolled (by district) ---------------------------------
 
 enrolled.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -14,6 +14,7 @@ enrolled.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -23,7 +24,7 @@ enrolled.2018 <- read_csv("Education/Enrollment/2018_enrolled_ethnicity_district
   drop_na(districtName)
 
 enrolled.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -32,7 +33,8 @@ enrolled.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
-    ) %>%
+  ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -42,7 +44,7 @@ enrolled.2017 <- read_csv("Education/Enrollment/2017_enrolled_ethnicity_district
   drop_na(districtName)
 
 enrolled.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -52,6 +54,7 @@ enrolled.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -61,7 +64,7 @@ enrolled.2016 <- read_csv("Education/Enrollment/2016_enrolled_ethnicity_district
   drop_na(districtName)
 
 enrolled.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -71,6 +74,7 @@ enrolled.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -80,7 +84,7 @@ enrolled.2015 <- read_csv("Education/Enrollment/2015_enrolled_ethnicity_district
   drop_na(districtName)
 
 enrolled.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -90,6 +94,7 @@ enrolled.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -99,7 +104,7 @@ enrolled.2014 <- read_csv("Education/Enrollment/2014_enrolled_ethnicity_district
   drop_na(districtName)
 
 enrolled.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -109,6 +114,7 @@ enrolled.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -121,7 +127,7 @@ enrolled.2013 <- read_csv("Education/Enrollment/2013_enrolled_ethnicity_district
   )
 
 enrolled.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -131,6 +137,7 @@ enrolled.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -143,7 +150,7 @@ enrolled.2012 <- read_csv("Education/Enrollment/2012_enrolled_ethnicity_district
   )
 
 enrolled.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -153,6 +160,7 @@ enrolled.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -165,7 +173,7 @@ enrolled.2011 <- read_csv("Education/Enrollment/2011_enrolled_ethnicity_district
   )
 
 enrolled.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -175,6 +183,7 @@ enrolled.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -187,7 +196,7 @@ enrolled.2010 <- read_csv("Education/Enrollment/2010_enrolled_ethnicity_district
   )
 
 enrolled.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -197,6 +206,7 @@ enrolled.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -209,7 +219,7 @@ enrolled.2009 <- read_csv("Education/Enrollment/2009_enrolled_ethnicity_district
   )
 
 enrolled.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district.csv") %>%
-  select (DistrictNumber, DistrictType, DistrictName, TotalStudents) %>%
+  select (DistrictNumber, DistrictType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtNumber = DistrictNumber,
     districtType = DistrictType,
@@ -221,6 +231,7 @@ enrolled.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -233,7 +244,7 @@ enrolled.2008 <- read_csv("Education/Enrollment/2008_enrolled_ethnicity_district
   )
 
 enrolled.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -243,6 +254,7 @@ enrolled.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -255,7 +267,7 @@ enrolled.2007 <- read_csv("Education/Enrollment/2007_enrolled_ethnicity_district
   )
 
 enrolled.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -265,6 +277,7 @@ enrolled.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName=toupper(districtName)
   ) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(
     totalStudents = sum(totalStudents)
@@ -277,7 +290,7 @@ enrolled.2006 <- read_csv("Education/Enrollment/2006_enrolled_ethnicity_district
   )
 
 enrolled.2005 <- read_csv("Education/Enrollment/2005_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -299,7 +312,7 @@ enrolled.2005 <- read_csv("Education/Enrollment/2005_enrolled_ethnicity_district
   )
 
 enrolled.2004 <- read_csv("Education/Enrollment/2004_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents
@@ -321,7 +334,7 @@ enrolled.2004 <- read_csv("Education/Enrollment/2004_enrolled_ethnicity_district
   )
 
 enrolled.2003 <- read_csv("Education/Enrollment/2003_enrolled_ethnicity_district.csv") %>%
-  select (districtNumber, districtType, DistrictName, TotalStudents) %>%
+  select (districtNumber, districtType, DistrictName, Grade, TotalStudents) %>%
   rename(
     districtName=DistrictName,
     totalStudents=TotalStudents

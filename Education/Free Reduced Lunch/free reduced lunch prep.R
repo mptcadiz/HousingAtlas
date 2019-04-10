@@ -4,7 +4,8 @@ library(tidyverse)
 # Percent of students with free/reduced lunch (by district) ---------------------------------
 
 free.red.lunch.2018 <- read_csv("Education/Free Reduced Lunch/2018_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -23,7 +24,8 @@ free.red.lunch.2018 <- read_csv("Education/Free Reduced Lunch/2018_free_red_lunc
   select(DistrictName, percentLunch2018)
 
 free.red.lunch.2017 <- read_csv("Education/Free Reduced Lunch/2017_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -42,7 +44,8 @@ free.red.lunch.2017 <- read_csv("Education/Free Reduced Lunch/2017_free_red_lunc
   select(DistrictName, percentLunch2017)
 
 free.red.lunch.2016 <- read_csv("Education/Free Reduced Lunch/2016_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -61,7 +64,8 @@ free.red.lunch.2016 <- read_csv("Education/Free Reduced Lunch/2016_free_red_lunc
   select(DistrictName, percentLunch2016)
 
 free.red.lunch.2015 <- read_csv("Education/Free Reduced Lunch/2015_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -80,7 +84,8 @@ free.red.lunch.2015 <- read_csv("Education/Free Reduced Lunch/2015_free_red_lunc
   select(DistrictName, percentLunch2015)
 
 free.red.lunch.2014 <- read_csv("Education/Free Reduced Lunch/2014_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -99,7 +104,8 @@ free.red.lunch.2014 <- read_csv("Education/Free Reduced Lunch/2014_free_red_lunc
   select(DistrictName, percentLunch2014)
 
 free.red.lunch.2013 <- read_csv("Education/Free Reduced Lunch/2013_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -122,7 +128,8 @@ free.red.lunch.2013 <- read_csv("Education/Free Reduced Lunch/2013_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2013)
 
 free.red.lunch.2012 <- read_csv("Education/Free Reduced Lunch/2012_free_red_lunch.csv") %>%
-  select (districtNumber, districtType, DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     K12Enr = na_if(K12Enr, "NULL"),
     FreeK12 = na_if(FreeK12, "NULL"),
@@ -154,7 +161,8 @@ free.red.lunch.2012 <- read_csv("Education/Free Reduced Lunch/2012_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2012)
 
 free.red.lunch.2011 <- read_csv("Education/Free Reduced Lunch/2011_free_red_lunch.csv") %>%
-  select (districtNumber, districtType, DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   mutate(
     K12Enr = na_if(K12Enr, "NULL"),
     FreeK12 = na_if(FreeK12, "NULL"),
@@ -186,7 +194,8 @@ free.red.lunch.2011 <- read_csv("Education/Free Reduced Lunch/2011_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2011)
 
 free.red.lunch.2010 <- read_csv("Education/Free Reduced Lunch/2010_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -209,7 +218,8 @@ free.red.lunch.2010 <- read_csv("Education/Free Reduced Lunch/2010_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2010)
 
 free.red.lunch.2009 <- read_csv("Education/Free Reduced Lunch/2009_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, grade, K12Enr, FreeK12, RedK12) %>%
+  filter(grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -232,7 +242,8 @@ free.red.lunch.2009 <- read_csv("Education/Free Reduced Lunch/2009_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2009)
 
 free.red.lunch.2008 <- read_csv("Education/Free Reduced Lunch/2008_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
+  filter(Grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -255,7 +266,8 @@ free.red.lunch.2008 <- read_csv("Education/Free Reduced Lunch/2008_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2008)
 
 free.red.lunch.2007 <- read_csv("Education/Free Reduced Lunch/2007_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, grade, K12Enr, FreeK12, RedK12) %>%
+  filter(grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),
@@ -278,7 +290,8 @@ free.red.lunch.2007 <- read_csv("Education/Free Reduced Lunch/2007_free_red_lunc
   select(DistrictNumber, DistrictType, DistrictName, percentLunch2007)
 
 free.red.lunch.2006 <- read_csv("Education/Free Reduced Lunch/2006_free_red_lunch.csv") %>%
-  select (districtNumber,districtType,DistrictName, K12Enr, FreeK12, RedK12) %>%
+  select (districtNumber,districtType,DistrictName, grade, K12Enr, FreeK12, RedK12) %>%
+  filter(grade != "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),

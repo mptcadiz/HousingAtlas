@@ -14,13 +14,14 @@ library(tidyverse)
 # Teacher count data ---------------------------------
 
 teacher.2018 <- read_csv("Education/Student Teacher Ratio/2018_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -36,13 +37,14 @@ teacher.2018 <- read_csv("Education/Student Teacher Ratio/2018_teachers.csv") %>
   filter(districtName!="STATEWIDE")
 
 teacher.2017 <- read_csv("Education/Student Teacher Ratio/2017_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -58,13 +60,14 @@ teacher.2017 <- read_csv("Education/Student Teacher Ratio/2017_teachers.csv") %>
   filter(districtName!="STATEWIDE")
 
 teacher.2016 <- read_csv("Education/Student Teacher Ratio/2016_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -80,13 +83,14 @@ teacher.2016 <- read_csv("Education/Student Teacher Ratio/2016_teachers.csv") %>
   filter(districtName!="STATEWIDE")
 
 teacher.2015 <- read_csv("Education/Student Teacher Ratio/2015_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -102,13 +106,14 @@ teacher.2015 <- read_csv("Education/Student Teacher Ratio/2015_teachers.csv") %>
   filter(districtName!="STATEWIDE")
 
 teacher.2014 <- read_csv("Education/Student Teacher Ratio/2014_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -124,13 +129,14 @@ teacher.2014 <- read_csv("Education/Student Teacher Ratio/2014_teachers.csv") %>
   filter(districtName!="STATEWIDE")
 
 teacher.2013 <- read_csv("Education/Student Teacher Ratio/2013_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -149,13 +155,14 @@ teacher.2013 <- read_csv("Education/Student Teacher Ratio/2013_teachers.csv") %>
   )
 
 teacher.2012 <- read_csv("Education/Student Teacher Ratio/2012_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -174,13 +181,14 @@ teacher.2012 <- read_csv("Education/Student Teacher Ratio/2012_teachers.csv") %>
   )
 
 teacher.2011 <- read_csv("Education/Student Teacher Ratio/2011_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -199,13 +207,14 @@ teacher.2011 <- read_csv("Education/Student Teacher Ratio/2011_teachers.csv") %>
   )
 
 teacher.2010 <- read_csv("Education/Student Teacher Ratio/2010_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -224,13 +233,14 @@ teacher.2010 <- read_csv("Education/Student Teacher Ratio/2010_teachers.csv") %>
   )
 
 teacher.2009 <- read_csv("Education/Student Teacher Ratio/2009_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -249,13 +259,14 @@ teacher.2009 <- read_csv("Education/Student Teacher Ratio/2009_teachers.csv") %>
   )
 
 teacher.2008 <- read_csv("Education/Student Teacher Ratio/2008_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals:") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -274,13 +285,14 @@ teacher.2008 <- read_csv("Education/Student Teacher Ratio/2008_teachers.csv") %>
   )
 
 teacher.2007 <- read_csv("Education/Student Teacher Ratio/2007_teachers.csv") %>%
-  select(DistNumb, DistType, DistName, TotFTE) %>%
+  select(DistNumb, DistType, DistName, TotFTE,SchName) %>%
   rename(
     districtName=DistName,
     districtNumber=DistNumb,
     districtType = DistType,
     totalTeachers = TotFTE
   ) %>%
+  filter(SchName != "Totals:") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),

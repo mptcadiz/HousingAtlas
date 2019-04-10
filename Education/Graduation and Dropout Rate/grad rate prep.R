@@ -4,19 +4,22 @@ library(tidyverse)
 # Graduation rates by district ---------------------------------
 
 grad.2017 <- read_csv("Education/Graduation and Dropout Rate/2017_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
@@ -28,19 +31,22 @@ grad.2017 <- read_csv("Education/Graduation and Dropout Rate/2017_grad.csv") %>%
   drop_na(districtName)
 
 grad.2016 <- read_csv("Education/Graduation and Dropout Rate/2016_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
@@ -52,19 +58,22 @@ grad.2016 <- read_csv("Education/Graduation and Dropout Rate/2016_grad.csv") %>%
   drop_na(districtName)
 
 grad.2015 <- read_csv("Education/Graduation and Dropout Rate/2015_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
@@ -76,19 +85,22 @@ grad.2015 <- read_csv("Education/Graduation and Dropout Rate/2015_grad.csv") %>%
   drop_na(districtName)
 
 grad.2014 <- read_csv("Education/Graduation and Dropout Rate/2014_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
@@ -100,19 +112,22 @@ grad.2014 <- read_csv("Education/Graduation and Dropout Rate/2014_grad.csv") %>%
   drop_na(districtName)
 
 grad.2013 <- read_csv("Education/Graduation and Dropout Rate/2013_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%
@@ -127,19 +142,22 @@ grad.2013 <- read_csv("Education/Graduation and Dropout Rate/2013_grad.csv") %>%
   drop_na(districtName)
 
 grad.2012 <- read_csv("Education/Graduation and Dropout Rate/2012_grad.csv") %>%
-  select ("District Number","District Type", "District Name",  "Ending Status", "Four Year Percent") %>%
+  select ("District Number","District Type", "District Name", "Demographic Category", "Ending Status", "Four Year Percent") %>%
   rename (
     districtName="District Name",
     districtNumber="District Number",
     districtType="District Type",
     gradRate = "Four Year Percent",
-    endStatus = "Ending Status"
+    endStatus = "Ending Status",
+    category = "Demographic Category"
   ) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
   ) %>%
-  filter(endStatus=="Graduate") %>%
+  filter(
+    endStatus=="Graduate",
+    category=="A") %>%
   #drop_na(gradRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(gradRate=mean(gradRate, na.rm=TRUE)) %>%

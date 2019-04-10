@@ -583,6 +583,7 @@ server <- function(input, output, session) {
     
     home.val.county.plot <- ggplot(filter(med.home.val.1990_2010, countyName %in% input$home.val.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(homeValue))) +
       scale_x_continuous(breaks=c(1990,2000,2010,2017))+
+      scale_y_continuous(labels=scales::dollar)+
       labs(x="Year", y="Home Value")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
