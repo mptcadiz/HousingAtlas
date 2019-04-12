@@ -54,17 +54,33 @@ theme_sf <- theme_bw() +
 # Objects - Visualization of home value data by county ---------------------------------------------------------
 
 #Shapefiles ----------------------------------------------------
-mn_counties <- st_read("MNCounties_MNDOT.shp", quiet = TRUE) %>%
+mn_counties <- st_read("Shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
   rename(countyfp = FIPS_CODE) %>%
   st_simplify(dTolerance = 1000) %>%
   mutate(
     COUNTY_NAM = ifelse(COUNTY_NAM == "Saint Louis", "St Louis", as.character(COUNTY_NAM)),
     COUNTY_NAM = ifelse(COUNTY_NAM == "Lake of the Woods", "Lake Of The Woods", as.character(COUNTY_NAM))
-    ) %>%
+  ) %>%
   rename(countyName = COUNTY_NAM)
 
+mn_school_districts <- st_read("Shapefiles/school_district_boundaries.shp", quiet = TRUE) %>%
+  select(UNI_TYP, UNI_MAJ,UNI_NAM,geometry) %>%
+  rename(districtType=UNI_TYP,
+         districtNumber=UNI_MAJ,
+         districtName=UNI_NAM) %>%
+  st_simplify(dTolerance = 1000) %>%
+  mutate(
+    districtType = formatC(districtType, width = 2, flag = "0"),
+    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+  )
+
+
 #Housing --------------------------------------------------------
-med.home.val.1990_2010 <- read_csv("Housing/Median Home Value/med_home_val_1990_2010.csv")
+med.home.val.1990_2010 <- read_csv("Housing/Median Home Value/med_home_val_1990_2010.csv") %>%
+  full_join(mn_counties, med.home.val.1990_2010, by = c("countyName")) %>%
+  mutate(bins = cut(homeValue,
+                    breaks = c(0, 59999,999999,139999,179999,219999,259999,300000),
+                    labels = c("$20,000 - $59,999", "$60,000 - $999,999", "$100,000 - $139,999", "$140,000 - $179,999", "$180,000 - $219,999", "$220,000 - $259,999", "$260,000 - $300,000")))
 
 med.year.built.1990_2017 <- read_csv("Housing/Median Year Built/med_year_built_1990_2017.csv") %>%
   full_join(mn_counties, med.year.built.1990_2017, by = c("countyName")) %>%
@@ -79,6 +95,25 @@ county.list <- med.home.val.1990_2010 %>%
   distinct(countyName)
 
 #Education --------------------------------------------------------
+enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
+
+enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
+  full_join(mn_school_districts,  enrolled.2018_2000.tidy, by = c("districtNumber","districtType")) %>%
+  drop_na(districtName.y) %>%
+  rename(districtName=districtName.x) %>%
+  mutate(
+    districtName = ifelse(districtNumber == "0000", "Minneapolis-St. Paul Int'l Airport", districtName),
+    districtName = ifelse(districtNumber == "0323", "Franconia", districtName),
+    districtName = ifelse(districtNumber == "0815", "Prinsburg", districtName),
+    districtName = ifelse(districtNumber == "2759", "Eagle Valley", districtName)
+    )%>%
+  select(-districtName.y) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(totalStudents,
+                    breaks = c(0, 6999,13999,20999,27999,34999,41999,50000),
+                    labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")))
+
+
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
   mutate(districtName=toupper(districtName))
 
@@ -86,8 +121,6 @@ ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
   distinct(districtName) %>%
   mutate(districtName=toupper(districtName))
-
-enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
 
 enrollment.district.list <- enrolled.2018_2000.tidy %>%
   select(districtName) %>%
@@ -176,7 +209,7 @@ navbarPage("",
                                  tabPanel("Median Home Value",
                                           mainPanel(
                                             tabsetPanel(
-                                              tabPanel("Median Home Value",
+                                              tabPanel("Median Home Value: 1990 - 2017 Chart",
                                                        
                                                        selectizeInput(inputId = "home.val.county",
                                                                       label = "Choose a county",
@@ -189,34 +222,48 @@ navbarPage("",
                                                                     inline=TRUE),
                                                        
                                                        ggiraphOutput("homevalcountygraph")
-                                                       )))),
+                                                       ),
+                                              
+                                              tabPanel("Median Home Value - Maps",
+                                                       
+                                                       selectInput(inputId = "year.home.val",
+                                                                   label = "Choose a year",
+                                                                   choices = list(1990,2000,2010,2017),
+                                                                   multiple = FALSE),
+                                                       
+                                                       ggiraphOutput("homevalmap")
+                                              )
+                                              
+                                              ))),
                                  
                                  #UI: Median year built by county over time --------------------------------------------------------
                                  tabPanel("Median Year Built",
                                           mainPanel(
                                             tabsetPanel(
-                                              tabPanel("Median Year Built",
-                                                       # selectizeInput(inputId = "year.built.county",
-                                                       #                label = "Choose a county",
-                                                       #                choices = county.list,
-                                                       #                multiple = TRUE),
-                                                       # 
-                                                       # radioButtons(inputId="year.built.vis.list",
-                                                       #              label="How would you like to visualize the data?",
-                                                       #              choices = vis.list,
-                                                       #              inline=TRUE),
-                                                       # 
-                                                       # ggiraphOutput("yearbuiltcountygraph")
-                                                       
+                                              tabPanel("Median Year Built - Maps",
                                                        selectInput(inputId = "year.built.county",
                                                                       label = "Choose a year",
                                                                       choices = list(1990,2000,2010,2017),
                                                                       multiple = FALSE),
                                                        
                                                        ggiraphOutput("yearbuiltcountygraph")
-                                              )))),
+                                              ),
+                                              tabPanel("Median Year Built - Charts",
+                                                       selectizeInput(inputId = "year.built.county.chart",
+                                                                      label = "Choose a county",
+                                                                      choices = county.list,
+                                                                      multiple = TRUE),
+
+                                                       radioButtons(inputId="year.built.vis.list",
+                                                                    label="How would you like to visualize the data?",
+                                                                    choices = vis.list,
+                                                                    inline=TRUE),
+
+                                                       ggiraphOutput("yearbuiltcountychart")
+                                              )
+                                              ))),
                                  
-                                 #UI: Median year built by county over time --------------------------------------------------------
+                                 #UI: Mortgage status --------------------------------------------------------
                                  tabPanel("Mortgage Status",
                                           mainPanel(
                                             tabsetPanel(
@@ -586,54 +633,57 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::dollar)+
       labs(x="Year", y="Home Value")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      #guides(fill=guide_legend(ncol=3))+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom") +
+      scale_fill_manual(guide = guide_legend(ncol = 3))
+      #guide_legend(ncol=3)
     
     if (input$home.val.vis.list == "Data points"){
-      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: $",comma(homeValue, digits = 0))))
+      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Home Value: $",comma(homeValue, digits = 0))))
     }
     else if (input$home.val.vis.list == "Trend lines"){
-      home.val.county.plot <- home.val.county.plot + geom_line()
+      home.val.county.plot <- home.val.county.plot + geom_line() + scale_fill_manual(guide = guide_legend(ncol = 3))
     }
     else if (input$home.val.vis.list == "Both visualizations"){
-      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Home Value: $",comma(homeValue, digits = 0)))) +
+      home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Home Value: $",comma(homeValue, digits = 0)))) +
         geom_line()
     }
     ggiraph(code=print(home.val.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
+  
+  output$homevalmap <- renderggiraph({
+    home.val.map.plot <- ggplot(filter(med.home.val.1990_2010, year == as.numeric(input$year.home.val))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Home Value: ", homeValue, sep = "")), color = "black") + 
+      theme_sf +
+      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
+    
+    ggiraph(code = print(home.val.map.plot), selection_type = "none")
+    
+  })
 
 
 #Median Year Built Visualization --------------------------------------------------------
-  # output$yearbuiltcountygraph <- renderggiraph({
-  # 
-  #   year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, countyName %in% input$year.built.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(yearBuilt))) +
-  #     scale_x_continuous(breaks=c(2000,2010,2017))+
-  #     labs(x="Year", y="Year Built")+
-  #     theme_bar+
-  #     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  # 
-  #   if (input$year.built.vis.list == "Data points"){
-  #     year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt)))
-  #   }
-  #   else if (input$year.built.vis.list == "Trend lines"){
-  #     year.built.county.plot <- year.built.county.plot + geom_line()
-  #   }
-  #   else if (input$year.built.vis.list == "Both visualizations"){
-  #     year.built.county.plot <- year.built.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Year Built: ",yearBuilt))) +
-  #       geom_line()
-  #   }
-  #   ggiraph(code=print(year.built.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
-  # })
-  
-  # output$yearbuiltcountygraph <- renderggiraph({
-  #   
-  #   year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, year == as.numeric(input$year.built.county))) +
-  #     geom_sf_interactive(aes(fill = bins, tooltip = paste(Name, "\n", "Year: ", comma(yearBuilt, digits = 0), sep = "")), color = "black") + 
-  #     theme_sf +
-  #     scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
-  #   
-  #   ggiraph(code = print(year.built.county.plot), selection_type = "none")
-  #   
-  # })
+  output$yearbuiltcountychart <- renderggiraph({
+
+    year.built.county.chart.plot <- ggplot(filter(med.year.built.1990_2017, countyName %in% input$year.built.county.chart), aes(color=countyName, x=as.numeric(year), y=as.numeric(yearBuilt))) +
+      scale_x_continuous(breaks=c(2000,2010,2017))+
+      labs(x="Year", y="Year Built")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+    if (input$year.built.vis.list == "Data points"){
+      year.built.county.chart.plot <- year.built.county.chart.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Year Built: ",yearBuilt)))
+    }
+    else if (input$year.built.vis.list == "Trend lines"){
+      year.built.county.chart.plot <- year.built.county.chart.plot + geom_line()
+    }
+    else if (input$year.built.vis.list == "Both visualizations"){
+      year.built.county.chart.plot <- year.built.county.chart.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Year Built: ",yearBuilt))) +
+        geom_line()
+    }
+    ggiraph(code=print(year.built.county.chart.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
   
   output$yearbuiltcountygraph <- renderggiraph({
     
@@ -655,7 +705,10 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of houses without mortgages")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      #guides(fill=guide_legend(ncrow=3, byrow=TRUE)) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom") +
+      scale_fill_manual(guide = guide_legend(ncol = 3))
 
     if (input$mortgage.status.vis.list == "Data points"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
@@ -681,7 +734,8 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of students of color enrolled")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
 
     if (input$student.ethnicity.vis.list == "Data points"){
       student.ethnicity.district.plot <- student.ethnicity.district.plot +
@@ -704,13 +758,15 @@ server <- function(input, output, session) {
 
     student.enrollment.district.plot <- ggplot(filter(enrolled.2018_2000.tidy, districtName %in% input$student.enrollment.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(totalStudents))) +
       scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
+      scale_y_continuous(label=comma) +
       labs(x="Year", y="Number of students enrolled")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
 
     if (input$student.enrollment.vis.list == "Data points"){
       student.enrollment.district.plot <- student.enrollment.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Number of students enrolled: ",comma(totalStudents, digits=0))))
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total number of students enrolled: ",comma(totalStudents, digits=0))))
     }
     else if (input$student.enrollment.vis.list == "Trend lines"){
       student.enrollment.district.plot <- student.enrollment.district.plot +
@@ -718,7 +774,7 @@ server <- function(input, output, session) {
     }
     else if (input$student.enrollment.vis.list == "Both visualizations"){
       student.enrollment.district.plot <- student.enrollment.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Number of students enrolled: ",comma(totalStudents, digits=0)))) +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total number of students enrolled: ",comma(totalStudents, digits=0)))) +
         geom_line()
     }
     ggiraph(code=print(student.enrollment.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -732,11 +788,12 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Graduation Rate")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
 
       if (input$grad.rate.vis.list == "Data points"){
         grad.rate.plot <- grad.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",percent(gradRate))))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total graduation rate: ",percent(gradRate))))
       }
       else if (input$grad.rate.vis.list == "Trend lines"){
         grad.rate.plot <- grad.rate.plot +
@@ -744,7 +801,7 @@ server <- function(input, output, session) {
       }
       else if (input$grad.rate.vis.list == "Both visualizations"){
         grad.rate.plot <- grad.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Graduation rate: ",percent(gradRate)))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total graduation rate: ",percent(gradRate)))) +
           geom_line()
       }
       ggiraph(code=print(grad.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -758,11 +815,12 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Dropout Rate")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$drop.rate.vis.list == "Data points"){
         drop.rate.plot <- drop.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",percent(dropRate))))
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total dropout rate: ",percent(dropRate))))
       }
       else if (input$drop.rate.vis.list == "Trend lines"){
         drop.rate.plot <- drop.rate.plot +
@@ -770,7 +828,7 @@ server <- function(input, output, session) {
       }
       else if (input$drop.rate.vis.list == "Both visualizations"){
         drop.rate.plot <- drop.rate.plot +
-          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Dropout rate: ",percent(dropRate)))) +
+          geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Total dropout rate: ",percent(dropRate)))) +
           geom_line()
       }
       ggiraph(code=print(drop.rate.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
@@ -784,7 +842,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Graduation Rate of Students of Color")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$ethnicity.grad.rate.vis.list == "Data points"){
         ethnicity.grad.rate.plot <- ethnicity.grad.rate.plot +
@@ -810,7 +869,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Graduation Rate")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
 
       if (input$ethnicity.breakdown.grad.rate.vis.list == "Data points"){
         ethnicity.grad.rate.breakdown.plot <- ethnicity.grad.rate.breakdown.plot +
@@ -836,7 +896,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Dropout Rate of Students of Color")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$ethnicity.drop.rate.vis.list == "Data points"){
         ethnicity.drop.rate.plot <- ethnicity.drop.rate.plot +
@@ -862,7 +923,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Dropout Rate")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$ethnicity.breakdown.drop.rate.vis.list == "Data points"){
         ethnicity.drop.rate.breakdown.plot <- ethnicity.drop.rate.breakdown.plot +
@@ -888,7 +950,8 @@ server <- function(input, output, session) {
         #scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Average GRAD: Math Score")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$grad.math.score.vis.list == "Data points"){
         grad.math.score.plot <- grad.math.score.plot +
@@ -914,7 +977,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="GRAD: Math Percent Passed")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$grad.math.pass.vis.list == "Data points"){
         grad.math.pass.plot <- grad.math.pass.plot +
@@ -940,7 +1004,8 @@ server <- function(input, output, session) {
         #scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Average GRAD: Reading Score")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$grad.reading.score.vis.list == "Data points"){
         grad.reading.score.plot <- grad.reading.score.plot +
@@ -966,7 +1031,8 @@ server <- function(input, output, session) {
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="GRAD: Reading Percent Passed")+
         theme_bar+
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              legend.position="bottom")
       
       if (input$grad.reading.pass.vis.list == "Data points"){
         grad.reading.pass.plot <- grad.reading.pass.plot +
@@ -992,7 +1058,8 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of students with free/reduced lunch")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
 
     if (input$lunch.vis.list == "Data points"){
       lunch.district.plot <- lunch.district.plot +
@@ -1018,7 +1085,8 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of students not proficient in English")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
     
     if (input$english.vis.list == "Data points"){
       english.plot <- english.plot +
@@ -1044,7 +1112,8 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of students with English as home language")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
     
     if (input$home.lang.vis.list == "Data points"){
       home.lang.plot <- home.lang.plot +
@@ -1067,10 +1136,11 @@ server <- function(input, output, session) {
     
     teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$teacher.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(totalTeachers))) +
       scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
-      #scale_y_continuous(labels=scales::percent)+
+      scale_y_continuous(label=comma) +
       labs(x="Year", y="Number of teachers (full-time equivalents)")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
     
     if (input$teacher.vis.list == "Data points"){
       teacher.plot <- teacher.plot +
@@ -1093,10 +1163,11 @@ server <- function(input, output, session) {
     
     student.teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$student.teacher.ratio), aes(color=districtName, x=as.numeric(year), y=as.numeric(studentTeacherRatio))) +
       scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
-      #scale_y_continuous(labels=scales::percent)+
+      scale_y_continuous(label=comma) +
       labs(x="Year", y="Student-Teacher Ratio")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
     
     if (input$student.teacher.vis.list == "Data points"){
       student.teacher.plot <- student.teacher.plot +
