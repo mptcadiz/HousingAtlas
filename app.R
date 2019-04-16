@@ -55,7 +55,7 @@ theme_sf <- theme_bw() +
 
 #Shapefiles ----------------------------------------------------
 mn_counties <- st_read("Shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
-  rename(countyfp = FIPS_CODE) %>%
+  rename(countyFIPS = FIPS_CODE) %>%
   st_simplify(dTolerance = 1000) %>%
   mutate(
     COUNTY_NAM = ifelse(COUNTY_NAM == "Saint Louis", "St Louis", as.character(COUNTY_NAM)),
@@ -88,33 +88,189 @@ med.year.built.1990_2017 <- read_csv("Housing/Median Year Built/med_year_built_1
                     breaks = c(0, 1946,1954,1962,1970,1978,1986,1994),
                     labels = c("1939 - 1946", "1947 - 1954", "1955 - 1962", "1963 - 1970", "1971 - 1978", "1979 - 1986", "1987 - 1994")))
 
-tidymortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/mortgage_status_1990_2010.csv")
+tidymortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/mortgage_status_1990_2010.csv") %>%
+  full_join(mn_counties, tidymortgage.status.1990_2010, by = c("countyFIPS")) %>%
+  rename(countyName=countyName.x) %>%
+  select(-countyName.y) %>%
+  mutate(bins = cut(percentFree,
+                    breaks = c(0, 0.19, 0.39, 0.59, 0.79, 1),
+                    labels = c("0 - 19%", "20% - 39%", "40% - 59%", "60 - 79%", "80% - 100 %")))
+
 
 county.list <- med.home.val.1990_2010 %>%
   select(countyName) %>%
   distinct(countyName)
 
 #Education --------------------------------------------------------
-enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
+enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv") %>%
+  rbind(c("2759", "01", "Eagle Valley", 2000, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2001, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2002, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2003, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2004, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2005, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2006, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2007, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2008, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2009, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2010, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2011, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2012, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2013, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2014, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2015, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2000, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2001, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2002, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2003, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2004, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2005, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2000, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2001, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2002, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2003, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2004, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2005, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2000, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2001, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2002, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2003, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2004, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2005, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2018, NA))
 
 enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
   full_join(mn_school_districts,  enrolled.2018_2000.tidy, by = c("districtNumber","districtType")) %>%
   drop_na(districtName.y) %>%
   rename(districtName=districtName.x) %>%
-  mutate(
-    districtName = ifelse(districtNumber == "0000", "Minneapolis-St. Paul Int'l Airport", districtName),
-    districtName = ifelse(districtNumber == "0323", "Franconia", districtName),
-    districtName = ifelse(districtNumber == "0815", "Prinsburg", districtName),
-    districtName = ifelse(districtNumber == "2759", "Eagle Valley", districtName)
-    )%>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
+  mutate(totalStudents=as.numeric(as.character(totalStudents)),
+         year=as.numeric(as.character(year))
+         ) %>%
   mutate(bins = cut(totalStudents,
                     breaks = c(0, 6999,13999,20999,27999,34999,41999,50000),
-                    labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")))
-
+                    labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)))
 
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
+  rbind(c("2759", "01", "Eagle Valley", 2000, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2001, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2002, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2003, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2004, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2005, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2006, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2007, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2008, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2009, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2010, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2011, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2012, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2013, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2014, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2015, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2000, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2001, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2002, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2003, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2004, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2005, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2000, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2001, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2002, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2003, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2004, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2005, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2000, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2001, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2002, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2003, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2004, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2005, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
   mutate(districtName=toupper(districtName))
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
@@ -133,6 +289,16 @@ grad.math.2009_2013_total <- read_csv("Education/GRAD scores/grad_math_2009_2013
 
 grad.math.list <- grad.math.2009_2013_total %>%
   select(districtName) %>%
+  distinct(districtName)
+
+act.scores.2008_2018 <- read_csv("Education/ACT Scores/act_scores_2008_2018.csv")
+
+act.scores.list <- act.scores.2008_2018 %>%
+  distinct(districtName)
+
+act.takers.2008_2018 <- read_csv("Education/ACT Scores/act_percent_2008_2018.csv")
+
+act.takers.list <- act.takers.2008_2018 %>%
   distinct(districtName)
 
 grad.reading.2008_2012_total <- read_csv("Education/GRAD scores/grad_reading_2008_2012.csv") %>%
@@ -279,7 +445,17 @@ navbarPage("",
                                                                     inline=TRUE),
                                                        
                                                        ggiraphOutput("mortgagestatuscountygraph")
-                                              ))))
+                                              ),
+                                              
+                                              tabPanel("Mortgage Status - Maps",
+                                                       selectInput(inputId = "mortgage.status.county.map",
+                                                                   label = "Choose a year",
+                                                                   choices = list(1990,2000,2010),
+                                                                   multiple = FALSE),
+                                                       
+                                                       ggiraphOutput("mortgagestatuscountymap")
+                                              )
+                                              )))
                                  )
                           )
                     ),
@@ -305,6 +481,17 @@ navbarPage("",
                                                                   
                                                                   ggiraphOutput("studentenrollmentgraph")
                                                          ),
+                                                         
+                                                         tabPanel("Total Number of Students Enrolled - Maps",
+                                                                  selectInput(inputId = "student.enrollment.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("studentenrollmentmap")
+                                                         ),
+                                                         
+                                                         
                                                                       tabPanel("Percent of Students of Color Enrolled",
                                                                                
                                                                                selectizeInput(inputId = "student.ethnicity.district",
@@ -489,19 +676,32 @@ navbarPage("",
                                                                   ggiraphOutput("gradreadingpassgraph")
                                                          ),
                                                          
-                                                         tabPanel("ACT"
+                                                         tabPanel("ACT",
+                                                                  #UI: Average ACT Score --------------------------------------------------------
+                                                                  selectizeInput(inputId = "act.scores",
+                                                                                 label = "Choose a district",
+                                                                                 choices = act.scores.list,
+                                                                                 multiple = TRUE),
+
+                                                                  radioButtons(inputId="act.scores.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+
+                                                                  ggiraphOutput("actscoresgraph"),
                                                                   
-                                                                  # selectizeInput(inputId = "ethnicity.drop.rate",
-                                                                  #                label = "Choose a district",
-                                                                  #                choices = grad.rate.list,
-                                                                  #                multiple = TRUE),
-                                                                  # 
-                                                                  # radioButtons(inputId="ethnicity.drop.rate.vis.list",
-                                                                  #              label="How would you like to visualize the data?",
-                                                                  #              choices = vis.list,
-                                                                  #              inline=TRUE),
-                                                                  # 
-                                                                  # ggiraphOutput("ethnicitydroprategraph")
+                                                                  #UI: Percent of ACT Takers --------------------------------------------------------
+                                                                  selectizeInput(inputId = "act.takers",
+                                                                                 label = "Choose a district",
+                                                                                 choices = act.takers.list,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  radioButtons(inputId="act.takers.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=TRUE),
+                                                                  
+                                                                  ggiraphOutput("acttakersgraph")
                                                          )
                                                          
                                                          
@@ -726,31 +926,15 @@ server <- function(input, output, session) {
     ggiraph(code=print(mortgage.status.county.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
 
-#Ethnicity of Students Enrolled Visualization --------------------------------------------------------
-  output$studentethnicitygraph <- renderggiraph({
+  output$mortgagestatuscountymap <- renderggiraph({
 
-    student.ethnicity.district.plot <- ggplot(filter(enrolled.ethnicity.2000_2018.tidy, districtName %in% input$student.ethnicity.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentMinority))) +
-      scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
-      scale_y_continuous(labels=scales::percent)+
-      labs(x="Year", y="Percent of students of color enrolled")+
-      theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+    mortgage.status.county.map.plot <- ggplot(filter(tidymortgage.status.1990_2010, year == as.numeric(input$mortgage.status.county.map))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Percent Of Mortgage Free Homes: ", percent(percentFree), sep = "")), color = "black") +
+      theme_sf +
+      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "black"))
 
-    if (input$student.ethnicity.vis.list == "Data points"){
-      student.ethnicity.district.plot <- student.ethnicity.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students of color enrolled: ",percent(percentMinority))))
-    }
-    else if (input$student.ethnicity.vis.list == "Trend lines"){
-      student.ethnicity.district.plot <- student.ethnicity.district.plot +
-        geom_line()
-    }
-    else if (input$student.ethnicity.vis.list == "Both visualizations"){
-      student.ethnicity.district.plot <- student.ethnicity.district.plot +
-        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students of color enrolled: ",percent(percentMinority)))) +
-        geom_line()
-    }
-    ggiraph(code=print(student.ethnicity.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+    ggiraph(code = print(mortgage.status.county.map.plot), selection_type = "none")
+
   })
 
 #Students Enrolled Visualization --------------------------------------------------------
@@ -779,7 +963,45 @@ server <- function(input, output, session) {
     }
     ggiraph(code=print(student.enrollment.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
- 
+  
+  output$studentenrollmentmap <- renderggiraph({
+    
+    student.enrollment.map.plot <- ggplot(filter(enrolled.2018_2000.map, year == as.numeric(input$student.enrollment.map))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
+      theme_sf +
+      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "#00300f", "black"))
+    
+    ggiraph(code = print(student.enrollment.map.plot), selection_type = "none")
+    
+  })
+  
+  #Ethnicity of Students Enrolled Visualization --------------------------------------------------------
+  output$studentethnicitygraph <- renderggiraph({
+    
+    student.ethnicity.district.plot <- ggplot(filter(enrolled.ethnicity.2000_2018.tidy, districtName %in% input$student.ethnicity.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentMinority))) +
+      scale_x_continuous(breaks=c(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018))+
+      scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Percent of students of color enrolled")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
+    
+    if (input$student.ethnicity.vis.list == "Data points"){
+      student.ethnicity.district.plot <- student.ethnicity.district.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students of color enrolled: ",percent(percentMinority))))
+    }
+    else if (input$student.ethnicity.vis.list == "Trend lines"){
+      student.ethnicity.district.plot <- student.ethnicity.district.plot +
+        geom_line()
+    }
+    else if (input$student.ethnicity.vis.list == "Both visualizations"){
+      student.ethnicity.district.plot <- student.ethnicity.district.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of students of color enrolled: ",percent(percentMinority)))) +
+        geom_line()
+    }
+    ggiraph(code=print(student.ethnicity.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
 #Overall Graduation Rates Visualization --------------------------------------------------------
     output$gradrategraph <- renderggiraph({
 
@@ -1049,7 +1271,61 @@ server <- function(input, output, session) {
       }
       ggiraph(code=print(grad.reading.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
+
+#ACT Scores Visualization --------------------------------------------------------
+  output$actscoresgraph <- renderggiraph({
     
+    act.scores.plot <- ggplot(filter(act.scores.2008_2018, districtName %in% input$act.scores), aes(color=districtName, x=as.numeric(year), y=as.numeric(score))) +
+      scale_x_continuous(breaks=c(2008,2009, 2010,2011,2012, 2013, 2014, 2015, 2016, 2017, 2018))+
+      #scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Average ACT Score")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
+    
+    if (input$act.scores.vis.list == "Data points"){
+      act.scores.plot <- act.scores.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Average ACT Score: ",score)))
+    }
+    else if (input$act.scores.vis.list == "Trend lines"){
+      act.scores.plot <- act.scores.plot +
+        geom_line()
+    }
+    else if (input$act.scores.vis.list == "Both visualizations"){
+      act.scores.plot <- act.scores.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Average ACT Score: ",score))) +
+        geom_line()
+    }
+    ggiraph(code=print(act.scores.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
+#ACT Percent Takers --------------------------------------------------------
+  output$acttakersgraph <- renderggiraph({
+    
+    act.takers.plot <- ggplot(filter(act.takers.2008_2018, districtName %in% input$act.takers), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentTakers))) +
+      scale_x_continuous(breaks=c(2008,2009, 2010,2011,2012, 2013, 2014, 2015, 2016, 2017, 2018))+
+      scale_y_continuous(labels=scales::percent)+
+      labs(x="Year", y="Percent of 12th Graders Who Take the ACT")+
+      theme_bar+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")
+    
+    if (input$act.takers.vis.list == "Data points"){
+      act.takers.plot <- act.takers.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of 12th Graders Who Take the ACT: ",percent(percentTakers))))
+    }
+    else if (input$act.takers.vis.list == "Trend lines"){
+      act.takers.plot <- act.takers.plot +
+        geom_line()
+    }
+    else if (input$act.takers.vis.list == "Both visualizations"){
+      act.takers.plot <- act.takers.plot +
+        geom_point_interactive(size=3,aes(tooltip=paste(districtName, year,"\n Percent of 12th Graders Who Take the ACT: ",percent(percentTakers)))) +
+        geom_line()
+    }
+    ggiraph(code=print(act.takers.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
 #Students With Free/Reduced Lunch Visualization --------------------------------------------------------
   output$lunchgraph <- renderggiraph({
 

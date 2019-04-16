@@ -286,13 +286,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2018=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DISTRICT")
@@ -308,13 +304,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2017=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DISTRICT")
@@ -330,13 +322,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2016=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DISTRICT")
@@ -352,13 +340,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2015=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -374,13 +358,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2014=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -396,13 +376,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2013=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -418,13 +394,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2012=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -440,13 +412,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2011=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -462,13 +430,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2010=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -484,13 +448,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2009=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -508,13 +468,9 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       districtName=toupper(districtName)
     ) %>%
     filter(
-      str_detect(grade,"10") | str_detect(grade,"11") | str_detect(grade,"12")
+      str_detect(grade,"12")
     ) %>%
-    group_by(districtNumber, districtType, districtName) %>%
-    summarise(
-      totalStudents = sum(totalStudents)
-    ) %>%
-    ungroup() %>%
+    select(-grade) %>%
     rename(totalStudents2008=totalStudents) %>%
     drop_na(districtName) %>%
     filter(districtName != "MINNEAPOLIS PUBLIC SCHOOL DIST.")
@@ -626,4 +582,3 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       year = replace(year, year =="percent2018" ,"2018")
     ) %>%
     write_csv("Education/ACT Scores/act_percent_2008_2018.csv")
-  
