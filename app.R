@@ -189,9 +189,13 @@ enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
   mutate(totalStudents=as.numeric(as.character(totalStudents)),
          year=as.numeric(as.character(year))
          ) %>%
+  # mutate(bins = cut(totalStudents,
+  #                   breaks = c(0, 6999,13999,20999,27999,34999,41999,50000),
+  #                   labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")),
+  #        bins = ifelse(is.na(bins), "NA", as.character(bins)))
   mutate(bins = cut(totalStudents,
-                    breaks = c(0, 6999,13999,20999,27999,34999,41999,50000),
-                    labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")),
+                    breaks = c(0, 499, 999, 2499, 4999, 9999, 29999, 50000),
+                    labels = c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)))
 
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
@@ -271,7 +275,22 @@ enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_eth
   rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
   rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
   rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
-  mutate(districtName=toupper(districtName))
+  mutate(districtName=toupper(districtName)) %>%
+  rename(districtNumber = DistrictNumber)
+
+enrolled.ethnicity.2000_2018.map <- enrolled.ethnicity.2000_2018.tidy %>%
+  full_join(mn_school_districts,  enrolled.2018_2000.tidy, by = c("districtNumber","districtType")) %>%
+  drop_na(districtName.y) %>%
+  rename(districtName=districtName.x) %>%
+  select(-districtName.y) %>%
+  drop_na(districtName) %>%
+  mutate(percentMinority=as.numeric(as.character(percentMinority)),
+         year=as.numeric(as.character(year))
+  ) %>%
+  mutate(bins = cut(percentMinority,
+                    breaks = c(-1, 0.2499, 0.4999, 0.7499, 1),
+                    labels = c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)))
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
@@ -492,20 +511,29 @@ navbarPage("",
                                                          ),
                                                          
                                                          
-                                                                      tabPanel("Percent of Students of Color Enrolled",
+                                                          tabPanel("Percent of Students of Color Enrolled",
                                                                                
-                                                                               selectizeInput(inputId = "student.ethnicity.district",
-                                                                                              label = "Choose a district",
-                                                                                              choices = ethnicity.district.list,
-                                                                                              multiple = TRUE),
+                                                                    selectizeInput(inputId = "student.ethnicity.district",
+                                                                              label = "Choose a district",
+                                                                              choices = ethnicity.district.list,
+                                                                              multiple = TRUE),
                                                                                
-                                                                               radioButtons(inputId="student.ethnicity.vis.list",
-                                                                                            label="How would you like to visualize the data?",
-                                                                                            choices = vis.list,
-                                                                                            inline=TRUE),
+                                                                    radioButtons(inputId="student.ethnicity.vis.list",
+                                                                              label="How would you like to visualize the data?",
+                                                                              choices = vis.list,
+                                                                              inline=TRUE),
                                                                                
-                                                                               ggiraphOutput("studentethnicitygraph")
-                                                                      )
+                                                                    ggiraphOutput("studentethnicitygraph")
+                                                                      ),
+                                                         
+                                                         tabPanel("Percent of Students of Color Enrolled - Maps",
+                                                                  selectInput(inputId = "student.ethnicity.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("studentethnicitymap")
+                                                         )
                                                          ))),
                                             
                                             #UI: Graduation and Dropout Rates --------------------------------------------------------
@@ -969,8 +997,11 @@ server <- function(input, output, session) {
     student.enrollment.map.plot <- ggplot(filter(enrolled.2018_2000.map, year == as.numeric(input$student.enrollment.map))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
       theme_sf +
-      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "#00300f", "black"))
-    
+      scale_fill_manual(breaks=c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000","NA"),
+                          values=c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6")) 
+      
+      #scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6"))
+      
     ggiraph(code = print(student.enrollment.map.plot), selection_type = "none")
     
   })
@@ -1000,6 +1031,20 @@ server <- function(input, output, session) {
         geom_line()
     }
     ggiraph(code=print(student.ethnicity.district.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+  })
+  
+  output$studentethnicitymap <- renderggiraph({
+    
+    student.ethnicity.map.plot <- ggplot(filter(enrolled.ethnicity.2000_2018.map, year == as.numeric(input$student.ethnicity.map))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of Students of Color Enrolled: ", percent(percentMinority), sep = "")), color = "black") +
+      theme_sf +
+      scale_fill_manual(breaks=c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%", "NA"),
+                        values=c("white", "#E7F5D9", "#5CA81F", "#076324", "#c6c6c6")) 
+    
+    #scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6"))
+    
+    ggiraph(code = print(student.ethnicity.map.plot), selection_type = "none")
+    
   })
   
 #Overall Graduation Rates Visualization --------------------------------------------------------
