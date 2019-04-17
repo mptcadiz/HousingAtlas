@@ -863,8 +863,8 @@ server <- function(input, output, session) {
       theme_bar+
       #guides(fill=guide_legend(ncol=3))+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom") +
-      scale_fill_manual(guide = guide_legend(ncol = 3))
+            legend.position="bottom")
+      #scale_fill_manual(guide = guide_legend(ncol = 3))
       #guide_legend(ncol=3)
     
     if (input$home.val.vis.list == "Data points"){
@@ -884,6 +884,7 @@ server <- function(input, output, session) {
     home.val.map.plot <- ggplot(filter(med.home.val.1990_2010, year == as.numeric(input$year.home.val))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Home Value: ", homeValue, sep = "")), color = "black") + 
       theme_sf +
+      theme(legend.position="bottom") + 
       scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
     
     ggiraph(code = print(home.val.map.plot), selection_type = "none")
@@ -935,8 +936,8 @@ server <- function(input, output, session) {
       theme_bar+
       #guides(fill=guide_legend(ncrow=3, byrow=TRUE)) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom") +
-      scale_fill_manual(guide = guide_legend(ncol = 3))
+            legend.position="bottom")
+      #scale_fill_manual(guide = guide_legend(ncol = 3))
 
     if (input$mortgage.status.vis.list == "Data points"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
@@ -959,6 +960,7 @@ server <- function(input, output, session) {
     mortgage.status.county.map.plot <- ggplot(filter(tidymortgage.status.1990_2010, year == as.numeric(input$mortgage.status.county.map))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Percent Of Mortgage Free Homes: ", percent(percentFree), sep = "")), color = "black") +
       theme_sf +
+      theme(legend.position="bottom") + 
       scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "black"))
 
     ggiraph(code = print(mortgage.status.county.map.plot), selection_type = "none")
@@ -997,6 +999,7 @@ server <- function(input, output, session) {
     student.enrollment.map.plot <- ggplot(filter(enrolled.2018_2000.map, year == as.numeric(input$student.enrollment.map))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
       theme_sf +
+      theme(legend.position="bottom") + 
       scale_fill_manual(breaks=c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000","NA"),
                           values=c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6")) 
       
@@ -1038,6 +1041,7 @@ server <- function(input, output, session) {
     student.ethnicity.map.plot <- ggplot(filter(enrolled.ethnicity.2000_2018.map, year == as.numeric(input$student.ethnicity.map))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of Students of Color Enrolled: ", percent(percentMinority), sep = "")), color = "black") +
       theme_sf +
+      theme(legend.position="bottom") + 
       scale_fill_manual(breaks=c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%", "NA"),
                         values=c("white", "#E7F5D9", "#5CA81F", "#076324", "#c6c6c6")) 
     
