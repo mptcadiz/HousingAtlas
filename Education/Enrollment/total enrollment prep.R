@@ -523,3 +523,25 @@ enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
     year = replace(year, year =="totalStudents2017" ,"2017"),
     year = replace(year, year =="totalStudents2018" ,"2018")) %>%
     write_csv("Education/Enrollment/enrolled_total_2000_2018.csv",append=FALSE)
+
+enrollment.change.2008_2018 <- enrolled.2018_2000 %>%
+  mutate(change2017 = totalStudents2017/totalStudents2018,
+         change2016 = totalStudents2016/totalStudents2018,
+         change2015 = totalStudents2015/totalStudents2018,
+         change2014 = totalStudents2014/totalStudents2018,
+         change2013 = totalStudents2013/totalStudents2018,
+         change2012 = totalStudents2012/totalStudents2018,
+         change2011 = totalStudents2011/totalStudents2018,
+         change2010 = totalStudents2010/totalStudents2018,
+         change2009 = totalStudents2009/totalStudents2018,
+         change2008 = totalStudents2008/totalStudents2018,
+         change2007 = totalStudents2007/totalStudents2018,
+         change2006= totalStudents2006/totalStudents2018,
+         change2005 = totalStudents2005/totalStudents2018,
+         change2004 = totalStudents2004/totalStudents2018,
+         change2003 = totalStudents2003/totalStudents2018,
+         change2002 = totalStudents2002/totalStudents2018,
+         change2001 = totalStudents2001/totalStudents2018,
+         change2000 = totalStudents2000/totalStudents2018,) %>%
+  select (districtNumber, districtType, districtName, change2017:change2000) %>%
+  write_csv("Education/Enrollment/enrollment_change_2000_2018.csv",append=FALSE)

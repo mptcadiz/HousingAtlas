@@ -196,7 +196,9 @@ enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
   mutate(bins = cut(totalStudents,
                     breaks = c(0, 499, 999, 2499, 4999, 9999, 29999, 50000),
                     labels = c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000")),
-         bins = ifelse(is.na(bins), "NA", as.character(bins)))
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins,"1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000")
+         )
 
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
   rbind(c("2759", "01", "Eagle Valley", 2000, NA)) %>%
@@ -288,9 +290,19 @@ enrolled.ethnicity.2000_2018.map <- enrolled.ethnicity.2000_2018.tidy %>%
          year=as.numeric(as.character(year))
   ) %>%
   mutate(bins = cut(percentMinority,
-                    breaks = c(-1, 0.2499, 0.4999, 0.7499, 1),
-                    labels = c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%")),
-         bins = ifelse(is.na(bins), "NA", as.character(bins)))
+                    breaks = c(-1, 0.04999999, 0.09999999, 0.14999999, 0.19999999, 0.24999999, 1),
+                    labels = c("0% - 5%", "5% - 10%", "10% - 15%", "15% - 20%", "20% - 25%", "25% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 5%", "5% - 10%", "10% - 15%", "15% - 20%", "20% - 25%", "25% - 100%")
+         )
+  # mutate(bins = cut(percentMinority,
+  #                   breaks = c(-1, 0.2499, 0.4999, 0.7499, 1),
+  #                   labels = c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%")),
+  #        bins = ifelse(is.na(bins), "NA", as.character(bins)))
+
+
+ggplot(filter(enrolled.ethnicity.2000_2018.map, year==2018),aes(percentMinority)) +
+  geom_histogram()
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
@@ -861,11 +873,9 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::dollar)+
       labs(x="Year", y="Home Value")+
       theme_bar+
-      #guides(fill=guide_legend(ncol=3))+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
-      #scale_fill_manual(guide = guide_legend(ncol = 3))
-      #guide_legend(ncol=3)
+            legend.position="bottom")+
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$home.val.vis.list == "Data points"){
       home.val.county.plot <- home.val.county.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Home Value: $",comma(homeValue, digits = 0))))
@@ -899,7 +909,9 @@ server <- function(input, output, session) {
       scale_x_continuous(breaks=c(2000,2010,2017))+
       labs(x="Year", y="Year Built")+
       theme_bar+
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position="bottom")+
+      scale_color_discrete(guide = guide_legend(ncol = 3))
 
     if (input$year.built.vis.list == "Data points"){
       year.built.county.chart.plot <- year.built.county.chart.plot + geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Median Year Built: ",yearBuilt)))
@@ -919,6 +931,7 @@ server <- function(input, output, session) {
     year.built.county.plot <- ggplot(filter(med.year.built.1990_2017, year == as.numeric(input$year.built.county))) +
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Year Built: ", yearBuilt, sep = "")), color = "black") + 
       theme_sf +
+      theme(legend.position="bottom") +
       scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
     
     ggiraph(code = print(year.built.county.plot), selection_type = "none")
@@ -934,10 +947,9 @@ server <- function(input, output, session) {
       scale_y_continuous(labels=scales::percent)+
       labs(x="Year", y="Percent of houses without mortgages")+
       theme_bar+
-      #guides(fill=guide_legend(ncrow=3, byrow=TRUE)) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
-      #scale_fill_manual(guide = guide_legend(ncol = 3))
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
 
     if (input$mortgage.status.vis.list == "Data points"){
       mortgage.status.county.plot <- mortgage.status.county.plot +
@@ -976,7 +988,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Number of students enrolled")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
 
     if (input$student.enrollment.vis.list == "Data points"){
       student.enrollment.district.plot <- student.enrollment.district.plot +
@@ -1000,8 +1013,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(breaks=c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000","NA"),
-                          values=c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6")) 
+      scale_fill_manual(values=c("1 - 499"="white", "500 - 999" = "#E7F5D9", "1000 - 2499" = "#C7EF99", "2500 - 4999" = "#90E033", "5000 - 9999" = "#5CA81F", "10000 - 29999"="#076324", "30000 - 50,000"="black","NA"= "#c6c6c6")) 
       
       #scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6"))
       
@@ -1018,7 +1030,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Percent of students of color enrolled")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$student.ethnicity.vis.list == "Data points"){
       student.ethnicity.district.plot <- student.ethnicity.district.plot +
@@ -1042,8 +1055,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of Students of Color Enrolled: ", percent(percentMinority), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(breaks=c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%", "NA"),
-                        values=c("white", "#E7F5D9", "#5CA81F", "#076324", "#c6c6c6")) 
+      scale_fill_manual(values=c("0% - 5%"="white", "5% - 10%"="#E7F5D9", "10% - 15%"="#C7EF99", "15% - 20%"="#90E033", "20% - 25%"="#5CA81F", "25% - 100%"="#076324", "NA"="#c6c6c6")) 
     
     #scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6"))
     
@@ -1060,7 +1072,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Graduation Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") + 
+        scale_color_discrete(guide = guide_legend(ncol = 3))
 
       if (input$grad.rate.vis.list == "Data points"){
         grad.rate.plot <- grad.rate.plot +
@@ -1087,7 +1100,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Dropout Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$drop.rate.vis.list == "Data points"){
         drop.rate.plot <- drop.rate.plot +
@@ -1114,7 +1128,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Graduation Rate of Students of Color")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$ethnicity.grad.rate.vis.list == "Data points"){
         ethnicity.grad.rate.plot <- ethnicity.grad.rate.plot +
@@ -1141,7 +1156,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Graduation Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") + 
+        scale_color_discrete(guide = guide_legend(ncol = 3))
 
       if (input$ethnicity.breakdown.grad.rate.vis.list == "Data points"){
         ethnicity.grad.rate.breakdown.plot <- ethnicity.grad.rate.breakdown.plot +
@@ -1168,7 +1184,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Dropout Rate of Students of Color")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$ethnicity.drop.rate.vis.list == "Data points"){
         ethnicity.drop.rate.plot <- ethnicity.drop.rate.plot +
@@ -1195,7 +1212,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Dropout Rate")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$ethnicity.breakdown.drop.rate.vis.list == "Data points"){
         ethnicity.drop.rate.breakdown.plot <- ethnicity.drop.rate.breakdown.plot +
@@ -1222,7 +1240,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Average GRAD: Math Score")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$grad.math.score.vis.list == "Data points"){
         grad.math.score.plot <- grad.math.score.plot +
@@ -1249,7 +1268,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="GRAD: Math Percent Passed")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") + 
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$grad.math.pass.vis.list == "Data points"){
         grad.math.pass.plot <- grad.math.pass.plot +
@@ -1276,7 +1296,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="Average GRAD: Reading Score")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$grad.reading.score.vis.list == "Data points"){
         grad.reading.score.plot <- grad.reading.score.plot +
@@ -1303,7 +1324,8 @@ server <- function(input, output, session) {
         labs(x="Year", y="GRAD: Reading Percent Passed")+
         theme_bar+
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
-              legend.position="bottom")
+              legend.position="bottom") +
+        scale_color_discrete(guide = guide_legend(ncol = 3))
       
       if (input$grad.reading.pass.vis.list == "Data points"){
         grad.reading.pass.plot <- grad.reading.pass.plot +
@@ -1330,7 +1352,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Average ACT Score")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$act.scores.vis.list == "Data points"){
       act.scores.plot <- act.scores.plot +
@@ -1357,7 +1380,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Percent of 12th Graders Who Take the ACT")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$act.takers.vis.list == "Data points"){
       act.takers.plot <- act.takers.plot +
@@ -1384,7 +1408,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Percent of students with free/reduced lunch")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
 
     if (input$lunch.vis.list == "Data points"){
       lunch.district.plot <- lunch.district.plot +
@@ -1411,7 +1436,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Percent of students not proficient in English")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$english.vis.list == "Data points"){
       english.plot <- english.plot +
@@ -1438,7 +1464,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Percent of students with English as home language")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$home.lang.vis.list == "Data points"){
       home.lang.plot <- home.lang.plot +
@@ -1465,7 +1492,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Number of teachers (full-time equivalents)")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$teacher.vis.list == "Data points"){
       teacher.plot <- teacher.plot +
@@ -1492,7 +1520,8 @@ server <- function(input, output, session) {
       labs(x="Year", y="Student-Teacher Ratio")+
       theme_bar+
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position="bottom")
+            legend.position="bottom") +
+      scale_color_discrete(guide = guide_legend(ncol = 3))
     
     if (input$student.teacher.vis.list == "Data points"){
       student.teacher.plot <- student.teacher.plot +

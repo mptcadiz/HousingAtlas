@@ -243,7 +243,7 @@ free.red.lunch.2009 <- read_csv("Education/Free Reduced Lunch/2009_free_red_lunc
 
 free.red.lunch.2008 <- read_csv("Education/Free Reduced Lunch/2008_free_red_lunch.csv") %>%
   select (districtNumber,districtType,DistrictName, Grade, K12Enr, FreeK12, RedK12) %>%
-  filter(Grade != "All Grades") %>%
+  filter(Grade == "All Grades") %>%
   group_by(districtNumber,districtType, DistrictName) %>%
   summarise(
     K12Enr = sum(K12Enr, na.rm=TRUE),

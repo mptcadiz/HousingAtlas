@@ -230,7 +230,7 @@ english.2013 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
   rename(
     districtName=DistrictName
   ) %>%
-  filter(Grade != "All Grades") %>%
+  filter(Grade == "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
@@ -281,7 +281,7 @@ english.2012 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
   rename(
     districtName=DistrictName
   ) %>%
-  filter(Grade != "All Grades") %>%
+  filter(Grade == "All Grades") %>%
   mutate(
     LEPIdentifiedK12 = na_if(LEPIdentifiedK12, "NULL"),
     LEPIdentifiedK12 = as.numeric(LEPIdentifiedK12),
@@ -331,7 +331,7 @@ english.2011 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
   rename(
     districtName=DistrictName
   ) %>%
-  filter(Grade != "All Grades") %>%
+  filter(Grade == "All Grades") %>%
   mutate(
     LEPIdentifiedK12 = na_if(LEPIdentifiedK12, "NULL"),
     LEPIdentifiedK12 = as.numeric(LEPIdentifiedK12),
@@ -381,7 +381,7 @@ english.2010 <- read_csv("/home/cadiz003/HousingAtlas/Education/English Proficie
   rename(
     districtName=DistrictName
   ) %>%
-  filter(Grade != "All Grades") %>%
+  filter(Grade == "All Grades") %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
