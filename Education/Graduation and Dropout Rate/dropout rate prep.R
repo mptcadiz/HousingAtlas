@@ -21,7 +21,7 @@ drop.2017 <- read_csv("Education/Graduation and Dropout Rate/2017_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
          ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
@@ -49,7 +49,7 @@ drop.2016 <- read_csv("Education/Graduation and Dropout Rate/2016_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
   ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
@@ -77,7 +77,7 @@ drop.2015 <- read_csv("Education/Graduation and Dropout Rate/2015_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
   ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
@@ -105,7 +105,7 @@ drop.2014 <- read_csv("Education/Graduation and Dropout Rate/2014_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
   ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
@@ -133,7 +133,7 @@ drop.2013 <- read_csv("Education/Graduation and Dropout Rate/2013_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
   ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
@@ -164,7 +164,7 @@ drop.2012 <- read_csv("Education/Graduation and Dropout Rate/2012_grad.csv") %>%
     endStatus=="Dropout",
     category=="A"
   ) %>%
-  #drop_na(dropRate) %>%
+  drop_na(dropRate) %>%
   group_by(districtNumber, districtType, districtName) %>%
   summarise(dropRate=mean(dropRate, na.rm=TRUE)) %>%
   ungroup() %>%
