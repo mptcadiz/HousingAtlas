@@ -498,7 +498,11 @@ enrolled.2018_2000 <- full_join(enrolled.2018, enrolled.2017, by = c("districtTy
   full_join(enrolled.2000, enrolled.2018_2000, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName)
+  drop_na(districtName) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
 
 enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
   gather(year,totalStudents,totalStudents2018:totalStudents2000) %>%
@@ -525,23 +529,69 @@ enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
     write_csv("Education/Enrollment/enrolled_total_2000_2018.csv",append=FALSE)
 
 enrollment.change.2008_2018 <- enrolled.2018_2000 %>%
-  mutate(change2017 = totalStudents2017/totalStudents2018,
-         change2016 = totalStudents2016/totalStudents2018,
-         change2015 = totalStudents2015/totalStudents2018,
-         change2014 = totalStudents2014/totalStudents2018,
-         change2013 = totalStudents2013/totalStudents2018,
-         change2012 = totalStudents2012/totalStudents2018,
-         change2011 = totalStudents2011/totalStudents2018,
-         change2010 = totalStudents2010/totalStudents2018,
-         change2009 = totalStudents2009/totalStudents2018,
-         change2008 = totalStudents2008/totalStudents2018,
-         change2007 = totalStudents2007/totalStudents2018,
-         change2006= totalStudents2006/totalStudents2018,
-         change2005 = totalStudents2005/totalStudents2018,
-         change2004 = totalStudents2004/totalStudents2018,
-         change2003 = totalStudents2003/totalStudents2018,
-         change2002 = totalStudents2002/totalStudents2018,
-         change2001 = totalStudents2001/totalStudents2018,
-         change2000 = totalStudents2000/totalStudents2018,) %>%
+  mutate(totalStudents2018=as.numeric(as.character(totalStudents2018)),
+         totalStudents2017=as.numeric(as.character(totalStudents2017)),
+         totalStudents2016=as.numeric(as.character(totalStudents2016)),
+         totalStudents2015=as.numeric(as.character(totalStudents2015)),
+         totalStudents2014=as.numeric(as.character(totalStudents2014)),
+         totalStudents2013=as.numeric(as.character(totalStudents2013)),
+         totalStudents2012=as.numeric(as.character(totalStudents2012)),
+         totalStudents2011=as.numeric(as.character(totalStudents2011)),
+         totalStudents2010=as.numeric(as.character(totalStudents2010)),
+         totalStudents2009=as.numeric(as.character(totalStudents2009)),
+         totalStudents2008=as.numeric(as.character(totalStudents2008)),
+         totalStudents2007=as.numeric(as.character(totalStudents2007)),
+         totalStudents2006=as.numeric(as.character(totalStudents2006)),
+         totalStudents2005=as.numeric(as.character(totalStudents2005)),
+         totalStudents2004=as.numeric(as.character(totalStudents2004)),
+         totalStudents2003=as.numeric(as.character(totalStudents2003)),
+         totalStudents2002=as.numeric(as.character(totalStudents2002)),
+         totalStudents2001=as.numeric(as.character(totalStudents2001)),
+         totalStudents2000=as.numeric(as.character(totalStudents2000))
+        ) %>%
+  mutate(
+        change2017 = (totalStudents2018-totalStudents2017)/totalStudents2018,
+         change2016 = (totalStudents2018-totalStudents2016)/totalStudents2018,
+         change2015 = (totalStudents2018-totalStudents2015)/totalStudents2018,
+         change2014 = (totalStudents2018-totalStudents2014)/totalStudents2018,
+         change2013 = (totalStudents2018-totalStudents2013)/totalStudents2018,
+         change2012 = (totalStudents2018-totalStudents2012)/totalStudents2018,
+         change2011 = (totalStudents2018-totalStudents2011)/totalStudents2018,
+         change2010 = (totalStudents2018-totalStudents2010)/totalStudents2018,
+         change2009 = (totalStudents2018-totalStudents2009)/totalStudents2018,
+         change2008 = (totalStudents2018-totalStudents2008)/totalStudents2018,
+         change2007 = (totalStudents2018-totalStudents2007)/totalStudents2018,
+         change2006= (totalStudents2018-totalStudents2006)/totalStudents2018,
+         change2005 = (totalStudents2018-totalStudents2005)/totalStudents2018,
+         change2004 = (totalStudents2018-totalStudents2004)/totalStudents2018,
+         change2003 = (totalStudents2018-totalStudents2003)/totalStudents2018,
+         change2002 = (totalStudents2018-totalStudents2002)/totalStudents2018,
+         change2001 = (totalStudents2018-totalStudents2001)/totalStudents2018,
+         change2000 = (totalStudents2018-totalStudents2000)/totalStudents2018) %>%
   select (districtNumber, districtType, districtName, change2017:change2000) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  gather(year,change,change2017:change2000) %>%
+  mutate(
+    year = replace(year, year =="change2000" ,"2000"),
+    year = replace(year, year =="change2001" ,"2001"),
+    year = replace(year, year =="change2002" ,"2002"),
+    year = replace(year, year =="change2003" ,"2003"),
+    year = replace(year, year =="change2004" ,"2004"),
+    year = replace(year, year =="change2005" ,"2005"),
+    year = replace(year, year =="change2006" ,"2006"),
+    year = replace(year, year =="change2007" ,"2007"),
+    year = replace(year, year =="change2008" ,"2008"),
+    year = replace(year, year =="change2009" ,"2009"),
+    year = replace(year, year =="change2010" ,"2010"),
+    year = replace(year, year =="change2011" ,"2011"),
+    year = replace(year, year =="change2012" ,"2012"),
+    year = replace(year, year =="change2013" ,"2013"),
+    year = replace(year, year =="change2014" ,"2014"),
+    year = replace(year, year =="change2015" ,"2015"),
+    year = replace(year, year =="change2016" ,"2016"),
+    year = replace(year, year =="change2017" ,"2017"),
+    year = replace(year, year =="change2018" ,"2018")) %>%
   write_csv("Education/Enrollment/enrollment_change_2000_2018.csv",append=FALSE)

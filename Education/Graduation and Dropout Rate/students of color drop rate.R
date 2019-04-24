@@ -208,7 +208,22 @@ drop.ethnicity.2012_2017 <- full_join(drop.ethnicity.2017, drop.ethnicity.2016, 
   full_join(drop.ethnicity.2012, drop.ethnicity.2012_2017, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName)
+  drop_na(districtName) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0025", "01", "Pine Point", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0264", "01", "Herman-Norcross", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0402", "01", "Hendricks", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0403", "01", "Ivanhoe", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0404", "01", "Lake Benton", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0415", "01", "Lynd", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0635", "01", "Milroy", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0707", "01", "Nett Lake", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0801", "01", "Browns Valley", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0852", "01", "Campbell-Tintah", NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2907", "01", "Round Lake-Brewster", NA, NA, NA, NA, NA, NA))
 
 drop.ethnicity.2012_2017.tidy <- drop.ethnicity.2012_2017 %>%
   gather(year,dropRate,dropRate2012:dropRate2017) %>%

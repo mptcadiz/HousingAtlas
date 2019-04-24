@@ -556,7 +556,11 @@ teacher.2018_2000 <- full_join(teacher.2018, teacher.2017, by = c("districtType"
   full_join(teacher.2000, teacher.2018_2000, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName)
+  drop_na(districtName) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
 
 teacher.2018_2000.tidy <- teacher.2018_2000 %>%
   gather(year,totalTeachers,totalTeachers2018:totalTeachers2000) %>%
@@ -584,12 +588,92 @@ teacher.2018_2000.tidy <- teacher.2018_2000 %>%
 
 # Student count data ---------------------------------
 
-student.count_2000_2018 <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
+student.count_2000_2018 <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv") %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2005, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2004, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2003, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2002, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2001, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2000, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2018, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2017, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2016, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2015, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2014, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2013, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2012, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2011, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2010, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2009, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2008, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2007, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2006, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2005, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2004, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2003, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2002, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2001, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley",  2000, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2005, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2004, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2003, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2002, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2001, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2000, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2005, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2004, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2003, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2002, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2001, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2000, NA))
 
 #Merge students and teacher data ---------------------------------
-student.teacher.ratio_2000_2018 <- full_join(student.count_2000_2018, teacher.2018_2000.tidy, by = c("districtType","districtNumber","year")) %>%
+student.teacher.ratio2_2000_2018 <- full_join(student.count_2000_2018, teacher.2018_2000.tidy, by = c("districtType","districtNumber","year")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
   mutate(studentTeacherRatio = totalStudents/totalTeachers) %>%
+  mutate(year=as.character(as.numeric(year))) %>%
   write_csv("Education/Student Teacher Ratio/student_teacher_ratio_2000_2018.csv",append=FALSE)
+
+test <- read_csv("Education/Student Teacher Ratio/student_teacher_ratio_2000_2018.csv")

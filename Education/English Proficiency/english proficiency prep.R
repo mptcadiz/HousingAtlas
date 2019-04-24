@@ -438,7 +438,11 @@ english.2010_2019 <- full_join(english.2019, english.2018, by = c("districtType"
   full_join(english.2010, english.2010_2019, by = c("districtType","districtNumber")) %>%
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
-  drop_na(districtName)
+  drop_na(districtName) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
 
 
 english.2010_2019.identified <- english.2010_2019 %>%

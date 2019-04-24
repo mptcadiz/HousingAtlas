@@ -71,7 +71,8 @@ mn_school_districts <- st_read("Shapefiles/school_district_boundaries.shp", quie
   st_simplify(dTolerance = 1000) %>%
   mutate(
     districtType = formatC(districtType, width = 2, flag = "0"),
-    districtNumber = formatC(districtNumber, width = 4, flag = "0")
+    districtNumber = formatC(districtNumber, width = 4, flag = "0"),
+    districtName = ifelse(districtName=="Minneapolis-St. Paul Int'l Airport", "Minneapolis-St. Paul International Airport", as.character(districtName))
   )
 
 
@@ -102,83 +103,7 @@ county.list <- med.home.val.1990_2010 %>%
   distinct(countyName)
 
 # Objects - Education --------------------------------------------------------
-enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv") %>%
-  rbind(c("2759", "01", "Eagle Valley", 2000, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2001, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2002, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2003, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2004, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2005, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2006, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2007, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2008, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2009, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2010, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2011, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2012, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2013, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2014, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2015, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2000, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2001, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2002, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2003, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2004, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2005, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2000, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2001, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2002, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2003, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2004, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2005, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2000, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2001, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2002, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2003, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2004, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2005, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2018, NA))
+enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
 
 enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
   full_join(mn_school_districts,  enrolled.2018_2000.tidy, by = c("districtNumber","districtType")) %>%
@@ -189,94 +114,35 @@ enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
   mutate(totalStudents=as.numeric(as.character(totalStudents)),
          year=as.numeric(as.character(year))
          ) %>%
-  # mutate(bins = cut(totalStudents,
-  #                   breaks = c(0, 6999,13999,20999,27999,34999,41999,50000),
-  #                   labels = c("0 - 6,999", "7,000 - 13,999", "14,000 - 20,999", "21,000 - 27,999", "28,000 - 34,999", "35,000 - 41,999", "42,000 - 50,000")),
-  #        bins = ifelse(is.na(bins), "NA", as.character(bins)))
   mutate(bins = cut(totalStudents,
                     breaks = c(0, 499, 999, 2499, 4999, 9999, 29999, 50000),
-                    labels = c("1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000")),
+                    labels = c("1 - 499", "500 - 999", "1,000 - 2,499", "2,500 - 4,999", "5,000 - 9,999", "10,000 - 29,999", "30,000 - 50,000")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
-         bins = fct_relevel(bins,"1 - 499", "500 - 999", "1000 - 2499", "2500 - 4999", "5000 - 9999", "10000 - 29999", "30000 - 50,000")
+         bins = fct_relevel(bins,"1 - 499", "500 - 999", "1,000 - 2,499", "2,500 - 4,999", "5,000 - 9,999", "10,000 - 29,999", "30,000 - 50,000")
          )
 
+enrollment.change.2008_2012 <- read_csv("Education/Enrollment/enrollment_change_2000_2018.csv")
+
+enrollment.change.2008_2012.map <- enrollment.change.2008_2012 %>%
+  full_join(mn_school_districts,  enrollment.change.2008_2012, by = c("districtNumber","districtType")) %>%
+  drop_na(districtName.y) %>%
+  rename(districtName=districtName.x) %>%
+  select(-districtName.y) %>%
+  drop_na(districtName) %>%
+  mutate(change=as.numeric(as.character(change)),
+         year=as.numeric(as.character(year))
+  ) %>%
+  mutate(bins = cut(change,
+                    breaks = c(-3, -0.04999999, -0.02499999, 0, 0.02499999, 0.04999999, 0.8),
+                    labels = c("-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins,"-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")
+  )
+
+ggplot(filter(enrollment.change.2008_2012.map, year==2000),aes(change)) +
+  geom_histogram()
+
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
-  rbind(c("2759", "01", "Eagle Valley", 2000, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2001, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2002, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2003, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2004, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2005, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2006, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2007, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2008, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2009, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2010, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2011, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2012, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2013, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2014, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2015, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2000, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2001, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2002, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2003, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2004, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2005, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
-  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2000, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2001, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2002, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2003, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2004, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2005, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2000, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2001, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2002, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2003, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2004, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2005, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
   mutate(districtName=toupper(districtName)) %>%
   rename(districtNumber = DistrictNumber)
 
@@ -295,11 +161,6 @@ enrolled.ethnicity.2000_2018.map <- enrolled.ethnicity.2000_2018.tidy %>%
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
          bins = fct_relevel(bins, "0% - 5%", "5% - 10%", "10% - 15%", "15% - 20%", "20% - 25%", "25% - 100%")
          )
-  # mutate(bins = cut(percentMinority,
-  #                   breaks = c(-1, 0.2499, 0.4999, 0.7499, 1),
-  #                   labels = c("0% - 24%", "25% - 49%", "50% - 74%", "75% - 100%")),
-  #        bins = ifelse(is.na(bins), "NA", as.character(bins)))
-
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
@@ -311,11 +172,9 @@ enrollment.district.list <- enrolled.2018_2000.tidy %>%
   distinct(districtName)
 
 grad.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv") %>%
-  mutate(gradRate=gradRate/100) %>%
-  drop_na(gradRate)
+  mutate(gradRate=gradRate/100)
   
-grad.2012_2018.tidy.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv") %>%
-  mutate(gradRate=gradRate/100) %>%
+grad.2012_2018.tidy.map <- grad.2012_2018.tidy %>%
   full_join(mn_school_districts,  grad.2012_2018.tidy, by = c("districtNumber","districtType")) %>%
   rename(districtName = districtName.y) %>%
   select(-districtName.x) %>%
@@ -445,10 +304,6 @@ tidy.free.red.lunch.2006_2018.map <- tidy.free.red.lunch.2006_2018 %>%
          bins = fct_relevel(bins, "0% - 25%", "25% - 35%", "35% - 50%", "50% - 75%", "75% - 100%")
   )
 
-#Histogram----------------
-ggplot(filter(english.2010_2019.map, year==2010),aes(percentIdentified)) +
-  geom_histogram()
-
 english.2010_2019 <- read_csv("Education/English Proficiency/english_identified_2010_2019.csv")
 
 english.2010_2019.map <- english.2010_2019 %>%
@@ -469,11 +324,35 @@ english.list <- english.2010_2019 %>%
 
 home_lang_2008_2018 <- read_csv("Education/Home Language/home_lang_2008_2018.csv")
 
+home_lang_2008_2018.map <- home_lang_2008_2018 %>%
+  full_join(mn_school_districts,  home_lang_2008_2018, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(percentEng,
+                    breaks = c(-1,0.79999999, 0.93999999, 0.95999999, 0.97999999, 1),
+                    labels = c("0% - 80%", "80% - 94%", "94% - 96%", "96% - 98%", "98% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 80%", "80% - 94%", "94% - 96%", "96% - 98%", "98% - 100%")
+  )
+
 home.lang.list <- home_lang_2008_2018 %>%
   select(districtName) %>%
   distinct(districtName)
 
 student.teacher.ratio.2008_2018 <- read_csv("Education/Student Teacher Ratio/student_teacher_ratio_2000_2018.csv")
+
+student.teacher.ratio.2008_2018.map <- student.teacher.ratio.2008_2018 %>%
+  full_join(mn_school_districts,  student.teacher.ratio.2008_2018, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(studentTeacherRatio,
+                    breaks = c(-1,9.99999999, 11.999999, 14.999999, 16.999999, 23),
+                    labels = c("0 - 10", "10 - 12", "12 - 15", "15 - 17", "17+")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0 - 10", "10 - 12", "12 - 15", "15 - 17", "17+")
+  )
 
 teacher.district.list <- student.teacher.ratio.2008_2018 %>%
   distinct(districtName)
@@ -614,6 +493,14 @@ navbarPage("",
                                                                   ggiraphOutput("studentenrollmentmap")
                                                          ),
                                                          
+                                                         tabPanel("Change In Student Enrollment - Maps",
+                                                                  selectInput(inputId = "enrollment.change.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("enrollmentchangemap")
+                                                         ),
                                                          
                                                           tabPanel("Percent of Students of Color Enrolled",
                                                                                
@@ -962,6 +849,16 @@ navbarPage("",
                                                                                inline=TRUE),
 
                                                                   ggiraphOutput("homelanggraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Percent of Students With English As Home Language - Maps",
+                                                                  
+                                                                  selectInput(inputId = "home.lang.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("homelangmap")
                                                          )
                                                        ))
                                                      ),
@@ -996,6 +893,16 @@ navbarPage("",
                                                                                inline=TRUE),
                                                                   
                                                                   ggiraphOutput("studentteachegraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Student-Teacher Ratio - Maps",
+                                                                  
+                                                                  selectInput(inputId = "student.teacher.ratio.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("studentteachermap")
                                                          )
                                                        ))
                                             )
@@ -1170,9 +1077,22 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(values=c("1 - 499"="white", "500 - 999" = "#E7F5D9", "1000 - 2499" = "#C7EF99", "2500 - 4999" = "#90E033", "5000 - 9999" = "#5CA81F", "10000 - 29999"="#076324", "30000 - 50,000"="black","NA"= "#c6c6c6")) 
+      scale_fill_manual(values=c("1 - 499"="white", "500 - 999" = "#E7F5D9", "1,000 - 2,499" = "#C7EF99", "2,500 - 4,999" = "#90E033", "5,000 - 9,999" = "#5CA81F", "10,000 - 29,999"="#076324", "30,000 - 50,000"="black","NA"= "#c6c6c6")) 
       
     ggiraph(code = print(student.enrollment.map.plot), selection_type = "none")
+    
+  })
+  
+  output$enrollmentchangemap <- renderggiraph({
+    
+    enrollment.change.map.plot <- ggplot(filter(enrollment.change.2008_2012.map, year == as.numeric(input$enrollment.change.map))) +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Change In Student Enrollment from 2018 to ", year, ": ", percent(change), sep = "")), color = "black") +
+      theme_sf +
+      theme(legend.position="bottom") + 
+      #scale_fill_manual(values=c("-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")) +
+      scale_fill_manual(values=c("-300% to -5%"="white", "-5% to -2.5%" = "#E7F5D9", "-2.5% to 0%" = "#C7EF99", "0% to 2.5%" = "#90E033", "2.5% to 5%" = "#5CA81F", "5% to 76%"="#076324", "NA"= "#c6c6c6")) 
+    
+    ggiraph(code = print(enrollment.change.map.plot), selection_type = "none")
     
   })
   
@@ -1722,6 +1642,18 @@ output$englishprofmap <- renderggiraph({
     ggiraph(code=print(home.lang.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })  
 
+output$homelangmap <- renderggiraph({
+  home.lang.map.plot <- ggplot(filter(home_lang_2008_2018.map, year == as.numeric(input$home.lang.map))) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of students with English as home language: ", percent(percentEng), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    #theme(legend.position="bottom") +
+    scale_fill_manual(values=c("0% - 80%"="white", "80% - 94%"="#C7EF99", "94% - 96%"="#90E033", "96% - 98%"="#076324", "98% - 100%"="#033d15", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(home.lang.map.plot), selection_type = "none")
+  
+})
+
 #Number of Teachers --------------------------------------------------------
   output$teachergraph <- renderggiraph({
     
@@ -1777,6 +1709,19 @@ output$englishprofmap <- renderggiraph({
     }
     ggiraph(code=print(student.teacher.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
+
+output$studentteachermap <- renderggiraph({
+  student.teacher.map.plot <- ggplot(filter(student.teacher.ratio.2008_2018.map, year == as.numeric(input$student.teacher.ratio.map))) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Student-Teacher Ratio: ", studentTeacherRatio, sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    #theme(legend.position="bottom") +
+    #scale_fill_manual(values=c("0% - 80%"="white", "80% - 94%"="#C7EF99", "94% - 96%"="#90E033", "96% - 98%"="#076324", "98% - 100%"="#033d15", "NA"= "#c6c6c6")) + 
+    scale_fill_manual(values=c("0 - 10"="white", "10 - 12"="#C7EF99", "12 - 15"="#90E033", "15 - 17"="#076324", "17+"="#033d15", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(student.teacher.map.plot), selection_type = "none")
+  
+})
   
 }
 

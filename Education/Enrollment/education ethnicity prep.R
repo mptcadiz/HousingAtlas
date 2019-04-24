@@ -715,7 +715,11 @@ enrolled.ethnicity.2000_2018 <- full_join(enrolled.ethnicity.district.2018, enro
   full_join(enrolled.ethnicity.district.2000,enrolled.ethnicity.2000_2018, by = c("DistrictType","DistrictNumber")) %>%
   rename(DistrictName=DistrictName.x) %>%
   select(-DistrictName.y) %>%
-  drop_na(DistrictName)
+  drop_na(DistrictName) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
   
 
 enrolled.ethnicity.2000_2018.tidy <- enrolled.ethnicity.2000_2018 %>%
