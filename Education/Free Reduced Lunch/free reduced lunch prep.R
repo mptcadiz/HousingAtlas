@@ -361,23 +361,16 @@ free.red.lunch.2006_2018 <- full_join(free.red.lunch.2018, free.red.lunch.2017, 
   full_join(free.red.lunch.2006, free.red.lunch.2006_2018, by = c("DistrictType","DistrictNumber")) %>%
   rename(DistrictName=DistrictName.x) %>%
   select(-DistrictName.y) %>%
-  drop_na(DistrictName) %>%
+  drop_na(DistrictName)
   # rename(districtName = DistrictName,
   #         districtNumber = DistrictNumber,
   #         districtType= DistrictType) %>%
-  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-  rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-  rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-  rbind(c("0815", "02", "Prinsburg",  NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
-  
-  testlunch <- free.red.lunch.2006_2018 %>%
-    bind_rows(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-    rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA)) %>%
-    rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-    rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-    rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
-    rbind(c("0815", "02", "Prinsburg",  NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
-  
+  # rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  # rbind(c("2759", "01", "Eagle Valley", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  # rbind(c("0323", "02", "Franconia", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)) %>%
+  # rbind(c("0815", "02", "Prinsburg",  NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
+  # 
+
 
 tidy.free.red.lunch.2006_2018 <- free.red.lunch.2006_2018 %>%
   gather(year,percentLunch,percentLunch2006:percentLunch2018) %>%
@@ -396,4 +389,59 @@ tidy.free.red.lunch.2006_2018 <- free.red.lunch.2006_2018 %>%
     year = replace(year, year =="percentLunch2017" ,"2017"),
     year = replace(year, year =="percentLunch2018" ,"2018")) %>%
   rename(districtName=DistrictName) %>%
+  write_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv",append=FALSE)
+
+lunchtest <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv") %>%
+  rbind(c("0815", "02", "Prinsburg", 2006, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2007, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2008, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2009, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2010, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2011, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2012, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2013, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2014, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2015, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2016, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2017, NA)) %>%
+  rbind(c("0815", "02", "Prinsburg", 2018, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2006, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2007, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2008, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2009, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2010, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2011, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2012, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2013, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2014, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2015, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2016, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2017, NA)) %>%
+  rbind(c("0000", "01", "Minneapolis-St. Paul International Airport", 2018, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2006, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2007, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2008, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2009, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2010, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2011, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2012, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2013, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2014, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2015, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2016, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2017, NA)) %>%
+  rbind(c("0323", "02", "Franconia", 2018, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2006, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2007, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2008, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2009, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2010, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2011, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2012, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2013, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2014, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2015, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
+  rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
   write_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv",append=FALSE)

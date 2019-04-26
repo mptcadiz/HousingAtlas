@@ -10,6 +10,9 @@ library(extrafont)
 library(gridExtra)
 #library(lettercase)
 library(ggiraph)
+library(geojsonio)
+#library(rmapshaper)
+library(sp)
 loadfonts()
 options(scipen=999)
 
@@ -74,6 +77,7 @@ mn_school_districts <- st_read("Shapefiles/school_district_boundaries.shp", quie
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName = ifelse(districtName=="Minneapolis-St. Paul Int'l Airport", "Minneapolis-St. Paul International Airport", as.character(districtName))
   )
+  #ms_simplify()
 
 
 #Objects - Housing --------------------------------------------------------
@@ -103,6 +107,8 @@ county.list <- med.home.val.1990_2010 %>%
   distinct(countyName)
 
 # Objects - Education --------------------------------------------------------
+
+# Objects - Enrollment (total) ----------------------------------------------------
 enrolled.2018_2000.tidy <- read_csv("Education/Enrollment/enrolled_total_2000_2018.csv")
 
 enrolled.2018_2000.map <- enrolled.2018_2000.tidy %>%
@@ -139,9 +145,7 @@ enrollment.change.2008_2012.map <- enrollment.change.2008_2012 %>%
          bins = fct_relevel(bins,"-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")
   )
 
-ggplot(filter(enrollment.change.2008_2012.map, year==2000),aes(change)) +
-  geom_histogram()
-
+# Objects - Enrollment (students of color) ----------------------------------------------------
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
   mutate(districtName=toupper(districtName)) %>%
   rename(districtNumber = DistrictNumber)
@@ -171,6 +175,7 @@ enrollment.district.list <- enrolled.2018_2000.tidy %>%
   select(districtName) %>%
   distinct(districtName)
 
+# Objects - Graduation and Dropout Rate (total) ----------------------------------------------------
 grad.2012_2018.tidy <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv") %>%
   mutate(gradRate=gradRate/100)
   
@@ -206,6 +211,7 @@ drop.2012_2018.tidy.map <- drop.2012_2018.tidy %>%
          bins = fct_relevel(bins, "0% - 2.5%", "2.5% - 5.5%", "5.5% - 7.5%", "7.5% - 10%", "10% to 100%")
   )
 
+# Objects - Graduation and Dropout Rate (students of color) ----------------------------------------------------
 grad.ethnicity.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_2012_2017.csv") 
 
 grad.ethnicity.2012_2017.map <- grad.ethnicity.2012_2017 %>%
@@ -240,7 +246,34 @@ grad.ethnicity.list <- grad.ethnicity.2012_2017 %>%
 
 grad.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_breakdown_2012_2017.csv") 
 
+grad.ethnicity.breakdown.2012_2017.map <- grad.ethnicity.breakdown.2012_2017 %>%
+  full_join(mn_school_districts,  grad.ethnicity.breakdown.2012_2017, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
+                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+  )
+
 drop.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv") 
+
+drop.ethnicity.breakdown.2012_2017.map <- drop.ethnicity.breakdown.2012_2017 %>%
+  full_join(mn_school_districts,  drop.ethnicity.breakdown.2012_2017, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(dropRate,
+                    breaks = c(-1, 0.04999999, 0.09999999, 0.19999999, 1),
+                    labels = c("0% - 5%", "5% - 10%", "10% - 20%","20% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 5%", "5% - 10%", "10% - 20%","20% - 100%")
+  )
+
+ggplot(filter(drop.ethnicity.breakdown.2012_2017, year==2017),aes(dropRate)) +
+  geom_histogram()
 
 grad.ethnicity.breakdown.district.list <- grad.ethnicity.breakdown.2012_2017 %>%
   select(districtName) %>%
@@ -250,7 +283,7 @@ grad.ethnicity.breakdown.ethnicity.list <- grad.ethnicity.breakdown.2012_2017 %>
   select(description) %>%
   distinct(description)
 
-
+# Objects - Testing (GRAD and ACT) ----------------------------------------------------
 grad.math.2009_2013_total <- read_csv("Education/GRAD scores/grad_math_2009_2013.csv") %>%
   mutate(percentPassed=percentPassed/100)
 
@@ -276,7 +309,6 @@ act.takers.2008_2018.map <- act.takers.2008_2018 %>%
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
          bins = fct_relevel(bins, "0 - 50%","50% - 75%", "75% - 85%", "85% - 95%", "95%+")
   )
-  
 
 act.takers.list <- act.takers.2008_2018 %>%
   distinct(districtName)
@@ -288,6 +320,7 @@ grad.reading.list <- grad.reading.2008_2012_total %>%
   select(districtName) %>%
   distinct(districtName)
 
+# Objects - Free/Reduced Lunch ----------------------------------------------------
 tidy.free.red.lunch.2006_2018 <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv") %>%
   rename(districtNumber = DistrictNumber,
          districtType = DistrictType)
@@ -297,13 +330,17 @@ tidy.free.red.lunch.2006_2018.map <- tidy.free.red.lunch.2006_2018 %>%
   rename(districtName=districtName.y) %>%
   select(-districtName.x) %>%
   drop_na(districtName) %>%
-  mutate(bins = cut(percentLunch,
+  mutate(
+    percentLunch=as.numeric(as.character(percentLunch)),
+    year=as.numeric(as.character(year)),
+    bins = cut(percentLunch,
                     breaks = c(-1,0.24999999, 0.34999999, 0.49999999, 0.74999999, 1),
                     labels = c("0% - 25%", "25% - 35%", "35% - 50%", "50% - 75%", "75% - 100%")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
          bins = fct_relevel(bins, "0% - 25%", "25% - 35%", "35% - 50%", "50% - 75%", "75% - 100%")
   )
 
+# Objects - English Proficiency ----------------------------------------------------
 english.2010_2019 <- read_csv("Education/English Proficiency/english_identified_2010_2019.csv")
 
 english.2010_2019.map <- english.2010_2019 %>%
@@ -322,6 +359,7 @@ english.list <- english.2010_2019 %>%
   select(districtName) %>%
   distinct(districtName)
 
+# Objects - Home Language ----------------------------------------------------
 home_lang_2008_2018 <- read_csv("Education/Home Language/home_lang_2008_2018.csv")
 
 home_lang_2008_2018.map <- home_lang_2008_2018 %>%
@@ -340,6 +378,7 @@ home.lang.list <- home_lang_2008_2018 %>%
   select(districtName) %>%
   distinct(districtName)
 
+# Objects - Student-Teacher Ratio ----------------------------------------------------
 student.teacher.ratio.2008_2018 <- read_csv("Education/Student Teacher Ratio/student_teacher_ratio_2000_2018.csv")
 
 student.teacher.ratio.2008_2018.map <- student.teacher.ratio.2008_2018 %>%
@@ -647,6 +686,22 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitybreakdowngradrategraph")
                                                          ),
                                                          
+                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity - Maps",
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.grad.ethnicity.map",
+                                                                                 label = "Choose an ethnicity",
+                                                                                 choices = grad.ethnicity.breakdown.ethnicity.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectInput(inputId = "ethnicity.breakdown.grad.year.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2012,2013,2014,2015,2016,2017),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("ethnicitybreakdowngradmap")
+                                                                  
+                                                         ),
+                                                         
                                                          tabPanel("Students of Color Dropout Rate - By Ethnicity",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.breakdown.drop.rate.district",
@@ -665,6 +720,22 @@ navbarPage("",
                                                                                inline=TRUE),
                                                                   
                                                                   ggiraphOutput("ethnicitybreakdowndroprategraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity - Maps",
+                                                                  
+                                                                  selectizeInput(inputId = "ethnicity.breakdown.drop.ethnicity.map",
+                                                                                 label = "Choose an ethnicity",
+                                                                                 choices = grad.ethnicity.breakdown.ethnicity.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectInput(inputId = "ethnicity.breakdown.drop.year.map",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2012,2013,2014,2015,2016,2017),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("ethnicitybreakdowndropmap")
+                                                                  
                                                          )
                                                          
                                                          
@@ -1285,7 +1356,19 @@ output$ethnicitygradratemap <- renderggiraph({
       }
       ggiraph(code=print(ethnicity.grad.rate.breakdown.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
-    
+
+output$ethnicitybreakdowngradmap <- renderggiraph({
+  ethnicity.breakdown.grad.map.plot <- ggplot(filter(grad.ethnicity.breakdown.2012_2017.map, (description %in% input$ethnicity.breakdown.grad.ethnicity.map) & (year == as.numeric(input$ethnicity.breakdown.grad.year.map)))) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", description, " Graduation Rate: ", percent(gradRate), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    #theme(legend.position="bottom") +
+    scale_fill_manual(values=c("0% - 50%" = "white", "50% - 75%" = "#C7EF99", "75% - 85%" = "#90E033", "85% - 100%" = "#076324", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(ethnicity.breakdown.grad.map.plot), selection_type = "none")
+  
+})
+
 #Dropout Rates Visualization - Students of Color --------------------------------------------------------
     output$ethnicitydroprategraph <- renderggiraph({
       
