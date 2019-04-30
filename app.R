@@ -258,6 +258,69 @@ grad.ethnicity.breakdown.2012_2017.map <- grad.ethnicity.breakdown.2012_2017 %>%
          bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
   )
 
+grad.asian.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_asian_2012_2017.csv") %>%
+  full_join(mn_school_districts,  grad.asian.2012_2017.map, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.84999999, 0.89999999, 0.94999999, 1),
+                    labels = c("0% - 85%", "85% - 90%","90% - 95%", "95% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 85%", "85% - 90%","90% - 95%", "95% - 100%")
+  )
+
+ggplot(filter(grad.asian.2012_2017.map, year==2017),aes(gradRate)) +
+  geom_histogram()
+
+grad.black.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_black_2012_2017.csv") %>%
+  full_join(mn_school_districts,  grad.black.2012_2017.map, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.79999999, 0.84999999, 0.89999999, 0.94999999, 1),
+                    labels = c("0% - 80%", "80% - 85%", "85% - 90%","90% - 95%", "95% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 80%", "80% - 85%", "85% - 90%","90% - 95%", "95% - 100%")
+  )
+
+grad.hispanic.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_hispanic_2012_2017.csv") %>%
+  full_join(mn_school_districts,  grad.hispanic.2012_2017.map, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
+                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+  )
+
+grad.native.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_native_2012_2017.csv") %>%
+  full_join(mn_school_districts,  grad.native.2012_2017.map, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
+                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+  )
+
+grad.mixed.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_mixed_2012_2017.csv") %>%
+  full_join(mn_school_districts,  grad.mixed.2012_2017.map, by = c("districtNumber","districtType")) %>%
+  rename(districtName=districtName.y) %>%
+  select(-districtName.x) %>%
+  drop_na(districtName) %>%
+  mutate(bins = cut(gradRate,
+                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
+                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+  )
+
 drop.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv") 
 
 drop.ethnicity.breakdown.2012_2017.map <- drop.ethnicity.breakdown.2012_2017 %>%
@@ -271,9 +334,6 @@ drop.ethnicity.breakdown.2012_2017.map <- drop.ethnicity.breakdown.2012_2017 %>%
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
          bins = fct_relevel(bins, "0% - 5%", "5% - 10%", "10% - 20%","20% - 100%")
   )
-
-ggplot(filter(drop.ethnicity.breakdown.2012_2017, year==2017),aes(dropRate)) +
-  geom_histogram()
 
 grad.ethnicity.breakdown.district.list <- grad.ethnicity.breakdown.2012_2017 %>%
   select(districtName) %>%
