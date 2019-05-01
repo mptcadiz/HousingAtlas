@@ -11,7 +11,7 @@ library(gridExtra)
 #library(lettercase)
 library(ggiraph)
 library(geojsonio)
-#library(rmapshaper)
+library(rmapshaper)
 library(sp)
 loadfonts()
 options(scipen=999)
@@ -76,8 +76,8 @@ mn_school_districts <- st_read("Shapefiles/school_district_boundaries.shp", quie
     districtType = formatC(districtType, width = 2, flag = "0"),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName = ifelse(districtName=="Minneapolis-St. Paul Int'l Airport", "Minneapolis-St. Paul International Airport", as.character(districtName))
-  )
-  #ms_simplify()
+  ) %>%
+  ms_simplify()
 
 
 #Objects - Housing --------------------------------------------------------
@@ -270,19 +270,16 @@ grad.asian.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad
          bins = fct_relevel(bins, "0% - 85%", "85% - 90%","90% - 95%", "95% - 100%")
   )
 
-ggplot(filter(grad.asian.2012_2017.map, year==2017),aes(gradRate)) +
-  geom_histogram()
-
 grad.black.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_black_2012_2017.csv") %>%
   full_join(mn_school_districts,  grad.black.2012_2017.map, by = c("districtNumber","districtType")) %>%
   rename(districtName=districtName.y) %>%
   select(-districtName.x) %>%
   drop_na(districtName) %>%
   mutate(bins = cut(gradRate,
-                    breaks = c(-1, 0.79999999, 0.84999999, 0.89999999, 0.94999999, 1),
-                    labels = c("0% - 80%", "80% - 85%", "85% - 90%","90% - 95%", "95% - 100%")),
+                    breaks = c(-1, 0.59999999, 0.69999999, 0.79999999, 1),
+                    labels = c("0% - 60%", "60% - 70%", "70% - 80%","80% - 100%")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
-         bins = fct_relevel(bins, "0% - 80%", "80% - 85%", "85% - 90%","90% - 95%", "95% - 100%")
+         bins = fct_relevel(bins, "0% - 60%", "60% - 70%", "70% - 80%","80% - 100%")
   )
 
 grad.hispanic.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_hispanic_2012_2017.csv") %>%
@@ -291,10 +288,10 @@ grad.hispanic.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/g
   select(-districtName.x) %>%
   drop_na(districtName) %>%
   mutate(bins = cut(gradRate,
-                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
-                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+                    breaks = c(-1, 0.59999999, 0.69999999, 0.79999999, 1),
+                    labels = c("0% - 60%", "60% - 70%", "70% - 80%","80% - 100%")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
-         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+         bins = fct_relevel(bins, "0% - 60%", "60% - 70%", "70% - 80%","80% - 100%")
   )
 
 grad.native.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_native_2012_2017.csv") %>%
@@ -303,10 +300,10 @@ grad.native.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/gra
   select(-districtName.x) %>%
   drop_na(districtName) %>%
   mutate(bins = cut(gradRate,
-                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
-                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+                    breaks = c(-1, 0.49999999, 0.59999999, 0.74999999, 1),
+                    labels = c("0% - 50%", "50% - 60%", "60% - 75%","75% - 100%")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
-         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+         bins = fct_relevel(bins, "0% - 50%", "50% - 60%", "60% - 75%","75% - 100%")
   )
 
 grad.mixed.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad_rate_mixed_2012_2017.csv") %>%
@@ -315,11 +312,14 @@ grad.mixed.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad
   select(-districtName.x) %>%
   drop_na(districtName) %>%
   mutate(bins = cut(gradRate,
-                    breaks = c(-1, 0.49999999, 0.74999999, 0.84999999, 1),
-                    labels = c("0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")),
+                    breaks = c(-1, 0.64999999, 0.74999999, 0.84999999, 1),
+                    labels = c("0% - 65%", "65% - 75%", "75% - 85%","85% - 100%")),
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
-         bins = fct_relevel(bins, "0% - 50%", "50% - 75%", "75% - 85%","85% - 100%")
+         bins = fct_relevel(bins, "0% - 65%", "65% - 75%", "75% - 85%","85% - 100%")
   )
+
+ggplot(filter(grad.mixed.2012_2017.map, year==2017),aes(gradRate)) +
+  geom_histogram()
 
 drop.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv") 
 
@@ -594,7 +594,7 @@ navbarPage("",
                                                          
                                                          tabPanel("Change In Student Enrollment - Maps",
                                                                   selectInput(inputId = "enrollment.change.map",
-                                                                              label = "Choose a year",
+                                                                              label = "Choose a year to compare to 2018",
                                                                               choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017),
                                                                               multiple = FALSE),
                                                                   
@@ -862,7 +862,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradreadingpassgraph")
                                                          ),
                                                          
-                                                         tabPanel("ACT",
+                                                         tabPanel("ACT Scores and Percent of Takers",
                                                                   #UI: Average ACT Score --------------------------------------------------------
                                                                   selectizeInput(inputId = "act.scores",
                                                                                  label = "Choose a district",
@@ -1086,7 +1086,7 @@ server <- function(input, output, session) {
   
   output$homevalmap <- renderggiraph({
     home.val.map.plot <- ggplot(filter(med.home.val.1990_2010, year == as.numeric(input$year.home.val))) +
-      geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Home Value: ", homeValue, sep = "")), color = "black") + 
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Home Value: $", comma(homeValue, digits = 0), sep = "")), color = "black") + 
       scale_color_manual(guide = guide_legend(ncol = 3)) +
       theme_sf +
       #theme(legend.position="bottom") + 
@@ -1217,7 +1217,7 @@ server <- function(input, output, session) {
   output$enrollmentchangemap <- renderggiraph({
     
     enrollment.change.map.plot <- ggplot(filter(enrollment.change.2008_2012.map, year == as.numeric(input$enrollment.change.map))) +
-      geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Change In Student Enrollment from 2018 to ", year, ": ", percent(change), sep = "")), color = "black") +
+      geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Change In Student Enrollment from", year, "to 2018: ", percent(change), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
       #scale_fill_manual(values=c("-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")) +
@@ -1671,7 +1671,7 @@ output$acttakersmap <- renderggiraph({
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
     #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0 - 50%"="white", "50% - 75%"="#C7EF99", "75% - 85%" ="#90E033", "85% - 95%"="#076324", "95%+" = "black", "NA"= "#c6c6c6")) 
+    scale_fill_manual(values=c("0 - 50%"="white", "50% - 75%"="#C7EF99", "75% - 85%" ="#90E033", "85% - 95%"="#076324", "95%+" = "#076324", "NA"= "#c6c6c6")) 
   
   ggiraph(code = print(act.takers.map.plot), selection_type = "none")
   
@@ -1711,7 +1711,7 @@ output$lunchmap <- renderggiraph({
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
     #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0% - 25%"="white", "25% - 35%" = "#C7EF99", "35% - 50%" = "#90E033", "50% - 75%"="#076324", "75% - 100%" = "black", "NA"= "#c6c6c6")) 
+    scale_fill_manual(values=c("0% - 25%"="white", "25% - 35%" = "#C7EF99", "35% - 50%" = "#90E033", "50% - 75%"="#076324", "75% - 100%" = "#076324", "NA"= "#c6c6c6")) 
   
   ggiraph(code = print(lunch.map.plot), selection_type = "none")
   
@@ -1751,7 +1751,7 @@ output$englishprofmap <- renderggiraph({
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
     #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0% - 2.5%"="white", "2.5% - 5%"="#C7EF99", "5% - 7.5%"="#90E033", "7.5% - 15%"="#076324", "15% - 100%"="black", "NA"= "#c6c6c6"))
+    scale_fill_manual(values=c("0% - 2.5%"="white", "2.5% - 5%"="#C7EF99", "5% - 7.5%"="#90E033", "7.5% - 15%"="#076324", "15% - 100%"="#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(english.map.plot), selection_type = "none")
   
