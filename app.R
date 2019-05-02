@@ -456,7 +456,25 @@ student.teacher.ratio.2008_2018.map <- student.teacher.ratio.2008_2018 %>%
 teacher.district.list <- student.teacher.ratio.2008_2018 %>%
   distinct(districtName)
 
-#Visualization types --------------------------------------------------------
+# Objects - Cost of Living ----------------------------------------------------
+yearly.cost.2016_2018 <- read_csv("Cost of Living/yearly_cost_2016_2018.csv")
+
+hourly.wage.2016_2018 <- read_csv("Cost of Living/hourly_wage_2016_2018.csv")
+
+col.county.name.list <-yearly.cost.2016_2018 %>%
+  select(countyName) %>%
+  distinct(countyName) %>%
+  arrange(countyName)
+
+col.county.workers.list <- c("Single","Partnered - 1 full-time worker", "Partnered - 1 full-time, 1 part-time worker","Partnered - 2 full-time workers") %>% 
+  as.list()
+
+col.county.children.list <- yearly.cost.2016_2018 %>%
+  select(numberChildren) %>%
+  distinct(numberChildren) %>%
+  arrange(numberChildren)
+
+# Objects - Visualization types --------------------------------------------------------
 vis.list <- c("Trend lines","Data points", "Both visualizations") %>% 
   as.list()
 
@@ -1043,6 +1061,54 @@ navbarPage("",
 
                                )
                     )
+           ),
+           
+           #UI: Cost of Living --------------------------------------------------------
+           tabPanel("Cost of Living Data",
+                    navbarMenu("",
+                               navlistPanel("Cost of Living",
+                                             tabPanel("Yearly Cost",
+                                                     mainPanel(
+                                                       tabsetPanel(
+                                                         tabPanel("Yearly Cost - Charts",
+                                                                  
+                                                                  selectizeInput(inputId = "col.county",
+                                                                                 label = "Choose a county",
+                                                                                 choices = col.county.name.list ,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.workers",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.children",
+                                                                                 label = "How many children?",
+                                                                                 choices = col.county.children.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  radioButtons(inputId="col.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=FALSE),
+                                                                  
+                                                                  ggiraphOutput("colcountygraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Yearly Cost - Maps",
+                                                                  
+                                                                  selectInput(inputId = "year.col.county",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("colcountymap")
+                                                         )
+                                                         
+                                                       )))
+
+                               )
+                    )
            )
            
 
@@ -1059,7 +1125,7 @@ navbarPage("",
 # Server
 server <- function(input, output, session) {
   
-#Median Home Value visualization --------------------------------------------------------
+# Server - Median Home Value visualization --------------------------------------------------------
   output$homevalcountygraph <- renderggiraph({
     
     home.val.county.plot <- ggplot(filter(med.home.val.1990_2010, countyName %in% input$home.val.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(homeValue))) +
@@ -1097,7 +1163,7 @@ server <- function(input, output, session) {
   })
 
 
-#Median Year Built Visualization --------------------------------------------------------
+# Server - Median Year Built Visualization --------------------------------------------------------
   output$yearbuiltcountychart <- renderggiraph({
 
     year.built.county.chart.plot <- ggplot(filter(med.year.built.1990_2017, countyName %in% input$year.built.county.chart), aes(color=countyName, x=as.numeric(year), y=as.numeric(yearBuilt))) +
@@ -1134,7 +1200,7 @@ server <- function(input, output, session) {
   })
 
   
-#Mortgage Status Visualization --------------------------------------------------------
+# Server - Mortgage Status Visualization --------------------------------------------------------
   output$mortgagestatuscountygraph <- renderggiraph({
 
     mortgage.status.county.plot <- ggplot(filter(tidymortgage.status.1990_2010, countyName %in% input$mortgage.status.county), aes(color=countyName, x=as.numeric(year), y=as.numeric(percentFree))) +
@@ -1174,7 +1240,7 @@ server <- function(input, output, session) {
 
   })
 
-#Students Enrolled Visualization --------------------------------------------------------
+# Server - Students Enrolled Visualization --------------------------------------------------------
   output$studentenrollmentgraph <- renderggiraph({
 
     student.enrollment.district.plot <- ggplot(filter(enrolled.2018_2000.tidy, districtName %in% input$student.enrollment.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(totalStudents))) +
@@ -1227,7 +1293,7 @@ server <- function(input, output, session) {
     
   })
   
-  #Ethnicity of Students Enrolled Visualization --------------------------------------------------------
+# Server - Ethnicity of Students Enrolled Visualization --------------------------------------------------------
   output$studentethnicitygraph <- renderggiraph({
     
     student.ethnicity.district.plot <- ggplot(filter(enrolled.ethnicity.2000_2018.tidy, districtName %in% input$student.ethnicity.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentMinority))) +
@@ -1269,7 +1335,7 @@ server <- function(input, output, session) {
     
   })
   
-#Overall Graduation Rates Visualization --------------------------------------------------------
+# Server - Overall Graduation Rates Visualization --------------------------------------------------------
     output$gradrategraph <- renderggiraph({
 
       grad.rate.plot <- ggplot(filter(grad.2012_2018.tidy, districtName %in% input$grad.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(gradRate))) +
@@ -1309,7 +1375,7 @@ server <- function(input, output, session) {
 
   })
     
-#Overall Dropout Rates Visualization --------------------------------------------------------
+# Server - Overall Dropout Rates Visualization --------------------------------------------------------
     output$droprategraph <- renderggiraph({
       
       drop.rate.plot <- ggplot(filter(drop.2012_2018.tidy, districtName %in% input$drop.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(dropRate))) +
@@ -1349,7 +1415,7 @@ output$dropratemap <- renderggiraph({
     
   })
 
-#Graduation Rates Visualization - Students of Color --------------------------------------------------------
+# Server - Graduation Rates Visualization - Students of Color --------------------------------------------------------
     output$ethnicitygradrategraph <- renderggiraph({
       
       ethnicity.grad.rate.plot <- ggplot(filter(grad.ethnicity.2012_2017, districtName %in% input$ethnicity.grad.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(gradRate))) +
@@ -1389,7 +1455,7 @@ output$ethnicitygradratemap <- renderggiraph({
   
 })
     
-#Graduation Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
+# Server - Graduation Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
     output$ethnicitybreakdowngradrategraph <- renderggiraph({
 
       ethnicity.grad.rate.breakdown.plot <- ggplot(filter(grad.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.grad.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.grad.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(gradRate))) +
@@ -1429,7 +1495,7 @@ output$ethnicitybreakdowngradmap <- renderggiraph({
   
 })
 
-#Dropout Rates Visualization - Students of Color --------------------------------------------------------
+# Server - Dropout Rates Visualization - Students of Color --------------------------------------------------------
     output$ethnicitydroprategraph <- renderggiraph({
       
       ethnicity.drop.rate.plot <- ggplot(filter(drop.ethnicity.2012_2017, districtName %in% input$ethnicity.drop.rate), aes(color=districtName, x=as.numeric(year), y=as.numeric(dropRate))) +
@@ -1469,7 +1535,7 @@ output$ethnicitydropratemap <- renderggiraph({
   
 })
 
-#Dropout Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
+# Server - Dropout Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
     output$ethnicitybreakdowndroprategraph <- renderggiraph({
       
       ethnicity.drop.rate.breakdown.plot <- ggplot(filter(drop.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.drop.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.drop.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(dropRate))) +
@@ -1497,7 +1563,7 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(ethnicity.drop.rate.breakdown.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
-#GRAD: Math Score Visualization --------------------------------------------------------
+# Server - GRAD: Math Score Visualization --------------------------------------------------------
     output$gradmathscoregraph <- renderggiraph({
       
       grad.math.score.plot <- ggplot(filter(grad.math.2009_2013_total, districtName %in% input$grad.math.score), aes(color=districtName, x=as.numeric(year), y=as.numeric(averageScore))) +
@@ -1525,7 +1591,7 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(grad.math.score.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
-#GRAD: Math Passing Visualization --------------------------------------------------------
+# Server - GRAD: Math Passing Visualization --------------------------------------------------------
     output$gradmathpassgraph <- renderggiraph({
       
       grad.math.pass.plot <- ggplot(filter(grad.math.2009_2013_total, districtName %in% input$grad.math.pass), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentPassed))) +
@@ -1553,7 +1619,7 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(grad.math.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
-#GRAD: Reading Score Visualization --------------------------------------------------------
+# Server - GRAD: Reading Score Visualization --------------------------------------------------------
     output$gradreadingscoregraph <- renderggiraph({
       
       grad.reading.score.plot <- ggplot(filter(grad.reading.2008_2012_total, districtName %in% input$grad.reading.score), aes(color=districtName, x=as.numeric(year), y=as.numeric(averageScore))) +
@@ -1581,7 +1647,7 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(grad.reading.score.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
-#GRAD: Reading Passing Visualization --------------------------------------------------------
+# Server - GRAD: Reading Passing Visualization --------------------------------------------------------
     output$gradreadingpassgraph <- renderggiraph({
       
       grad.reading.pass.plot <- ggplot(filter(grad.reading.2008_2012_total, districtName %in% input$grad.reading.pass), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentPassed))) +
@@ -1609,7 +1675,7 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(grad.reading.pass.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
 
-#ACT Scores Visualization --------------------------------------------------------
+# Server - ACT Scores Visualization --------------------------------------------------------
   output$actscoresgraph <- renderggiraph({
     
     act.scores.plot <- ggplot(filter(act.scores.2008_2018, districtName %in% input$act.scores), aes(color=districtName, x=as.numeric(year), y=as.numeric(score))) +
@@ -1637,7 +1703,7 @@ output$ethnicitydropratemap <- renderggiraph({
     ggiraph(code=print(act.scores.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
   
-#ACT Percent Takers --------------------------------------------------------
+# Server - ACT Percent Takers --------------------------------------------------------
   output$acttakersgraph <- renderggiraph({
     
     act.takers.plot <- ggplot(filter(act.takers.2008_2018, districtName %in% input$act.takers), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentTakers))) +
@@ -1677,7 +1743,7 @@ output$acttakersmap <- renderggiraph({
   
 })
   
-#Students With Free/Reduced Lunch Visualization --------------------------------------------------------
+# Server - Students With Free/Reduced Lunch Visualization --------------------------------------------------------
   output$lunchgraph <- renderggiraph({
 
     lunch.district.plot <- ggplot(filter(tidy.free.red.lunch.2006_2018, districtName %in% input$lunch.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentLunch))) +
@@ -1717,7 +1783,7 @@ output$lunchmap <- renderggiraph({
   
 })
 
-#Students Not Proficient in English - Identified --------------------------------------------------------
+# Server - Students Not Proficient in English - Identified --------------------------------------------------------
   output$englishprofgraph <- renderggiraph({
     
     english.plot <- ggplot(filter(english.2010_2019, districtName %in% input$english.prof), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentIdentified))) +
@@ -1757,7 +1823,7 @@ output$englishprofmap <- renderggiraph({
   
 })
 
-#Students With English As Home Language --------------------------------------------------------
+# Server - Students With English As Home Language --------------------------------------------------------
   output$homelanggraph <- renderggiraph({
     
     home.lang.plot <- ggplot(filter(home_lang_2008_2018, districtName %in% input$home.lang), aes(color=districtName, x=as.numeric(year), y=as.numeric(percentEng))) +
@@ -1797,7 +1863,7 @@ output$homelangmap <- renderggiraph({
   
 })
 
-#Number of Teachers --------------------------------------------------------
+# Server - Number of Teachers --------------------------------------------------------
   output$teachergraph <- renderggiraph({
     
     teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$teacher.district), aes(color=districtName, x=as.numeric(year), y=as.numeric(totalTeachers))) +
@@ -1825,7 +1891,7 @@ output$homelangmap <- renderggiraph({
     ggiraph(code=print(teacher.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
   })
   
-#Student-Teacher Ratio --------------------------------------------------------
+# Server - Student-Teacher Ratio --------------------------------------------------------
   output$studentteachegraph <- renderggiraph({
     
     student.teacher.plot <- ggplot(filter(student.teacher.ratio.2008_2018, districtName %in% input$student.teacher.ratio), aes(color=districtName, x=as.numeric(year), y=as.numeric(studentTeacherRatio))) +
@@ -1854,7 +1920,10 @@ output$homelangmap <- renderggiraph({
   })
 
 output$studentteachermap <- renderggiraph({
-  student.teacher.map.plot <- ggplot(filter(student.teacher.ratio.2008_2018.map, year == as.numeric(input$student.teacher.ratio.map))) +
+  student.teacher.map.plot <- ggplot(filter(student.teacher.ratio.2008_2018.map,
+                                            year == as.numeric(input$student.teacher.ratio.map)
+                                            )
+                                     ) +
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Student-Teacher Ratio: ", studentTeacherRatio, sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
@@ -1864,6 +1933,59 @@ output$studentteachermap <- renderggiraph({
   
   ggiraph(code = print(student.teacher.map.plot), selection_type = "none")
   
+})
+
+# Server - Cost of Living --------------------------------------------------------
+output$colcountygraph <- renderggiraph({
+
+#ethnicity.drop.rate.breakdown.plot <- ggplot(filter(drop.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.drop.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.drop.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(dropRate))) +
+  
+  col.plot <- ggplot(filter(yearly.cost.2016_2018,
+                            (countyName %in% input$col.county) &
+                            
+                            (if (input$col.county.workers == "Single") {
+                              numberAdults == 1 & adultAge=="19-50"
+                            }
+                            
+                            else if (input$col.county.workers == "Partnered - 1 full-time worker") {
+                              numberAdults == 2 & numberWorkers == 1 & adultAge=="19-50"
+                            }
+                            
+                            else if (input$col.county.workers == "Partnered - 1 full-time, 1 part-time worker") {
+                              numberAdults == 2 & numberWorkers == 1.5 & adultAge=="19-50"
+                            }
+                            
+                            else if (input$col.county.workers == "Partnered - 2 full-time workers") {
+                              numberAdults == 2 & numberWorkers == 2 & adultAge=="19-50"
+                            }) &
+                          
+                          (numberChildren == as.numeric(input$col.county.children))
+                              
+                            ),
+                     
+                     aes(color=countyName, x=as.numeric(year), y=as.numeric(yearlyCost))) +
+    scale_x_continuous(breaks=c(2016,2017,2018))+
+    scale_y_continuous(label=comma) +
+    labs(x="Year", y="Cost of Living")+
+    theme_bar+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="bottom") +
+    scale_color_discrete(guide = guide_legend(ncol = 3))
+
+  if (input$col.vis.list == "Data points"){
+    col.plot <- col.plot +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Cost of Living: $",comma(yearlyCost))))
+  }
+  else if (input$col.vis.list == "Trend lines"){
+    col.plot <- col.plot +
+      geom_line()
+  }
+  else if (input$col.vis.list == "Both visualizations"){
+    col.plot <- col.plot +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Cost of Living: $",comma(yearlyCost)))) +
+      geom_line()
+  }
+  ggiraph(code=print(col.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
 })
   
 }
