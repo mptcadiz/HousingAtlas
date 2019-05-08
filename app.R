@@ -100,7 +100,7 @@ tidymortgage.status.1990_2010 <- read_csv("Housing/Mortgage Status/mortgage_stat
   select(-countyName.y) %>%
   mutate(bins = cut(percentFree,
                     breaks = c(0, 0.19, 0.39, 0.59, 0.79, 1),
-                    labels = c("0 - 19%", "20% - 39%", "40% - 59%", "60 - 79%", "80% - 100 %")))
+                    labels = c("0 - 19%", "20% - 39%", "40% - 59%", "60 - 79%", "80% - 100%")))
 
 
 county.list <- med.home.val.1990_2010 %>%
@@ -556,6 +556,8 @@ navbarPage("",
                                                                     label="How would you like to visualize the data?",
                                                                     choices = vis.list,
                                                                     inline=TRUE),
+                                                       ggiraphOutput("yearbuiltcountychart")
+                                              ),
                                                        
                                               tabPanel("Median Year Built - Map",
                                                        selectInput(inputId = "year.built.county",
@@ -564,10 +566,9 @@ navbarPage("",
                                                                       multiple = FALSE),
                                                        
                                                        ggiraphOutput("yearbuiltcountygraph")
-                                              ),
-                                              
-                                                       ggiraphOutput("yearbuiltcountychart")
                                               )
+                                              
+                                                      
                                               ))),
                                  
                                  #UI: Mortgage status --------------------------------------------------------
@@ -1097,7 +1098,7 @@ navbarPage("",
                                              tabPanel("Yearly Cost",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Yearly Cost - Chart",
+                                                         tabPanel("Yearly Cost: Ages 19-50 - Chart",
                                                                   
                                                                   selectizeInput(inputId = "col.county",
                                                                                  label = "Choose a county",
@@ -1122,7 +1123,27 @@ navbarPage("",
                                                                   ggiraphOutput("colcountygraph")
                                                          ),
                                                          
-                                                         tabPanel("Yearly Cost - Map",
+                                                         tabPanel("Yearly Cost: Ages 51+ - Chart",
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.50",
+                                                                                 label = "Choose a county",
+                                                                                 choices = col.county.name.list ,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.workers.50",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  radioButtons(inputId="col.vis.list.50",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=FALSE),
+                                                                  
+                                                                  ggiraphOutput("colcounty50graph")
+                                                         ),
+                                                         
+                                                         tabPanel("Yearly Cost: Ages 19-50 - Map",
                                                                   
                                                                   selectInput(inputId = "year.col.county",
                                                                               label = "Choose a year",
@@ -1140,6 +1161,21 @@ navbarPage("",
                                                                                  multiple = FALSE),
                                                                   
                                                                   ggiraphOutput("colcountymap")
+                                                         ),
+                                                         
+                                                         tabPanel("Yearly Cost: 51+ - Map",
+                                                                  
+                                                                  selectInput(inputId = "year.col.county.50",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.workers.map.50",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("colcountymap50")
                                                          )
                                                          
                                                        ))),
@@ -1147,7 +1183,7 @@ navbarPage("",
                                             tabPanel("Hourly Wage",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Hourly Wage - Chart",
+                                                         tabPanel("Hourly Wage: Ages 19-50 - Chart",
                                                                   
                                                                   selectizeInput(inputId = "hourly.wage.county",
                                                                                  label = "Choose a county",
@@ -1172,7 +1208,27 @@ navbarPage("",
                                                                   ggiraphOutput("hourlywagegraph")
                                                          ),
                                                          
-                                                         tabPanel("Hourly Wage - Map",
+                                                         tabPanel("Hourly Wage: Ages 51+ - Chart",
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.county.50",
+                                                                                 label = "Choose a county",
+                                                                                 choices = col.county.name.list ,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.workers.50",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  radioButtons(inputId="hourly.wage.vis.list.50",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=FALSE),
+                                                                  
+                                                                  ggiraphOutput("hourlywagegraph50")
+                                                         ),
+                                                         
+                                                         tabPanel("Hourly Wage: Ages 19-50 - Map",
                                                                   
                                                                   selectInput(inputId = "year.hourly.wage.county",
                                                                               label = "Choose a year",
@@ -1190,6 +1246,21 @@ navbarPage("",
                                                                                  multiple = FALSE),
                                                                   
                                                                   ggiraphOutput("hourlywagemap")
+                                                         ),
+                                                         
+                                                         tabPanel("Hourly Wage: Ages 51+ - Map",
+                                                                  
+                                                                  selectInput(inputId = "year.hourly.wage.county.50",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.county.workers.map.50",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("hourlywagemap50")
                                                          )
                                                          
                                                        )))
@@ -1242,8 +1313,8 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Home Value: $", comma(homeValue, digits = 0), sep = "")), color = "black") + 
       scale_color_manual(guide = guide_legend(ncol = 3)) +
       theme_sf +
-      #theme(legend.position="bottom") + 
-      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
+      theme(legend.position="bottom") + 
+      scale_fill_manual(guide = guide_legend(ncol = 3), values = c("$20,000 - $59,999"="white", "$60,000 - $999,999"="#E7F5D9", "$100,000 - $139,999"="#C7EF99", "$140,000 - $179,999"="#90E033", "$180,000 - $219,999"="#5CA81F", "$220,000 - $259,999"="#076324", "$260,000 - $300,000"="black"))
 
       ggiraph(code = print(home.val.map.plot), selection_type = "none")
     
@@ -1280,7 +1351,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Median Year Built: ", yearBuilt, sep = "")), color = "black") + 
       theme_sf +
       theme(legend.position="bottom") +
-      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black"))
+      scale_fill_manual(guide = guide_legend(ncol = 3), values = c("1939 - 1946"="white", "1947 - 1954"="#E7F5D9", "1955 - 1962"="#C7EF99", "1963 - 1970"="#90E033", "1971 - 1978"="#5CA81F", "1979 - 1986"="#076324", "1987 - 1994"="black"))
     
     ggiraph(code = print(year.built.county.plot), selection_type = "none")
     
@@ -1321,7 +1392,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Percent Of Mortgage Free Homes: ", percent(percentFree), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "black"))
+      scale_fill_manual(guide = guide_legend(ncol = 3), values = c("0 - 19%"="white", "20% - 39%"="#E7F5D9", "40% - 59%"="#C7EF99", "60 - 79%"="#90E033", "80% - 100%"="#5CA81F"))
 
     ggiraph(code = print(mortgage.status.county.map.plot), selection_type = "none")
 
@@ -1361,7 +1432,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Number of Students Enrolled: ", comma(totalStudents), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(values=c("1 - 499"="white", "500 - 999" = "#E7F5D9", "1,000 - 2,499" = "#C7EF99", "2,500 - 4,999" = "#90E033", "5,000 - 9,999" = "#5CA81F", "10,000 - 29,999"="#076324", "30,000 - 50,000"="black","NA"= "#c6c6c6")) 
+      scale_fill_manual(guide = guide_legend(ncol = 3), values=c("1 - 499"="white", "500 - 999" = "#E7F5D9", "1,000 - 2,499" = "#C7EF99", "2,500 - 4,999" = "#90E033", "5,000 - 9,999" = "#5CA81F", "10,000 - 29,999"="#076324", "30,000 - 50,000"="black","NA"= "#c6c6c6")) 
       
     ggiraph(code = print(student.enrollment.map.plot), selection_type = "none")
     
@@ -1373,8 +1444,7 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Change In Student Enrollment from", year, "to 2018: ", percent(change), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      #scale_fill_manual(values=c("-300% to -5%", "-5% to -2.5%", "-2.5% to 0%", "0% to 2.5%", "2.5% to 5%", "5% to 76%")) +
-      scale_fill_manual(values=c("-300% to -5%"="white", "-5% to -2.5%" = "#E7F5D9", "-2.5% to 0%" = "#C7EF99", "0% to 2.5%" = "#90E033", "2.5% to 5%" = "#5CA81F", "5% to 76%"="#076324", "NA"= "#c6c6c6")) 
+      scale_fill_manual(guide = guide_legend(ncol = 3), values=c("-300% to -5%"="white", "-5% to -2.5%" = "#E7F5D9", "-2.5% to 0%" = "#C7EF99", "0% to 2.5%" = "#90E033", "2.5% to 5%" = "#5CA81F", "5% to 76%"="#076324", "NA"= "#c6c6c6")) 
     
     ggiraph(code = print(enrollment.change.map.plot), selection_type = "none")
     
@@ -1414,10 +1484,8 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of Students of Color Enrolled: ", percent(percentMinority), sep = "")), color = "black") +
       theme_sf +
       theme(legend.position="bottom") + 
-      scale_fill_manual(values=c("0% - 5%"="white", "5% - 10%"="#E7F5D9", "10% - 15%"="#C7EF99", "15% - 20%"="#90E033", "20% - 25%"="#5CA81F", "25% - 100%"="#076324", "NA"="#c6c6c6")) 
-    
-    #scale_fill_manual(values = c("white", "#E7F5D9", "#C7EF99", "#90E033", "#5CA81F", "#076324", "black", "#c6c6c6"))
-    
+      scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 5%"="white", "5% - 10%"="#E7F5D9", "10% - 15%"="#C7EF99", "15% - 20%"="#90E033", "20% - 25%"="#5CA81F", "25% - 100%"="#076324", "NA"="#c6c6c6")) 
+
     ggiraph(code = print(student.ethnicity.map.plot), selection_type = "none")
     
   })
@@ -1455,8 +1523,8 @@ server <- function(input, output, session) {
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Total Graduation Rate: ", percent(gradRate), sep = "")), color = "black") +
       scale_color_manual(guide = guide_legend(ncol = 3)) +
       theme_sf +
-      #theme(legend.position="bottom") +
-      scale_fill_manual(values=c("0% - 75%"="white", "75% - 85%"="#C7EF99", "85% - 95%"="#90E033", "95% - 100%"="#076324", "NA"= "#c6c6c6"))
+      theme(legend.position="bottom") + 
+      scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 75%"="white", "75% - 85%"="#C7EF99", "85% - 95%"="#90E033", "95% - 100%"="#076324", "NA"= "#c6c6c6"))
 
     ggiraph(code = print(grad.rate.map.plot), selection_type = "none")
 
@@ -1495,8 +1563,8 @@ output$dropratemap <- renderggiraph({
       geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Total Dropout Rate: ", percent(dropRate), sep = "")), color = "black") +
       scale_color_manual(guide = guide_legend(ncol = 3)) +
       theme_sf +
-      #theme(legend.position="bottom") +
-      scale_fill_manual(values=c("0% - 2.5%"="white", "2.5% - 5.5%"="#C7EF99", "5.5% - 7.5%"="#90E033", "7.5% - 10%"="#076324","10% to 100%"="black", "NA"= "#c6c6c6"))
+      theme(legend.position="bottom") + 
+      scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 2.5%"="white", "2.5% - 5.5%"="#C7EF99", "5.5% - 7.5%"="#90E033", "7.5% - 10%"="#076324","10% to 100%"="black", "NA"= "#c6c6c6"))
     
     ggiraph(code = print(drop.rate.map.plot), selection_type = "none")
     
@@ -1535,8 +1603,8 @@ output$ethnicitygradratemap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Total Students of Color Graduation Rate: ", percent(gradRate), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0% - 50%" = "white", "50% - 75%" = "#C7EF99", "75% - 85%" = "#90E033", "85% - 100%" = "#076324", "NA"= "#c6c6c6"))
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 50%" = "white", "50% - 75%" = "#C7EF99", "75% - 85%" = "#90E033", "85% - 100%" = "#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(ethnicity.grad.rate.map.plot), selection_type = "none")
   
@@ -1575,8 +1643,8 @@ output$ethnicitybreakdowngradmap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", description, " Graduation Rate: ", percent(gradRate), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0% - 50%" = "white", "50% - 75%" = "#C7EF99", "75% - 85%" = "#90E033", "85% - 100%" = "#076324", "NA"= "#c6c6c6"))
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 50%" = "white", "50% - 75%" = "#C7EF99", "75% - 85%" = "#90E033", "85% - 100%" = "#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(ethnicity.breakdown.grad.map.plot), selection_type = "none")
   
@@ -1615,8 +1683,8 @@ output$ethnicitydropratemap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Total Students of Color Dropout Rate: ", percent(dropRate), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0% - 5%" = "white", "5% - 10%" = "#C7EF99", "10% - 20%" = "#90E033","20% - 100%" = "#076324", "NA"= "#c6c6c6"))
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 5%" = "white", "5% - 10%" = "#C7EF99", "10% - 20%" = "#90E033","20% - 100%" = "#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(ethnicity.drop.rate.map.plot), selection_type = "none")
   
@@ -1823,8 +1891,8 @@ output$acttakersmap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of 12th Graders Who Took the ACT: ", percent(percentTakers), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("0 - 50%"="white", "50% - 75%"="#C7EF99", "75% - 85%" ="#90E033", "85% - 95%"="#076324", "95%+" = "#076324", "NA"= "#c6c6c6")) 
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0 - 50%"="white", "50% - 75%"="#C7EF99", "75% - 85%" ="#90E033", "85% - 95%"="#076324", "95%+" = "#076324", "NA"= "#c6c6c6")) 
   
   ggiraph(code = print(act.takers.map.plot), selection_type = "none")
   
@@ -1863,7 +1931,7 @@ output$lunchmap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of students with free/reduced lunch: ", percent(percentLunch), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
+    theme(legend.position="bottom") +
     scale_fill_manual(values=c("0% - 25%"="white", "25% - 35%" = "#C7EF99", "35% - 50%" = "#90E033", "50% - 75%"="#076324", "75% - 100%" = "#076324", "NA"= "#c6c6c6")) 
   
   ggiraph(code = print(lunch.map.plot), selection_type = "none")
@@ -1903,7 +1971,7 @@ output$englishprofmap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of students not proficient in English: ", percent(percentIdentified), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
+    theme(legend.position="bottom") +
     scale_fill_manual(values=c("0% - 2.5%"="white", "2.5% - 5%"="#C7EF99", "5% - 7.5%"="#90E033", "7.5% - 15%"="#076324", "15% - 100%"="#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(english.map.plot), selection_type = "none")
@@ -1943,7 +2011,7 @@ output$homelangmap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Percent of students with English as home language: ", percent(percentEng), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
+    theme(legend.position="bottom") +
     scale_fill_manual(values=c("0% - 80%"="white", "80% - 94%"="#C7EF99", "94% - 96%"="#90E033", "96% - 98%"="#076324", "98% - 100%"="#033d15", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(home.lang.map.plot), selection_type = "none")
@@ -2014,8 +2082,7 @@ output$studentteachermap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Student-Teacher Ratio: ", studentTeacherRatio, sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    #scale_fill_manual(values=c("0% - 80%"="white", "80% - 94%"="#C7EF99", "94% - 96%"="#90E033", "96% - 98%"="#076324", "98% - 100%"="#033d15", "NA"= "#c6c6c6")) + 
+    theme(legend.position="bottom") +
     scale_fill_manual(values=c("0 - 10"="white", "10 - 12"="#C7EF99", "12 - 15"="#90E033", "15 - 17"="#076324", "17+"="#033d15", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(student.teacher.map.plot), selection_type = "none")
@@ -2072,6 +2139,53 @@ output$colcountygraph <- renderggiraph({
   ggiraph(code=print(col.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
 })
 
+output$colcounty50graph <- renderggiraph({
+  col.plot.50 <- ggplot(filter(yearly.cost.2016_2018,
+                            (countyName %in% input$col.county.50) &
+                              
+                              (if (input$col.county.workers.50 == "Single") {
+                                numberAdults == 1 & adultAge=="51+"
+                              }
+                              
+                              else if (input$col.county.workers.50 == "Partnered - 1 full-time worker") {
+                                numberAdults == 2 & numberWorkers == 1 & adultAge=="51+"
+                              }
+                              
+                              else if (input$col.county.workers.50 == "Partnered - 1 full-time, 1 part-time worker") {
+                                numberAdults == 2 & numberWorkers == 1.5 & adultAge=="51+"
+                              }
+                              
+                              else if (input$col.county.workers.50 == "Partnered - 2 full-time workers") {
+                                numberAdults == 2 & numberWorkers == 2 & adultAge=="51+"
+                              })
+                            
+  ),
+  
+  aes(color=countyName, x=as.numeric(year), y=as.numeric(yearlyCost))) +
+    scale_x_continuous(breaks=c(2016,2017,2018))+
+    scale_y_continuous(label=comma) +
+    labs(x="Year", y="Cost of Living")+
+    theme_bar+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="bottom") +
+    scale_color_discrete(guide = guide_legend(ncol = 3))
+  
+  if (input$col.vis.list.50 == "Data points"){
+    col.plot.50 <- col.plot.50 +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Cost of Living: $",comma(yearlyCost))))
+  }
+  else if (input$col.vis.list.50 == "Trend lines"){
+    col.plot.50 <- col.plot.50 +
+      geom_line()
+  }
+  else if (input$col.vis.list.50 == "Both visualizations"){
+    col.plot.50 <- col.plot.50 +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Cost of Living: $",comma(yearlyCost)))) +
+      geom_line()
+  }
+  ggiraph(code=print(col.plot.50), selection_type="none",hover_css = "r:7;",width_svg=10)
+})
+
 output$colcountymap <- renderggiraph({
   col.county.map.plot <- ggplot(filter(yearly.cost.2016_2018.map,
                                             year == as.numeric(input$year.col.county) &
@@ -2098,10 +2212,41 @@ output$colcountymap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Cost of Living: $",comma(yearlyCost), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("$20,000 - $35,000"="white", "$35,000 - $45,000"="#C7EF99", "$45,000 - $55,000"="#90E033", "$55,000 - $65,000"="#076324", "$65,000 - $115,000"="#033d15", "NA"= "#c6c6c6"))
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3),values=c("$20,000 - $35,000"="white", "$35,000 - $45,000"="#C7EF99", "$45,000 - $55,000"="#90E033", "$55,000 - $65,000"="#076324", "$65,000 - $115,000"="#033d15", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(col.county.map.plot), selection_type = "none")
+  
+})
+
+output$colcountymap50 <- renderggiraph({
+  col.county.map.plot.50 <- ggplot(filter(yearly.cost.2016_2018.map,
+                                       year == as.numeric(input$year.col.county.50) &
+                                         
+                                         (if (input$col.county.workers.map.50 == "Single") {
+                                           numberAdults == 1 & adultAge=="51+"
+                                         }
+                                         
+                                         else if (input$col.county.workers.map.50 == "Partnered - 1 full-time worker") {
+                                           numberAdults == 2 & numberWorkers == 1 & adultAge=="51+"
+                                         }
+                                         
+                                         else if (input$col.county.workers.map.50 == "Partnered - 1 full-time, 1 part-time worker") {
+                                           numberAdults == 2 & numberWorkers == 1.5 & adultAge=="51+"
+                                         }
+                                         
+                                         else if (input$col.county.workers.map.50 == "Partnered - 2 full-time workers") {
+                                           numberAdults == 2 & numberWorkers == 2 & adultAge=="51+"
+                                         })
+  )
+  ) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Cost of Living: $",comma(yearlyCost), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3),values=c("$20,000 - $35,000"="white", "$35,000 - $45,000"="#C7EF99", "$45,000 - $55,000"="#90E033", "$55,000 - $65,000"="#076324", "$65,000 - $115,000"="#033d15", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(col.county.map.plot.50), selection_type = "none")
   
 })
 
@@ -2156,6 +2301,53 @@ output$hourlywagegraph <- renderggiraph({
   ggiraph(code=print(hourly.wage.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
 })
 
+output$hourlywagegraph50 <- renderggiraph({
+  hourly.wage.plot.50 <- ggplot(filter(hourly.wage.2016_2018,
+                                    (countyName %in% input$hourly.wage.county.50) &
+                                      
+                                      (if (input$hourly.wage.workers.50 == "Single") {
+                                        numberAdults == 1 & adultAge=="51+"
+                                      }
+                                      
+                                      else if (input$hourly.wage.workers.50 == "Partnered - 1 full-time worker") {
+                                        numberAdults == 2 & numberWorkers == 1 & adultAge=="51+"
+                                      }
+                                      
+                                      else if (input$hourly.wage.workers.50 == "Partnered - 1 full-time, 1 part-time worker") {
+                                        numberAdults == 2 & numberWorkers == 1.5 & adultAge=="51+"
+                                      }
+                                      
+                                      else if (input$hourly.wage.workers.50 == "Partnered - 2 full-time workers") {
+                                        numberAdults == 2 & numberWorkers == 2 & adultAge=="51+"
+                                      })
+                                    
+  ),
+  
+  aes(color=countyName, x=as.numeric(year), y=as.numeric(hourlyWage))) +
+    scale_x_continuous(breaks=c(2016,2017,2018))+
+    scale_y_continuous(label=comma) +
+    labs(x="Year", y="Hourly Wage")+
+    theme_bar+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="bottom") +
+    scale_color_discrete(guide = guide_legend(ncol = 3))
+  
+  if (input$hourly.wage.vis.list.50 == "Data points"){
+    hourly.wage.plot.50 <- hourly.wage.plot.50 +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Hourly Wage: $",comma(hourlyWage))))
+  }
+  else if (input$hourly.wage.vis.list.50 == "Trend lines"){
+    hourly.wage.plot.50 <- hourly.wage.plot.50 +
+      geom_line()
+  }
+  else if (input$hourly.wage.vis.list.50 == "Both visualizations"){
+    hourly.wage.plot.50 <- hourly.wage.plot.50 +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Hourly Wage: $",comma(hourlyWage)))) +
+      geom_line()
+  }
+  ggiraph(code=print(hourly.wage.plot.50), selection_type="none",hover_css = "r:7;",width_svg=10)
+})
+
 output$hourlywagemap <- renderggiraph({
   hourly.wage.map.plot <- ggplot(filter(hourly.wage.2016_2018.map,
                                        year == as.numeric(input$year.hourly.wage.county) &
@@ -2182,10 +2374,41 @@ output$hourlywagemap <- renderggiraph({
     geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Hourly Wage: $",comma(hourlyWage), sep = "")), color = "black") +
     scale_color_manual(guide = guide_legend(ncol = 3)) +
     theme_sf +
-    #theme(legend.position="bottom") +
-    scale_fill_manual(values=c("$7 - $15"="white", "$15 - $20"="#C7EF99", "$20 - $30"="#90E033", "$30 - $55"="#076324", "NA"= "#c6c6c6"))
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3),values=c("$7 - $15"="white", "$15 - $20"="#C7EF99", "$20 - $30"="#90E033", "$30 - $55"="#076324", "NA"= "#c6c6c6"))
   
   ggiraph(code = print(hourly.wage.map.plot), selection_type = "none")
+  
+})
+
+output$hourlywagemap50 <- renderggiraph({
+  hourly.wage.map.plot.50 <- ggplot(filter(hourly.wage.2016_2018.map,
+                                        year == as.numeric(input$year.hourly.wage.county.50) &
+                                          
+                                          (if (input$hourly.wage.county.workers.map.50 == "Single") {
+                                            numberAdults == 1 & adultAge=="51+"
+                                          }
+                                          
+                                          else if (input$hourly.wage.county.workers.map.50 == "Partnered - 1 full-time worker") {
+                                            numberAdults == 2 & numberWorkers == 1 & adultAge=="51+"
+                                          }
+                                          
+                                          else if (input$hourly.wage.county.workers.map.50 == "Partnered - 1 full-time, 1 part-time worker") {
+                                            numberAdults == 2 & numberWorkers == 1.5 & adultAge=="51+"
+                                          }
+                                          
+                                          else if (input$hourly.wage.county.workers.map.50 == "Partnered - 2 full-time workers") {
+                                            numberAdults == 2 & numberWorkers == 2 & adultAge=="51+"
+                                          })
+  )
+  ) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Hourly Wage: $",comma(hourlyWage), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3),values=c("$7 - $15"="white", "$15 - $20"="#C7EF99", "$20 - $30"="#90E033", "$30 - $55"="#076324", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(hourly.wage.map.plot.50), selection_type = "none")
   
 })
 

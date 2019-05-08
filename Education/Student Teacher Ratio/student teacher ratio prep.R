@@ -585,9 +585,7 @@ teacher.2018_2000.tidy <- teacher.2018_2000 %>%
     year = replace(year, year =="totalTeachers2018" ,2018)) %>%
    mutate(year=as.numeric(as.character(year))) %>%
   mutate(districtNumber=as.numeric(as.character(districtNumber)),
-         districtType=as.numeric(as.character(districtType))
-  ) %>%
-  mutate(
+         districtType=as.numeric(as.character(districtType)),
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtType = formatC(districtType, width = 2, flag = "0")
   )

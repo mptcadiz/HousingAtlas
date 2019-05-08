@@ -59,7 +59,7 @@ col.2017 <- read_csv("Cost of Living/cost_of_living_2017.csv") %>%
   rename(yearlyCost2017 = yearlyCost,
          hourlyWage2017 = hourlyWage)
 
-col.2016 <- read_csv("Cost of Living/cost_of_living_2016_2018.csv") %>%
+col.2016 <- read_csv("Cost of Living/cost_of_living_2016.csv") %>%
   select(vintage,"Area", "Family Size", "Number of Adults", "Number of Workers", "Number of Children", "Age of Adults", "Yearly Cost", "Hourly Wage") %>%
   rename(
     countyName=Area,
