@@ -746,6 +746,7 @@ gather(year,percentMinority,percentMinority2000:percentMinority2018) %>%
     year = replace(year, year =="percentMinority2018" ,"2018")) %>%
   rename(districtName = DistrictName,
          districtType = DistrictType) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv",append=FALSE)
 
 

@@ -222,4 +222,5 @@ drop.2012_2018.tidy <- drop.2012_2018 %>%
     year = replace(year, year =="dropRate2015" ,"2015"),
     year = replace(year, year =="dropRate2016" ,"2016"),
     year = replace(year, year =="dropRate2017" ,"2017")) %>%
+    mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/drop_rate_2012_2018.csv",append=FALSE)

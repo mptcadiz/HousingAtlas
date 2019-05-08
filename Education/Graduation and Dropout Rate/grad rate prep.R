@@ -216,6 +216,7 @@ grad.2012_2018.tidy2 <- grad.2012_2018 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+    mutate(districtName = str_to_title(districtName)) %>%
     write_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv",append=FALSE)
 
 test <- read_csv("Education/Graduation and Dropout Rate/grad_rate_2012_2018.csv")

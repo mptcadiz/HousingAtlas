@@ -11,7 +11,7 @@ library(gridExtra)
 #library(lettercase)
 library(ggiraph)
 library(geojsonio)
-library(rmapshaper)
+#library(rmapshaper)
 library(sp)
 loadfonts()
 options(scipen=999)
@@ -77,7 +77,8 @@ mn_school_districts <- st_read("Shapefiles/school_district_boundaries.shp", quie
     districtNumber = formatC(districtNumber, width = 4, flag = "0"),
     districtName = ifelse(districtName=="Minneapolis-St. Paul Int'l Airport", "Minneapolis-St. Paul International Airport", as.character(districtName))
   ) %>%
-  ms_simplify()
+  mutate(districtName = str_to_title(districtName))
+#  ms_simplify()
 
 
 #Objects - Housing --------------------------------------------------------
@@ -147,7 +148,6 @@ enrollment.change.2008_2012.map <- enrollment.change.2008_2012 %>%
 
 # Objects - Enrollment (students of color) ----------------------------------------------------
 enrolled.ethnicity.2000_2018.tidy <- read_csv("Education/Enrollment/enrolled_ethnicity_2000_2018.csv") %>%
-  mutate(districtName=toupper(districtName)) %>%
   rename(districtNumber = DistrictNumber)
 
 enrolled.ethnicity.2000_2018.map <- enrolled.ethnicity.2000_2018.tidy %>%
@@ -168,8 +168,7 @@ enrolled.ethnicity.2000_2018.map <- enrolled.ethnicity.2000_2018.tidy %>%
 
 ethnicity.district.list <- enrolled.ethnicity.2000_2018.tidy %>%
   select(districtName) %>%
-  distinct(districtName) %>%
-  mutate(districtName=toupper(districtName))
+  distinct(districtName)
 
 enrollment.district.list <- enrolled.2018_2000.tidy %>%
   select(districtName) %>%
@@ -318,9 +317,6 @@ grad.mixed.2012_2017.map <- read_csv("Education/Graduation and Dropout Rate/grad
          bins = fct_relevel(bins, "0% - 65%", "65% - 75%", "75% - 85%","85% - 100%")
   )
 
-ggplot(filter(grad.mixed.2012_2017.map, year==2017),aes(gradRate)) +
-  geom_histogram()
-
 drop.ethnicity.breakdown.2012_2017 <- read_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv") 
 
 drop.ethnicity.breakdown.2012_2017.map <- drop.ethnicity.breakdown.2012_2017 %>%
@@ -459,7 +455,32 @@ teacher.district.list <- student.teacher.ratio.2008_2018 %>%
 # Objects - Cost of Living ----------------------------------------------------
 yearly.cost.2016_2018 <- read_csv("Cost of Living/yearly_cost_2016_2018.csv")
 
+yearly.cost.2016_2018.map <- full_join(mn_counties,  yearly.cost.2016_2018, by = c("countyFIPS")) %>%
+  drop_na(countyName.y) %>%
+  rename(countyName=countyName.x) %>%
+  select(-countyName.y) %>%
+  mutate(bins = cut(yearlyCost,
+                    breaks = c(20000, 34999, 44999, 54999, 64999, 115000),
+                    labels = c("$20,000 - $35,000", "$35,000 - $45,000", "$45,000 - $55,000", "$55,000 - $65,000", "$65,000 - $115,000")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins,"$20,000 - $35,000", "$35,000 - $45,000", "$45,000 - $55,000", "$55,000 - $65,000", "$65,000 - $115,000")
+  )
+
 hourly.wage.2016_2018 <- read_csv("Cost of Living/hourly_wage_2016_2018.csv")
+
+hourly.wage.2016_2018.map <- full_join(mn_counties,  hourly.wage.2016_2018, by = c("countyFIPS")) %>%
+  drop_na(countyName.y) %>%
+  rename(countyName=countyName.x) %>%
+  select(-countyName.y) %>%
+  mutate(bins = cut(hourlyWage,
+                    breaks = c(7, 14.99, 19.99, 29.99, 55),
+                    labels = c("$7 - $15", "$15 - $20", "$20 - $30", "$30 - $55")),
+         bins = ifelse(is.na(bins), "NA", as.character(bins)),
+         bins = fct_relevel(bins,"$7 - $15", "$15 - $20", "$20 - $30", "$30 - $55")
+  )
+
+ggplot(filter(hourly.wage.2016_2018.map, year==2018),aes(hourlyWage)) +
+  geom_histogram()
 
 col.county.name.list <-yearly.cost.2016_2018 %>%
   select(countyName) %>%
@@ -494,7 +515,7 @@ navbarPage("",
                                  tabPanel("Median Home Value",
                                           mainPanel(
                                             tabsetPanel(
-                                              tabPanel("Median Home Value: 1990 - 2017 Chart",
+                                              tabPanel("Median Home Value - Chart",
                                                        
                                                        selectizeInput(inputId = "home.val.county",
                                                                       label = "Choose a county",
@@ -509,7 +530,7 @@ navbarPage("",
                                                        ggiraphOutput("homevalcountygraph")
                                                        ),
                                               
-                                              tabPanel("Median Home Value - Maps",
+                                              tabPanel("Median Home Value - Map",
                                                        
                                                        selectInput(inputId = "year.home.val",
                                                                    label = "Choose a year",
@@ -525,7 +546,18 @@ navbarPage("",
                                  tabPanel("Median Year Built",
                                           mainPanel(
                                             tabsetPanel(
-                                              tabPanel("Median Year Built - Maps",
+                                              tabPanel("Median Year Built - Chart",
+                                                       selectizeInput(inputId = "year.built.county.chart",
+                                                                      label = "Choose a county",
+                                                                      choices = county.list,
+                                                                      multiple = TRUE),
+                                                       
+                                                       radioButtons(inputId="year.built.vis.list",
+                                                                    label="How would you like to visualize the data?",
+                                                                    choices = vis.list,
+                                                                    inline=TRUE),
+                                                       
+                                              tabPanel("Median Year Built - Map",
                                                        selectInput(inputId = "year.built.county",
                                                                       label = "Choose a year",
                                                                       choices = list(1990,2000,2010,2017),
@@ -533,17 +565,7 @@ navbarPage("",
                                                        
                                                        ggiraphOutput("yearbuiltcountygraph")
                                               ),
-                                              tabPanel("Median Year Built - Charts",
-                                                       selectizeInput(inputId = "year.built.county.chart",
-                                                                      label = "Choose a county",
-                                                                      choices = county.list,
-                                                                      multiple = TRUE),
-
-                                                       radioButtons(inputId="year.built.vis.list",
-                                                                    label="How would you like to visualize the data?",
-                                                                    choices = vis.list,
-                                                                    inline=TRUE),
-
+                                              
                                                        ggiraphOutput("yearbuiltcountychart")
                                               )
                                               ))),
@@ -552,7 +574,7 @@ navbarPage("",
                                  tabPanel("Mortgage Status",
                                           mainPanel(
                                             tabsetPanel(
-                                              tabPanel("Mortgage Status",
+                                              tabPanel("Mortgage Status - Chart",
                                                        selectizeInput(inputId = "mortgage.status.county",
                                                                       label = "Choose a county",
                                                                       choices = county.list,
@@ -566,7 +588,7 @@ navbarPage("",
                                                        ggiraphOutput("mortgagestatuscountygraph")
                                               ),
                                               
-                                              tabPanel("Mortgage Status - Maps",
+                                              tabPanel("Mortgage Status - Map",
                                                        selectInput(inputId = "mortgage.status.county.map",
                                                                    label = "Choose a year",
                                                                    choices = list(1990,2000,2010),
@@ -586,7 +608,7 @@ navbarPage("",
                                             tabPanel("Enrollment",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Total Number of Students Enrolled",
+                                                         tabPanel("Total Number of Students Enrolled - Chart",
                                                                   
                                                                   selectizeInput(inputId = "student.enrollment.district",
                                                                                  label = "Choose a district",
@@ -601,7 +623,7 @@ navbarPage("",
                                                                   ggiraphOutput("studentenrollmentgraph")
                                                          ),
                                                          
-                                                         tabPanel("Total Number of Students Enrolled - Maps",
+                                                         tabPanel("Total Number of Students Enrolled - Map",
                                                                   selectInput(inputId = "student.enrollment.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
@@ -610,7 +632,7 @@ navbarPage("",
                                                                   ggiraphOutput("studentenrollmentmap")
                                                          ),
                                                          
-                                                         tabPanel("Change In Student Enrollment - Maps",
+                                                         tabPanel("Change In Student Enrollment - Map",
                                                                   selectInput(inputId = "enrollment.change.map",
                                                                               label = "Choose a year to compare to 2018",
                                                                               choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017),
@@ -619,7 +641,7 @@ navbarPage("",
                                                                   ggiraphOutput("enrollmentchangemap")
                                                          ),
                                                          
-                                                          tabPanel("Percent of Students of Color Enrolled",
+                                                          tabPanel("Percent of Students of Color Enrolled - Chart",
                                                                                
                                                                     selectizeInput(inputId = "student.ethnicity.district",
                                                                               label = "Choose a district",
@@ -634,7 +656,7 @@ navbarPage("",
                                                                     ggiraphOutput("studentethnicitygraph")
                                                                       ),
                                                          
-                                                         tabPanel("Percent of Students of Color Enrolled - Maps",
+                                                         tabPanel("Percent of Students of Color Enrolled - Map",
                                                                   selectInput(inputId = "student.ethnicity.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
@@ -648,7 +670,7 @@ navbarPage("",
                                             tabPanel("Graduation and Dropout Rates",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Total Graduation Rate",
+                                                         tabPanel("Total Graduation Rate - Chart",
                                                                   
                                                                   selectizeInput(inputId = "grad.rate",
                                                                                  label = "Choose a district",
@@ -663,7 +685,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradrategraph")
                                                          ),
                                                          
-                                                         tabPanel("Total Graduation Rate - Maps",
+                                                         tabPanel("Total Graduation Rate - Map",
                                                                   selectInput(inputId = "grad.rate.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2012,2013,2014,2015,2016,2017),
@@ -672,7 +694,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradratemap")
                                                          ),
                                                          
-                                                         tabPanel("Total Dropout Rate",
+                                                         tabPanel("Total Dropout Rate - Chart",
                                                                   
                                                                   selectizeInput(inputId = "drop.rate",
                                                                                  label = "Choose a district",
@@ -687,16 +709,20 @@ navbarPage("",
                                                                   ggiraphOutput("droprategraph")
                                                          ),
                                                          
-                                                         tabPanel("Total Dropout Rate - Maps",
+                                                         tabPanel("Total Dropout Rate - Map",
                                                                   selectInput(inputId = "drop.rate.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2012,2013,2014,2015,2016,2017),
                                                                               multiple = FALSE),
                                                                   
                                                                   ggiraphOutput("dropratemap")
-                                                         ),
-                                                         
-                                                         tabPanel("Students of Color Graduation Rate",
+                                                         )
+                                                         ))),
+                                            #UI: Graduation and Dropout Rates - Students of Color --------------------------------------------------------
+                                            tabPanel("Graduation and Dropout Rates - Students of Color",
+                                                     mainPanel(
+                                                       tabsetPanel(
+                                                         tabPanel("Students of Color Graduation Rate - Chart",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.grad.rate",
                                                                                  label = "Choose a district",
@@ -711,7 +737,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitygradrategraph")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Graduation Rate - Maps",
+                                                         tabPanel("Students of Color Graduation Rate - Map",
                                                                   selectInput(inputId = "ethnicity.grad.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2012,2013,2014,2015,2016,2017),
@@ -720,7 +746,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitygradratemap")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Dropout Rate",
+                                                         tabPanel("Students of Color Dropout Rate - Chart",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.drop.rate",
                                                                                  label = "Choose a district",
@@ -735,7 +761,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitydroprategraph")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Dropout Rate - Maps",
+                                                         tabPanel("Students of Color Dropout Rate - Map",
                                                                   selectInput(inputId = "ethnicity.drop.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2012,2013,2014,2015,2016,2017),
@@ -744,7 +770,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitydropratemap")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity",
+                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity - Chart",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.breakdown.grad.rate.district",
                                                                                  label = "Choose a district",
@@ -764,7 +790,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitybreakdowngradrategraph")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity - Maps",
+                                                         tabPanel("Students of Color Graduation Rate - By Ethnicity - Map",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.breakdown.grad.ethnicity.map",
                                                                                  label = "Choose an ethnicity",
@@ -780,7 +806,7 @@ navbarPage("",
                                                                   
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity",
+                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity - Chart",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.breakdown.drop.rate.district",
                                                                                  label = "Choose a district",
@@ -800,7 +826,7 @@ navbarPage("",
                                                                   ggiraphOutput("ethnicitybreakdowndroprategraph")
                                                          ),
                                                          
-                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity - Maps",
+                                                         tabPanel("Students of Color Dropout Rate - By Ethnicity - Map",
                                                                   
                                                                   selectizeInput(inputId = "ethnicity.breakdown.drop.ethnicity.map",
                                                                                  label = "Choose an ethnicity",
@@ -817,12 +843,13 @@ navbarPage("",
                                                          )
                                                          
                                                          
-                                                         ))),
+                                                       ))),
+                                            
                                             #UI: Test Scores --------------------------------------------------------
                                             tabPanel("Test Scores",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("GRAD: Math",
+                                                         tabPanel("GRAD: Math Average Score and Percent Takers - Chart",
                                                                   
                                                                   #UI: Average GRAD: Math scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.math.score",
@@ -851,7 +878,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradmathpassgraph")
                                                          ),
                                                          
-                                                         tabPanel("GRAD: Reading",
+                                                         tabPanel("GRAD: Reading Average Score and Percent Takers - Chart",
                                                                   
                                                                   #UI: Average GRAD: Reading scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.reading.score",
@@ -880,7 +907,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradreadingpassgraph")
                                                          ),
                                                          
-                                                         tabPanel("ACT Scores and Percent of Takers",
+                                                         tabPanel("ACT Scores and Percent of Takers - Chart",
                                                                   #UI: Average ACT Score --------------------------------------------------------
                                                                   selectizeInput(inputId = "act.scores",
                                                                                  label = "Choose a district",
@@ -908,7 +935,7 @@ navbarPage("",
                                                                   ggiraphOutput("acttakersgraph")
                                                          ),
                                                          
-                                                         tabPanel("Percent of ACT Takers - Maps",
+                                                         tabPanel("Percent of ACT Takers - Map",
                                                                   selectInput(inputId = "act.takers.map",
                                                                               label = "Choose a year",
                                                                               choices = list(2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018),
@@ -924,7 +951,7 @@ navbarPage("",
                                             tabPanel("Free/Reduced Lunch",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Percent of Students with Free/Reduced Lunch",
+                                                         tabPanel("Percent of Students with Free/Reduced Lunch - Chart",
                                                                   
                                                                   selectizeInput(inputId = "lunch.district",
                                                                                  label = "Choose a district",
@@ -954,7 +981,7 @@ navbarPage("",
                                             tabPanel("English Proficiency",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Percent of Students Not Proficient in English Identified",
+                                                         tabPanel("Percent of Students Not Proficient in English Identified - Chart",
 
                                                                  selectizeInput(inputId = "english.prof",
                                                                                  label = "Choose a district",
@@ -985,7 +1012,7 @@ navbarPage("",
                                             tabPanel("Home Language",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Percent of Students With English As Home Language",
+                                                         tabPanel("Percent of Students With English As Home Language - Chart",
 
                                                                   selectizeInput(inputId = "home.lang",
                                                                                  label = "Choose a district",
@@ -1000,7 +1027,7 @@ navbarPage("",
                                                                   ggiraphOutput("homelanggraph")
                                                          ),
                                                          
-                                                         tabPanel("Percent of Students With English As Home Language - Maps",
+                                                         tabPanel("Percent of Students With English As Home Language - Map",
                                                                   
                                                                   selectInput(inputId = "home.lang.map",
                                                                               label = "Choose a year",
@@ -1015,7 +1042,7 @@ navbarPage("",
                                             tabPanel("Student-Teacher Ratio",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Number of Teachers (Full-Time Equivalent Teachers)",
+                                                         tabPanel("Number of Teachers (Full-Time Equivalent Teachers) - Chart",
                                                                   
                                                                   selectizeInput(inputId = "teacher.district",
                                                                                  label = "Choose a district",
@@ -1029,7 +1056,7 @@ navbarPage("",
                                                                   
                                                                   ggiraphOutput("teachergraph")
                                                          ),
-                                                         tabPanel("Student-Teacher Ratio",
+                                                         tabPanel("Student-Teacher Ratio - Chart",
                                                                   
                                                                   selectizeInput(inputId = "student.teacher.ratio",
                                                                                  label = "Choose a district",
@@ -1044,7 +1071,7 @@ navbarPage("",
                                                                   ggiraphOutput("studentteachegraph")
                                                          ),
                                                          
-                                                         tabPanel("Student-Teacher Ratio - Maps",
+                                                         tabPanel("Student-Teacher Ratio - Map",
                                                                   
                                                                   selectInput(inputId = "student.teacher.ratio.map",
                                                                               label = "Choose a year",
@@ -1070,7 +1097,7 @@ navbarPage("",
                                              tabPanel("Yearly Cost",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("Yearly Cost - Charts",
+                                                         tabPanel("Yearly Cost - Chart",
                                                                   
                                                                   selectizeInput(inputId = "col.county",
                                                                                  label = "Choose a county",
@@ -1095,14 +1122,74 @@ navbarPage("",
                                                                   ggiraphOutput("colcountygraph")
                                                          ),
                                                          
-                                                         tabPanel("Yearly Cost - Maps",
+                                                         tabPanel("Yearly Cost - Map",
                                                                   
                                                                   selectInput(inputId = "year.col.county",
                                                                               label = "Choose a year",
                                                                               choices = list(2016,2017,2018),
                                                                               multiple = FALSE),
                                                                   
+                                                                  selectizeInput(inputId = "col.county.workers.map",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "col.county.children.map",
+                                                                                 label = "How many children?",
+                                                                                 choices = col.county.children.list,
+                                                                                 multiple = FALSE),
+                                                                  
                                                                   ggiraphOutput("colcountymap")
+                                                         )
+                                                         
+                                                       ))),
+                                            
+                                            tabPanel("Hourly Wage",
+                                                     mainPanel(
+                                                       tabsetPanel(
+                                                         tabPanel("Hourly Wage - Chart",
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.county",
+                                                                                 label = "Choose a county",
+                                                                                 choices = col.county.name.list ,
+                                                                                 multiple = TRUE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.workers",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.children",
+                                                                                 label = "How many children?",
+                                                                                 choices = col.county.children.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  radioButtons(inputId="hourly.wage.vis.list",
+                                                                               label="How would you like to visualize the data?",
+                                                                               choices = vis.list,
+                                                                               inline=FALSE),
+                                                                  
+                                                                  ggiraphOutput("hourlywagegraph")
+                                                         ),
+                                                         
+                                                         tabPanel("Hourly Wage - Map",
+                                                                  
+                                                                  selectInput(inputId = "year.hourly.wage.county",
+                                                                              label = "Choose a year",
+                                                                              choices = list(2016,2017,2018),
+                                                                              multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.county.workers.map",
+                                                                                 label = "I am:",
+                                                                                 choices = col.county.workers.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  selectizeInput(inputId = "hourly.wage.county.children.map",
+                                                                                 label = "How many children?",
+                                                                                 choices = col.county.children.list,
+                                                                                 multiple = FALSE),
+                                                                  
+                                                                  ggiraphOutput("hourlywagemap")
                                                          )
                                                          
                                                        )))
@@ -1935,11 +2022,8 @@ output$studentteachermap <- renderggiraph({
   
 })
 
-# Server - Cost of Living --------------------------------------------------------
+# Server - Cost of Living - Yearly Cost --------------------------------------------------------
 output$colcountygraph <- renderggiraph({
-
-#ethnicity.drop.rate.breakdown.plot <- ggplot(filter(drop.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.drop.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.drop.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(dropRate))) +
-  
   col.plot <- ggplot(filter(yearly.cost.2016_2018,
                             (countyName %in% input$col.county) &
                             
@@ -1987,7 +2071,124 @@ output$colcountygraph <- renderggiraph({
   }
   ggiraph(code=print(col.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
 })
+
+output$colcountymap <- renderggiraph({
+  col.county.map.plot <- ggplot(filter(yearly.cost.2016_2018.map,
+                                            year == as.numeric(input$year.col.county) &
+                                              
+                                              (if (input$col.county.workers.map == "Single") {
+                                                numberAdults == 1 & adultAge=="19-50"
+                                              }
+                                              
+                                              else if (input$col.county.workers.map == "Partnered - 1 full-time worker") {
+                                                numberAdults == 2 & numberWorkers == 1 & adultAge=="19-50"
+                                              }
+                                              
+                                              else if (input$col.county.workers.map == "Partnered - 1 full-time, 1 part-time worker") {
+                                                numberAdults == 2 & numberWorkers == 1.5 & adultAge=="19-50"
+                                              }
+                                              
+                                              else if (input$col.county.workers.map == "Partnered - 2 full-time workers") {
+                                                numberAdults == 2 & numberWorkers == 2 & adultAge=="19-50"
+                                              }) &
+                                              
+                                              (numberChildren == as.numeric(input$col.county.children.map))
+  )
+  ) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Cost of Living: $",comma(yearlyCost), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    #theme(legend.position="bottom") +
+    scale_fill_manual(values=c("$20,000 - $35,000"="white", "$35,000 - $45,000"="#C7EF99", "$45,000 - $55,000"="#90E033", "$55,000 - $65,000"="#076324", "$65,000 - $115,000"="#033d15", "NA"= "#c6c6c6"))
   
+  ggiraph(code = print(col.county.map.plot), selection_type = "none")
+  
+})
+
+# Server - Cost of Living - Hourly Wage --------------------------------------------------------
+
+output$hourlywagegraph <- renderggiraph({
+  hourly.wage.plot <- ggplot(filter(hourly.wage.2016_2018,
+                            (countyName %in% input$hourly.wage.county) &
+                              
+                              (if (input$hourly.wage.workers == "Single") {
+                                numberAdults == 1 & adultAge=="19-50"
+                              }
+                              
+                              else if (input$hourly.wage.workers == "Partnered - 1 full-time worker") {
+                                numberAdults == 2 & numberWorkers == 1 & adultAge=="19-50"
+                              }
+                              
+                              else if (input$hourly.wage.workers == "Partnered - 1 full-time, 1 part-time worker") {
+                                numberAdults == 2 & numberWorkers == 1.5 & adultAge=="19-50"
+                              }
+                              
+                              else if (input$hourly.wage.workers == "Partnered - 2 full-time workers") {
+                                numberAdults == 2 & numberWorkers == 2 & adultAge=="19-50"
+                              }) &
+                              
+                              (numberChildren == as.numeric(input$hourly.wage.children))
+                            
+  ),
+  
+  aes(color=countyName, x=as.numeric(year), y=as.numeric(hourlyWage))) +
+    scale_x_continuous(breaks=c(2016,2017,2018))+
+    scale_y_continuous(label=comma) +
+    labs(x="Year", y="Hourly Wage")+
+    theme_bar+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="bottom") +
+    scale_color_discrete(guide = guide_legend(ncol = 3))
+  
+  if (input$hourly.wage.vis.list == "Data points"){
+    hourly.wage.plot <- hourly.wage.plot +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Hourly Wage: $",comma(hourlyWage))))
+  }
+  else if (input$hourly.wage.vis.list == "Trend lines"){
+    hourly.wage.plot <- hourly.wage.plot +
+      geom_line()
+  }
+  else if (input$hourly.wage.vis.list == "Both visualizations"){
+    hourly.wage.plot <- hourly.wage.plot +
+      geom_point_interactive(size=3,aes(tooltip=paste(countyName, year,"\n Hourly Wage: $",comma(hourlyWage)))) +
+      geom_line()
+  }
+  ggiraph(code=print(hourly.wage.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
+})
+
+output$hourlywagemap <- renderggiraph({
+  hourly.wage.map.plot <- ggplot(filter(hourly.wage.2016_2018.map,
+                                       year == as.numeric(input$year.hourly.wage.county) &
+                                         
+                                         (if (input$hourly.wage.county.workers.map == "Single") {
+                                           numberAdults == 1 & adultAge=="19-50"
+                                         }
+                                         
+                                         else if (input$hourly.wage.county.workers.map == "Partnered - 1 full-time worker") {
+                                           numberAdults == 2 & numberWorkers == 1 & adultAge=="19-50"
+                                         }
+                                         
+                                         else if (input$hourly.wage.county.workers.map == "Partnered - 1 full-time, 1 part-time worker") {
+                                           numberAdults == 2 & numberWorkers == 1.5 & adultAge=="19-50"
+                                         }
+                                         
+                                         else if (input$hourly.wage.county.workers.map == "Partnered - 2 full-time workers") {
+                                           numberAdults == 2 & numberWorkers == 2 & adultAge=="19-50"
+                                         }) &
+                                         
+                                         (numberChildren == as.numeric(input$hourly.wage.county.children.map))
+  )
+  ) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(countyName, "\n", "Hourly Wage: $",comma(hourlyWage), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    #theme(legend.position="bottom") +
+    scale_fill_manual(values=c("$7 - $15"="white", "$15 - $20"="#C7EF99", "$20 - $30"="#90E033", "$30 - $55"="#076324", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(hourly.wage.map.plot), selection_type = "none")
+  
+})
+
 }
 
 # Run the application 

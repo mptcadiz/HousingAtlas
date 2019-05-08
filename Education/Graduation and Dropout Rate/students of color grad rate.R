@@ -209,6 +209,7 @@ grad.ethnicity.2012_2017 <- full_join(grad.ethnicity.2017, grad.ethnicity.2016, 
   rename(districtName=districtName.x) %>%
   select(-districtName.y) %>%
   drop_na(districtName) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_2012_2017.csv",append=FALSE)
 
 gradtest <- read_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_2012_2017.csv") %>%
@@ -454,6 +455,7 @@ grad.ethnicity.2012_2017.tidy <- gradtest %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
 write_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_2012_2017.csv",append=FALSE)
   
  

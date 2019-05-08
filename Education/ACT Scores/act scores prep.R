@@ -96,6 +96,7 @@ act.score.2008_2018 <- full_join(act.score.2018, act.score.2013_2017, by = c("ac
   ) %>%
   mutate(year=as.numeric(as.character(year))) %>%
   filter(districtName != "District Not Identified") %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/ACT Scores/act_scores_2008_2018.csv",append=FALSE)
 
 # Number of ACT takers (5 year averages) ---------------------------------
@@ -268,7 +269,7 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
     N2013=as.numeric(as.character(N2013))
   ) %>%
   filter(districtName != "District Not Identified") %>%
-  #filter(districtName != "MINNEAPOLIS PUBLIC SCH DIST") %>%
+  filter(districtName != "MINNEAPOLIS PUBLIC SCH DIST") %>%
   mutate(districtNumber = ifelse(districtName == "BOLD SCHOOL DISTRICT", 2534, districtNumber)) %>%
   mutate(
     districtNumber = formatC(districtNumber, width = 4, flag = "0")
@@ -597,4 +598,5 @@ act.n.2008_2018 <- full_join(act.n.2018, act.n.2013_2017, by = c("actCode")) %>%
       year = replace(year, year =="percent2017" ,"2017"),
       year = replace(year, year =="percent2018" ,"2018")
     ) %>%
+    mutate(districtName = str_to_title(districtName)) %>%
     write_csv("Education/ACT Scores/act_percent_2008_2018.csv")

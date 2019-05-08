@@ -197,4 +197,5 @@ drop.ethnicity.2012_2017.tidy <- drop.ethnicity.2012_2017 %>%
     year = replace(year, year =="dropRate2016" ,"2016"),
     year = replace(year, year =="dropRate2017" ,"2017")) %>%
   select(-category) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/drop_rate_ethnicity_breakdown_2012_2017.csv",append=FALSE)

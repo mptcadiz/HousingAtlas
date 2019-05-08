@@ -278,4 +278,5 @@ grad.reading.nonpub.2008_2012.tidy <- full_join(grad.reading.nonpub.2008_2012.sc
 # GRAD: math (public and nonpublic schools, by district) ---------------------------------
 
 grad.reading.2008_2012_total <- bind_rows(grad.reading.2008_2012.tidy, grad.reading.nonpub.2008_2012.tidy) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/GRAD scores/grad_reading_2008_2012.csv",append=FALSE)

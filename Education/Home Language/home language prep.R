@@ -447,4 +447,5 @@ home.lang.2008_2018.tidy <- home.lang.2008_2018 %>%
     year = replace(year, year =="percentEng2016" ,"2016"),
     year = replace(year, year =="percentEng2017" ,"2017"),
     year = replace(year, year =="percentEng2018" ,"2018")) %>%
+    mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Home Language/home_lang_2008_2018.csv",append=FALSE)

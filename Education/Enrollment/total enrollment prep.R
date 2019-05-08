@@ -526,6 +526,7 @@ enrolled.2018_2000.tidy <- enrolled.2018_2000 %>%
     year = replace(year, year =="totalStudents2016" ,"2016"),
     year = replace(year, year =="totalStudents2017" ,"2017"),
     year = replace(year, year =="totalStudents2018" ,"2018")) %>%
+    mutate(districtName = str_to_title(districtName)) %>%
     write_csv("Education/Enrollment/enrolled_total_2000_2018.csv",append=FALSE)
 
 enrollment.change.2008_2018 <- enrolled.2018_2000 %>%
@@ -594,4 +595,5 @@ enrollment.change.2008_2018 <- enrolled.2018_2000 %>%
     year = replace(year, year =="change2016" ,"2016"),
     year = replace(year, year =="change2017" ,"2017"),
     year = replace(year, year =="change2018" ,"2018")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Enrollment/enrollment_change_2000_2018.csv",append=FALSE)

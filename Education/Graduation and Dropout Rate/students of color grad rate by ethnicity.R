@@ -490,6 +490,7 @@ grad.asian.2012_2017 <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_asian_2012_2017.csv",append=FALSE)
 
 # Grad Rate - Black ---------------------------
@@ -790,6 +791,7 @@ grad.black.2012_2017 <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_black_2012_2017.csv",append=FALSE)
 
 # Grad Rate - Hispanic ---------------------------
@@ -1062,6 +1064,7 @@ grad.hispanic.2012_2017 <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_hispanic_2012_2017.csv",append=FALSE)
 
 # Grad Rate - Native ---------------------------
@@ -1395,6 +1398,7 @@ grad.native.2012_2017 <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_native_2012_2017.csv",append=FALSE)
 
 # Grad Rate - Mixed Race ---------------------------
@@ -1696,6 +1700,7 @@ grad.mixed.2012_2017 <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2015" ,"2015"),
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_mixed_2012_2017.csv",append=FALSE)
   
 
@@ -1710,4 +1715,5 @@ grad.ethnicity.2012_2017.tidy <- grad.ethnicity.2012_2017 %>%
     year = replace(year, year =="gradRate2016" ,"2016"),
     year = replace(year, year =="gradRate2017" ,"2017")) %>%
   select(-category) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Graduation and Dropout Rate/grad_rate_ethnicity_breakdown_2012_2017.csv",append=FALSE)

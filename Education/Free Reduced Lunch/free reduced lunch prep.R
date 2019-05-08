@@ -389,6 +389,7 @@ tidy.free.red.lunch.2006_2018 <- free.red.lunch.2006_2018 %>%
     year = replace(year, year =="percentLunch2017" ,"2017"),
     year = replace(year, year =="percentLunch2018" ,"2018")) %>%
   rename(districtName=DistrictName) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv",append=FALSE)
 
 lunchtest <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv") %>%
@@ -444,4 +445,5 @@ lunchtest <- read_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv
   rbind(c("2759", "01", "Eagle Valley", 2016, NA)) %>%
   rbind(c("2759", "01", "Eagle Valley", 2017, NA)) %>%
   rbind(c("2759", "01", "Eagle Valley", 2018, NA)) %>%
+  mutate(districtName = str_to_title(districtName)) %>%
   write_csv("Education/Free Reduced Lunch/free_red_lunch_2006_2018.csv",append=FALSE)

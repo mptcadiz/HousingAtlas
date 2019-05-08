@@ -104,7 +104,8 @@ yearly.cost.2018_2016 <- col.2018_2016 %>%
   mutate(
     year = replace(year, year =="yearlyCost2016" ,"2016"),
     year = replace(year, year =="yearlyCost2017" ,"2017"),
-    year = replace(year, year =="yearlyCost2018" ,"2018")
+    year = replace(year, year =="yearlyCost2018" ,"2018"),
+    countyFIPS = formatC(countyFIPS, width = 3, flag = "0")
   ) %>%
   write_csv("Cost of Living/yearly_cost_2016_2018.csv",append=FALSE)
 
@@ -116,10 +117,12 @@ hourly.wage.2018_2016 <- col.2018_2016 %>%
   mutate(
     year = replace(year, year =="hourlyWage2016" ,"2016"),
     year = replace(year, year =="hourlyWage2017" ,"2017"),
-    year = replace(year, year =="hourlyWage2018" ,"2018")
+    year = replace(year, year =="hourlyWage2018" ,"2018"),
+    countyFIPS = formatC(countyFIPS, width = 3, flag = "0")
   ) %>%
   write_csv("Cost of Living/hourly_wage_2016_2018.csv",append=FALSE)
 
 col.2018_2016.tidy <- full_join(yearly.cost.2018_2016, hourly.wage.2018_2016, by = c("countyFIPS","year","familySize", "numberAdults", "numberWorkers", "numberChildren", "adultAge")) %>%
   select(-countyName.y) %>%
-  rename(countyName=countyName.x)
+  rename(countyName=countyName.x) %>%
+  write_csv("Cost of Living/cost_of_living_2016_2018.csv",append=FALSE)
