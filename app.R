@@ -466,6 +466,10 @@ yearly.cost.2016_2018.map <- full_join(mn_counties,  yearly.cost.2016_2018, by =
          bins = fct_relevel(bins,"$20,000 - $35,000", "$35,000 - $45,000", "$45,000 - $55,000", "$55,000 - $65,000", "$65,000 - $115,000")
   )
 
+
+# ggplot(filter(yearly.cost.2016_2018.map, year==2018,familySize==6, numberAdults==2, numberWorkers==2, numberChildren==4, adultAge=="19-50"),aes(yearlyCost)) +
+#   geom_histogram()
+
 hourly.wage.2016_2018 <- read_csv("Cost of Living/hourly_wage_2016_2018.csv")
 
 hourly.wage.2016_2018.map <- full_join(mn_counties,  hourly.wage.2016_2018, by = c("countyFIPS")) %>%
@@ -478,9 +482,6 @@ hourly.wage.2016_2018.map <- full_join(mn_counties,  hourly.wage.2016_2018, by =
          bins = ifelse(is.na(bins), "NA", as.character(bins)),
          bins = fct_relevel(bins,"$7 - $15", "$15 - $20", "$20 - $30", "$30 - $55")
   )
-
-ggplot(filter(hourly.wage.2016_2018.map, year==2018),aes(hourlyWage)) +
-  geom_histogram()
 
 col.county.name.list <-yearly.cost.2016_2018 %>%
   select(countyName) %>%
@@ -850,9 +851,9 @@ navbarPage("",
                                             tabPanel("Test Scores",
                                                      mainPanel(
                                                        tabsetPanel(
-                                                         tabPanel("GRAD: Math Average Score and Percent Takers - Chart",
+                                                         tabPanel("GRAD: Math Average Score - Chart",
                                                                   
-                                                                  #UI: Average GRAD: Math scores  --------------------------------------------------------
+                                                                  #UI: Average GRAD: Math Average Scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.math.score",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.math.list,
@@ -863,9 +864,12 @@ navbarPage("",
                                                                                choices = vis.list,
                                                                                inline=TRUE),
                                                                   
-                                                                  ggiraphOutput("gradmathscoregraph"),
+                                                                  ggiraphOutput("gradmathscoregraph")
+                                                         ),
+                                                         
+                                                         tabPanel("GRAD: Math Percent Passers - Chart",
                                                                   
-                                                                  #UI: Percent of GRAD: Math passers --------------------------------------------------------
+                                                                  #UI: Percent of GRAD: Math Passers --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.math.pass",
                                                                                  label = "Choose a district",
                                                                                  choices = grad.math.list,
@@ -879,7 +883,7 @@ navbarPage("",
                                                                   ggiraphOutput("gradmathpassgraph")
                                                          ),
                                                          
-                                                         tabPanel("GRAD: Reading Average Score and Percent Takers - Chart",
+                                                         tabPanel("GRAD: Reading Average Scores - Chart",
                                                                   
                                                                   #UI: Average GRAD: Reading scores  --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.reading.score",
@@ -892,7 +896,10 @@ navbarPage("",
                                                                                choices = vis.list,
                                                                                inline=TRUE),
                                                                   
-                                                                  ggiraphOutput("gradreadingscoregraph"),
+                                                                  ggiraphOutput("gradreadingscoregraph")
+                                                         ),
+                                                         
+                                                         tabPanel("GRAD: Reading Passers - Chart",
                                                                   
                                                                   #UI: Percent of GRAD: Reading passers --------------------------------------------------------
                                                                   selectizeInput(inputId = "grad.reading.pass",
@@ -1613,7 +1620,7 @@ output$ethnicitygradratemap <- renderggiraph({
 # Server - Graduation Rates Visualization - Students of Color - Breakdown--------------------------------------------------------
     output$ethnicitybreakdowngradrategraph <- renderggiraph({
 
-      ethnicity.grad.rate.breakdown.plot <- ggplot(filter(grad.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.grad.rate.ethnicity) & (districtName %in% input$ethnicity.breakdown.grad.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(gradRate))) +
+      ethnicity.grad.rate.breakdown.plot <- ggplot(filter(grad.ethnicity.breakdown.2012_2017, (description %in% input$ethnicity.breakdown.drop.ethnicity.map) & (districtName %in% input$ethnicity.breakdown.grad.rate.district)), aes(color=description, x=as.numeric(year), y=as.numeric(gradRate))) +
         scale_x_continuous(breaks=c(2012,2013,2014,2015,2016,2017))+
         scale_y_continuous(labels=scales::percent)+
         labs(x="Year", y="Graduation Rate")+
@@ -1718,6 +1725,17 @@ output$ethnicitydropratemap <- renderggiraph({
       ggiraph(code=print(ethnicity.drop.rate.breakdown.plot), selection_type="none",hover_css = "r:7;",width_svg=10)
     })
     
+output$ethnicitybreakdowndropmap <- renderggiraph({
+  ethnicity.drop.rate.breakdown.map.plot <- ggplot(filter(drop.ethnicity.breakdown.2012_2017.map, year == as.numeric(input$ethnicity.breakdown.drop.year.map) & (description %in% input$ethnicity.breakdown.drop.ethnicity.map))) +
+    geom_sf_interactive(aes(fill = bins, tooltip = paste(districtName, "\n", "Total ", description, " Dropout Rate: ", percent(dropRate), sep = "")), color = "black") +
+    scale_color_manual(guide = guide_legend(ncol = 3)) +
+    theme_sf +
+    theme(legend.position="bottom") +
+    scale_fill_manual(guide = guide_legend(ncol = 3), values=c("0% - 5%" = "white", "5% - 10%" = "#C7EF99", "10% - 20%" = "#90E033","20% - 100%" = "#076324", "NA"= "#c6c6c6"))
+  
+  ggiraph(code = print(ethnicity.drop.rate.breakdown.map.plot), selection_type = "none")
+  
+})
 # Server - GRAD: Math Score Visualization --------------------------------------------------------
     output$gradmathscoregraph <- renderggiraph({
       
